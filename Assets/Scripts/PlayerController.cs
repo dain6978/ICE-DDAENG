@@ -1,0 +1,248 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Photon.Pun;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Photon.Realtime;
+using UnityEngine.UI;
+
+public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamageable 인터페이스 부착 -> 인터페이스의 함수 반드시 구현해야 함
+{
+    PhotonView PV;
+
+    [Header ("Items")]
+    [SerializeField] Item[] items;
+
+    int itemIndex;
+    int previousItemIndex = -1;
+
+
+    [Header ("Player Movement")]
+    [SerializeField] GameObject cameraHolder;
+    [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
+
+    float verticalLookRotation;
+    bool grounded;
+    Vector3 smoothMoveVelocity;
+    Vector3 moveAmount;
+
+    Rigidbody rb;
+
+
+    [Header("Health")]
+    [SerializeField] Image healthbarImage;
+    [SerializeField] GameObject playerUI;
+
+    const float maxHealth = 100f;
+    float currentHealth = maxHealth;
+
+    PlayerManager playerManager;
+
+    
+
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        PV = GetComponent<PhotonView>();
+
+        playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
+        // PV.InstantiationData[0]: PlayerManager의 createController에 생성하고 전송한 viewID에 대한 정보??
+        // PhotonView에서 특정 viewID를 가진 게임 오브젝트에서 PlayerManager 컴포넌트를 가져온다. 
+    }
+
+    private void Start()
+    {
+        if (PV.IsMine)
+        {
+            EquipItem(0); //게임 시작할 때 플레이어, 기본으로 0번 인덱스의 무기 장착
+        }
+        else 
+        { 
+            Destroy(GetComponentInChildren<Camera>().gameObject);
+            //자기 자신의 플레이어(로컬 플레이어) 컨트롤러가 아닐 경우 카메라 파괴 to 자기 자신의 카메라만 사용할 수 있도록
+            //카메라뿐만 아니라 gameObject 파괴 -> 오디오 리스너도 함께 파괴 (cameraHolder를 사용한 이유라는데 잘 모르겠당...)
+            Destroy(rb);
+            //로컬 플레이어의 rigidbody만 사용하도록 파괴
+            Destroy(playerUI); //로컬 플레이어의 UI (health바)만 사용
+        }
+    }
+    private void Update()
+    {
+        if (!PV.IsMine)
+            return; //플레이어 컨트롤러가 자기 자신의 플레이어만 컨트롤할 수 있게 
+        
+        Look();
+        Move();
+        Jump();
+
+        Item();
+
+        // 플레이어 무한 추락 방지
+        if (transform.position.y < -10f)
+        {
+            Die();
+        }
+    }
+
+    void Item()
+    {
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (Input.GetKeyDown((i + 1).ToString())) //GetKeyDonw("string")이니까 ToString() 한 것
+            {
+                EquipItem(i);
+                break;
+            }
+        }
+
+        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f) //scrolling Up 
+        {
+            if (itemIndex >= items.Length - 1) //아이템 개수 초과 x 오류 방지 
+            {
+                EquipItem(0);
+            }
+            else
+            {
+                EquipItem(itemIndex + 1); //start 함수에서 EquipItem(0) -> itemIndex 디폴트값: 0
+            }
+        }
+        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f) //scrolling Donw
+        {
+            if (itemIndex <= 0) //아이템 개수 초과 x 오류 방지 
+            {
+                EquipItem(items.Length - 1);
+            }
+            else
+            {
+                EquipItem(itemIndex - 1);
+            }
+        }
+
+        if (Input.GetMouseButtonDown(0)) //마우스 왼쪽 버튼 누르면 해당 총에 대해 Use (shoot)
+        {
+            items[itemIndex].Use();
+        }
+    }
+
+    void Move()
+    {
+        Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+        //normalize는 두 개의 키를 동시에 눌렀을 때(예: w & d) 빠르게 move하는 것 방지
+
+        moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed), ref smoothMoveVelocity, smoothTime);
+        //moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed)
+        // : left shift 키를 누르고 있는 상태면 sprintSpeed를, 아니면 walkSpeed를 움직이고 있는 방향인 moveDir에 곱함
+        //smooth damp: 움직임을 smooth하게 만들어주는 역할
+    }
+
+    void Jump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && grounded) //스페이스 키 눌렀을 때 땅에 닿아있으면 점프 (중복 점프 방지)
+        {
+            rb.AddForce(transform.up * jumpForce);
+        }
+    }
+    
+    void Look()
+    {
+        //mouse x에 따라(2차원에서 x축으로 마우스 움직임에 따라), 3차원에서 y축을 중심으로 playerController가 회전
+        transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);
+
+        verticalLookRotation += Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
+        verticalLookRotation = Mathf.Clamp(verticalLookRotation, -90f, 90f); //카메라 회전 각도 (최소: -90, 최대: +90)
+
+        //mouse y에 따라(2차원에서 y축으로 마우스 움직임에 따라), 3차원에서 x축을 중심으로 camerHolder가 회전
+        cameraHolder.transform.localEulerAngles = Vector3.left * verticalLookRotation;
+    }
+
+    public void SetGroundedState(bool _grounded)
+    {
+        grounded = _grounded;
+    }
+
+    //업데이트 함수는 매 프레임마다 호출되지만, fixedUpdate 함수는 고정된 가격마다 호출된다 
+    //따라서 모든 물리 및 움직임 계산은 각 컴퓨터의 fps에 영향을 덜 받도록 fixedUpdate에 적는다
+    private void FixedUpdate()
+    {
+        if (!PV.IsMine)
+            return;
+
+        //Update 함수에서 계산한 moveAmount를 바탕으로 FixedUpdate마다 실제 PlayerController의 rigidbody에 영향
+        rb.MovePosition(rb.position + transform.TransformDirection(moveAmount) * Time.fixedDeltaTime);
+    }
+
+
+//무기 
+
+    //showing and hiding items
+    void EquipItem(int _index)
+    {
+        if (_index == previousItemIndex)
+            return; //똑같은 키 두 번 누르면 아무 반응 X
+
+        itemIndex = _index;
+        items[itemIndex].itemGameObject.SetActive(true);
+
+        if (previousItemIndex != -1)
+        {
+            items[previousItemIndex].itemGameObject.SetActive(false); //item 교체하면 그 전의 item 비활성화
+        }
+
+        previousItemIndex = itemIndex;
+
+        
+        // 네트워크 상의 플레이어들 간의 무기 교체(EquipItem)에 대한 Syncing
+        
+        //Send out syncing datas (customPlayerProperties) from local player to network
+        if (PV.IsMine)
+        {
+            Hashtable hash = new Hashtable(); //네트워크에 customPlayerProperties 데이터를 전송하기 위해, 해시테이블 정의? (해시테이블: 딕셔너리 기반)
+            hash.Add("ItemIndex", itemIndex);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        }
+
+    }
+
+    // 전체 게임 동안 어떤 플레이어의 어떤 속성이 업데이트 될 때마다 실행되는 함수
+    // called when information is received
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
+        if (!PV.IsMine && targetPlayer == PV.Owner)
+        {//다른 플레이어의 속성이 업데이트 됐을 때 (다른 플레이어가 무기 교체했을 때) 
+            EquipItem((int)changedProps["ItemIndex"]);
+            //해시 테이블의 ItemIndex를 int로 형변환하고 EquipItem에 대한 정보를 네트워크로 pass...??
+        }
+    }
+
+    //IDamageable 인터페이스의 TakeDamage 함수 구현
+    public void TakeDamage(float damage) //runs on the shooter's computer
+    {
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+        //RPC 호출하는 법: PV.RPC("함수 이름), 타겟, 함수 파라미터) 
+        //RpcTarget.All: 서버에 있는 모든 플레이어에게 정보 전달
+    }
+
+    //to sync damage, RPC 사용
+    [PunRPC]
+    void RPC_TakeDamage(float damage) // runs on everyone's computer, but the '!PV.IsMine' check makes it only run on the victim's computer
+    {
+        //전달 받은 정보에 대해, 데미지를 받은 victim 플레이어의 컴퓨터에서만 Debug.Log 코드 실행, 나머지는 return
+        if (!PV.IsMine)
+            return;
+
+        currentHealth -= damage;
+        healthbarImage.fillAmount = currentHealth / maxHealth;
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        // 플레이어 매니저에서 플레이어의 death와 respawning 관리
+        playerManager.Die();
+    }
+}
