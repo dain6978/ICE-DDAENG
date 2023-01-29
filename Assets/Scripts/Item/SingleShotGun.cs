@@ -9,6 +9,11 @@ public class SingleShotGun : Gun
 
     PhotonView PV;
 
+    public float fireRate;
+    float fireTimer;
+
+    public Animator anim;
+
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -19,8 +24,20 @@ public class SingleShotGun : Gun
         Shoot();
     }
 
+    private void Update()
+    {
+        if(fireTimer < fireRate)
+        {
+            fireTimer += Time.deltaTime;
+        }
+    }
     void Shoot()
     {
+        if(fireTimer < fireRate)
+        {
+            return;
+        }
+
         //raycast 
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f)); //스크린(1인칭 카메라)의 중앙으로부터 뻗어 나오는 ray
         ray.origin = cam.transform.position; // ray의 시작점을 카메라의 위치로
@@ -34,6 +51,8 @@ public class SingleShotGun : Gun
             // damaga는 ItemInfo를 상속받은 GunInfo의 변수이기 때문에 GunInfo로 형변환 (언리얼 블루프린트 클래스 형변환 생각하면 될듯)
 
             PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal); //모든 클라이언트에 대해 hit(raycast의 반환값)의 위치를 인자로 하는 RPC_Shoot 함수 호출
+            fireTimer = 0.0f;
+            anim.CrossFadeInFixedTime("Fire", 0.01f);
         }
     }
 

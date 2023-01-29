@@ -56,6 +56,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (PV.IsMine)
         {
             EquipItem(0); //게임 시작할 때 플레이어, 기본으로 0번 인덱스의 무기 장착
+
+            //마우스 커서 안보이게
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Confined;
         }
         else 
         { 
@@ -119,7 +123,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             }
         }
 
-        if (Input.GetMouseButtonDown(0)) //마우스 왼쪽 버튼 누르면 해당 총에 대해 Use (shoot)
+        if (Input.GetButton("Fire1")) //마우스 왼쪽 버튼 누르면 해당 총에 대해 Use (shoot)
         {
             items[itemIndex].Use();
         }
