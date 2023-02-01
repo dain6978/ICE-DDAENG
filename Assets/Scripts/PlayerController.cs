@@ -38,7 +38,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     PlayerManager playerManager;
 
-    
+    //여기서부터 ice 관련!!
+    public bool isIced = false;
+    public int ice = 0;
+    int iceMAX = 4;
+    public GameObject snowmanObject;
+
+    //ice개수 초기화 시간
+    float iceCurTime = 0f;
+    float iceCoolTime = 5f;
+
+    //isIced상태 지속시간
+    float iceTime = 5f;
+
 
 
     private void Awake()
@@ -56,6 +68,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (PV.IsMine)
         {
             EquipItem(0); //게임 시작할 때 플레이어, 기본으로 0번 인덱스의 무기 장착
+            snowmanObject.SetActive(false);
 
             //마우스 커서 안보이게
             Cursor.visible = false;
@@ -81,13 +94,51 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         Jump();
 
         Item();
+        CheckIce();
 
         // 플레이어 무한 추락 방지
         if (transform.position.y < -10f)
         {
             Die();
         }
+
+        if (iceCurTime < iceCoolTime)
+        {
+            iceCurTime += Time.deltaTime;
+        }
+        else
+            ice = 0;
+            
     }
+
+    //ice 개수 체크
+    void CheckIce()
+    {
+        if (ice >= iceMAX && !isIced)
+        {
+            isIced = true;
+            PV.RPC("RPC_Ice", RpcTarget.All, true);
+
+            Invoke("ResetIce", iceTime);
+        }
+            
+    }
+
+    //ice 초기화
+    void ResetIce()
+    {
+        ice = 0;
+        isIced = false;
+        PV.RPC("RPC_Ice", RpcTarget.All, false);
+    }
+
+    [PunRPC]
+    void RPC_Ice(bool Ice)
+    {
+        snowmanObject.SetActive(Ice);
+    }
+
+    
 
     void Item()
     {
@@ -125,12 +176,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         if (Input.GetButton("Fire1")) //마우스 왼쪽 버튼 누르면 해당 총에 대해 Use (shoot)
         {
+            if (isIced)
+                return;
+
             items[itemIndex].Use();
         }
     }
 
     void Move()
     {
+        if (isIced)
+            return;
+
         Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
         //normalize는 두 개의 키를 동시에 눌렀을 때(예: w & d) 빠르게 move하는 것 방지
 
@@ -142,6 +199,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     void Jump()
     {
+        if (isIced)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Space) && grounded) //스페이스 키 눌렀을 때 땅에 닿아있으면 점프 (중복 점프 방지)
         {
             rb.AddForce(transform.up * jumpForce);
@@ -220,28 +280,41 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     }
 
     //IDamageable 인터페이스의 TakeDamage 함수 구현
-    public void TakeDamage(float damage) //runs on the shooter's computer
+    public void TakeDamage(float damage, bool isSnow) //runs on the shooter's computer
     {
-        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage, isSnow);
         //RPC 호출하는 법: PV.RPC("함수 이름), 타겟, 함수 파라미터) 
         //RpcTarget.All: 서버에 있는 모든 플레이어에게 정보 전달
     }
 
     //to sync damage, RPC 사용
     [PunRPC]
-    void RPC_TakeDamage(float damage) // runs on everyone's computer, but the '!PV.IsMine' check makes it only run on the victim's computer
+    void RPC_TakeDamage(float damage, bool isSnow) // runs on everyone's computer, but the '!PV.IsMine' check makes it only run on the victim's computer
     {
         //전달 받은 정보에 대해, 데미지를 받은 victim 플레이어의 컴퓨터에서만 Debug.Log 코드 실행, 나머지는 return
         if (!PV.IsMine)
             return;
 
-        currentHealth -= damage;
-        healthbarImage.fillAmount = currentHealth / maxHealth;
+        //snow총인 경우 ice 증가
+        if (isSnow)
+        {
+            iceCurTime = 0;
+            ice++;
+        }
+            
+
+        if (isIced)
+        {
+            currentHealth -= damage;
+            healthbarImage.fillAmount = currentHealth / maxHealth;
+        }
 
         if (currentHealth <= 0)
         {
             Die();
         }
+
+
     }
 
     void Die()

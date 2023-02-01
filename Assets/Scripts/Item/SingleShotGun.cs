@@ -7,6 +7,7 @@ public class SingleShotGun : Gun
 {
     [SerializeField] Camera cam;
 
+
     PhotonView PV;
 
     public float fireRate;
@@ -44,7 +45,7 @@ public class SingleShotGun : Gun
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(((GunInfo)itemInfo).damage);
+            hit.collider.gameObject.GetComponent<IDamageable>()?.TakeDamage(((GunInfo)itemInfo).damage, ((GunInfo)itemInfo).isSnow);
             // '?' 표시: 게임 오브젝트가 IDamageable 인터페이스를 가지고 있을 때만 TakeDamage 함수가 호출된다는 의미
             // SingleShotGun 스크립트 (클래스)는 Gun과 Item 클래스를 상속받음 -> Item 클래스의 public 변수인 itemInfo에 접근 가능
             // (itemInfo를 인스턴스로 갖는 ItemInfo 클래스에는 아이템의 이름에 대한 정보를 담은 itemName 변수 있음)
@@ -74,6 +75,8 @@ public class SingleShotGun : Gun
 
             bulletImpactObj.transform.SetParent(colliders[0].transform);
             //먼소리야?????????????? 13강 8~9분 다시 듣기 
+
         }
     }
+
 }

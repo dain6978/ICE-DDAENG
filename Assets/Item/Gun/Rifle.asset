@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Rifle
   m_EditorClassIdentifier: 
   itemName: Rfile
-  damage: 50
+  damage: 0
+  isSnow: 1
