@@ -6,14 +6,15 @@ public class PlayerAnimManager : MonoBehaviour
 {
     /*[HideInInspector]*/ public float moveMagnitude = 0;
 
-    GameObject playerAnimal;
+    //GameObject playerAnimal;
     Animator playerAnimator;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerAnimal = transform.GetChild(5).gameObject;
-        playerAnimator = playerAnimal.GetComponentInChildren<Animator>();
+        //playerAnimal = transform.GetChild(5).gameObject;
+        //playerAnimator = playerAnimal.GetComponentInChildren<Animator>();
+        playerAnimator = GetComponentInChildren<Animator>(); // 테스트용
     }
 
     // Update is called once per frame
