@@ -997,7 +997,6 @@ MonoBehaviour:
   walkSpeed: 3
   jumpForce: 300
   smoothTime: 0.15
-  playerMesh: {fileID: 4789930418821100149}
   healthbarImage: {fileID: 6833741609477164282}
   playerUI: {fileID: 4665144760258830378}
   isIced: 0
@@ -1633,11 +1632,6 @@ MeshCollider:
 --- !u!4 &4789930418818016083 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400006, guid: 49f10d89ddfdd594f9ed88fa79351b6c, type: 3}
-  m_PrefabInstance: {fileID: 4789930418817890773}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &4789930418821100149 stripped
-SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 13700000, guid: 49f10d89ddfdd594f9ed88fa79351b6c, type: 3}
   m_PrefabInstance: {fileID: 4789930418817890773}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6140701777615665231

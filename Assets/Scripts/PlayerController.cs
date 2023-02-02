@@ -27,7 +27,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     Vector3 moveAmount;
 
     Rigidbody rb;
-    public SkinnedMeshRenderer playerMesh;
+
+    GameObject playerAnimal;
+    SkinnedMeshRenderer[] playerMeshs; // 동물 메시 & face 메시
 
 
     [Header("Health")]
@@ -65,7 +67,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         // PV.InstantiationData[0]: PlayerManager의 createController에 생성하고 전송한 viewID에 대한 정보??
         // PhotonView에서 특정 viewID를 가진 게임 오브젝트에서 PlayerManager 컴포넌트를 가져온다. 
 
-        //playerMesh = GetComponentInChildren<SkinnedMeshRenderer>();
+        playerAnimal = transform.GetChild(5).gameObject;
+        playerMeshs = playerAnimal.GetComponentsInChildren<SkinnedMeshRenderer>();
     }
 
     private void Start()
@@ -79,7 +82,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Confined;
 
-            Destroy(playerMesh);
+            Destroy(playerMeshs[0]);
+            Destroy(playerMeshs[1]);
         }
         else 
         { 
