@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class PlayerAnimManager : MonoBehaviour
 {
-    public float moveMagnitude = 0;
+    /*[HideInInspector]*/ public float moveMagnitude = 0;
 
+    GameObject playerAnimal;
     Animator playerAnimator;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerAnimator = GetComponentInChildren<Animator>();
+        playerAnimal = transform.GetChild(5).gameObject;
+        playerAnimator = playerAnimal.GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame

@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     GameObject playerAnimal;
     SkinnedMeshRenderer[] playerMeshs; // 동물 메시 & face 메시
 
+    PlayerAnimManager playerAnimManager;
+
 
     [Header("Health")]
     [SerializeField] Image healthbarImage;
@@ -69,6 +71,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         playerAnimal = transform.GetChild(5).gameObject;
         playerMeshs = playerAnimal.GetComponentsInChildren<SkinnedMeshRenderer>();
+
+        playerAnimManager = GetComponent<PlayerAnimManager>();
     }
 
     private void Start()
@@ -82,8 +86,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Confined;
 
-            Destroy(playerMeshs[0]);
-            Destroy(playerMeshs[1]);
+            // 플레이어 1인칭 시점에서 자기 자신의 모습 (mesh) 안 보이게 설정
+            //Destroy(playerMeshs[0]);
+            //Destroy(playerMeshs[1]);
+
         }
         else 
         { 
@@ -93,6 +99,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             Destroy(rb);
             //로컬 플레이어의 rigidbody만 사용하도록 파괴
             Destroy(playerUI); //로컬 플레이어의 UI (health바)만 사용
+            //Destroy(playerAnimManager); //자기 자신의 것이 아닌 애니메이터 파괴...?????
         }
     }
     private void Update()
@@ -206,6 +213,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         //moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed)
         // : left shift 키를 누르고 있는 상태면 sprintSpeed를, 아니면 walkSpeed를 움직이고 있는 방향인 moveDir에 곱함
         //smooth damp: 움직임을 smooth하게 만들어주는 역할
+
+        playerAnimManager.moveMagnitude = Vector3.SqrMagnitude(moveAmount);
     }
 
     void Jump()
@@ -216,6 +225,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (Input.GetKeyDown(KeyCode.Space) && grounded) //스페이스 키 눌렀을 때 땅에 닿아있으면 점프 (중복 점프 방지)
         {
             rb.AddForce(transform.up * jumpForce);
+            playerAnimManager.JumpAnim();
         }
     }
     
