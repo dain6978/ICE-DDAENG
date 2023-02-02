@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             Destroy(rb);
             //로컬 플레이어의 rigidbody만 사용하도록 파괴
             Destroy(playerUI); //로컬 플레이어의 UI (health바)만 사용
-            //Destroy(playerAnimManager); //자기 자신의 것이 아닌 애니메이터 파괴...?????
+            Destroy(playerAnimManager); //자기 자신의 것이 아닌 애니메이터 파괴... 차이가 없어보이는데 의미가 있낭?
         }
     }
     private void Update()

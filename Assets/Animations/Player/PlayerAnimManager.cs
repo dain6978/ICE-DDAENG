@@ -11,10 +11,10 @@ public class PlayerAnimManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        //playerAnimal = transform.GetChild(5).gameObject;
-        //playerAnimator = playerAnimal.GetComponentInChildren<Animator>();
-        playerAnimator = GetComponentInChildren<Animator>(); // 테스트용
+    { 
+        playerAnimator = GetComponentInChildren<Animator>(); //테스트용
+        //playerAnimator = transform.GetChild(5).GetComponent<Animator>();
+        // MeshRenderer는 자식(Bunny)의 자식(Mesh)의 자식(Bunny/Face) 컴포넌트
     }
 
     // Update is called once per frame

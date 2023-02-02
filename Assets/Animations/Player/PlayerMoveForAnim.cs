@@ -10,7 +10,7 @@ public class PlayerMoveForAnim : MonoBehaviour
 {
 
     //[Header("Player Movement")]
-    //[SerializeField] GameObject cameraHolder;
+    [SerializeField] GameObject cameraHolder;
     [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
 
     float verticalLookRotation;
@@ -22,14 +22,24 @@ public class PlayerMoveForAnim : MonoBehaviour
 
     PlayerAnimManager playerAnimManager;
 
+    GameObject playerAnimal;
+    SkinnedMeshRenderer[] playerMeshs; // 동물 메시 & face 메시
+
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
+        playerAnimManager = GetComponent<PlayerAnimManager>();
+
+        playerAnimal = transform.GetChild(0).gameObject;
+        playerMeshs = playerAnimal.GetComponentsInChildren<SkinnedMeshRenderer>();
     }
 
     private void Start()
     {
-        playerAnimManager = GetComponent<PlayerAnimManager>();
+        //Destroy(playerMeshs[0]);
+        //Destroy(playerMeshs[1]);
     }
 
     private void Update()
@@ -71,7 +81,7 @@ public class PlayerMoveForAnim : MonoBehaviour
         verticalLookRotation = Mathf.Clamp(verticalLookRotation, -90f, 90f); //카메라 회전 각도 (최소: -90, 최대: +90)
 
         //mouse y에 따라(2차원에서 y축으로 마우스 움직임에 따라), 3차원에서 x축을 중심으로 camerHolder가 회전
-        //cameraHolder.transform.localEulerAngles = Vector3.left * verticalLookRotation;
+        cameraHolder.transform.localEulerAngles = Vector3.left * verticalLookRotation;
     }
 
     public void SetGroundedState(bool _grounded)
