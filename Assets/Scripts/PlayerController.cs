@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     Vector3 moveAmount;
 
     Rigidbody rb;
+    public SkinnedMeshRenderer playerMesh;
 
 
     [Header("Health")]
@@ -37,8 +38,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     float currentHealth = maxHealth;
 
     PlayerManager playerManager;
+    
 
     //여기서부터 ice 관련!!
+    [Header("Ice")]
     public bool isIced = false;
     public int ice = 0;
     int iceMAX = 4;
@@ -61,6 +64,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
         // PV.InstantiationData[0]: PlayerManager의 createController에 생성하고 전송한 viewID에 대한 정보??
         // PhotonView에서 특정 viewID를 가진 게임 오브젝트에서 PlayerManager 컴포넌트를 가져온다. 
+
+        //playerMesh = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
     private void Start()
@@ -73,6 +78,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             //마우스 커서 안보이게
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Confined;
+
+            Destroy(playerMesh);
         }
         else 
         { 
