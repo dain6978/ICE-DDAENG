@@ -13,6 +13,7 @@ public class PlayerMoveForAnim : MonoBehaviour
     [SerializeField] GameObject cameraHolder;
     [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
 
+    float moveSpeed;
     float verticalLookRotation;
     bool grounded;
     Vector3 smoothMoveVelocity;
@@ -54,13 +55,20 @@ public class PlayerMoveForAnim : MonoBehaviour
         Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
         //normalize는 두 개의 키를 동시에 눌렀을 때(예: w & d) 빠르게 move하는 것 방지
 
-        moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed), ref smoothMoveVelocity, smoothTime);
+        if (Input.GetKey(KeyCode.LeftShift))
+            moveSpeed = sprintSpeed;
+        else
+            moveSpeed = walkSpeed;
+
+        moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * moveSpeed, ref smoothMoveVelocity, smoothTime);
         //moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed)
         // : left shift 키를 누르고 있는 상태면 sprintSpeed를, 아니면 walkSpeed를 움직이고 있는 방향인 moveDir에 곱함
         //smooth damp: 움직임을 smooth하게 만들어주는 역할
 
-        playerAnimManager.moveMagnitude = Vector3.SqrMagnitude(moveAmount);
+        playerAnimManager.moveMagnitude = Vector3.SqrMagnitude(moveDir);
+        playerAnimManager.MoveAnim(moveSpeed);
 
+            
     }
 
     void Jump()

@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
 
     float verticalLookRotation;
+    float moveSpeed;
     bool grounded;
     Vector3 smoothMoveVelocity;
     Vector3 moveAmount;
@@ -69,8 +70,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         // PV.InstantiationData[0]: PlayerManager의 createController에 생성하고 전송한 viewID에 대한 정보??
         // PhotonView에서 특정 viewID를 가진 게임 오브젝트에서 PlayerManager 컴포넌트를 가져온다. 
 
-        playerAnimal = transform.GetChild(5).gameObject;
-        playerMeshs = playerAnimal.GetComponentsInChildren<SkinnedMeshRenderer>();
+        //playerAnimal = transform.GetChild(5).gameObject;
+        //playerMeshs = playerAnimal.GetComponentsInChildren<SkinnedMeshRenderer>();
 
         playerAnimManager = GetComponent<PlayerAnimManager>();
     }
@@ -209,12 +210,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
         //normalize는 두 개의 키를 동시에 눌렀을 때(예: w & d) 빠르게 move하는 것 방지
 
-        moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed), ref smoothMoveVelocity, smoothTime);
+        if (Input.GetKey(KeyCode.LeftShift))
+            moveSpeed = sprintSpeed;
+        else
+            moveSpeed = walkSpeed;
+
+        moveAmount = Vector3.SmoothDamp(moveAmount, moveDir * moveSpeed, ref smoothMoveVelocity, smoothTime);
         //moveDir * (Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : walkSpeed)
         // : left shift 키를 누르고 있는 상태면 sprintSpeed를, 아니면 walkSpeed를 움직이고 있는 방향인 moveDir에 곱함
         //smooth damp: 움직임을 smooth하게 만들어주는 역할
 
-        playerAnimManager.moveMagnitude = Vector3.SqrMagnitude(moveAmount);
+        playerAnimManager.moveMagnitude = Vector3.SqrMagnitude(moveDir);
+        playerAnimManager.MoveAnim(moveSpeed);
     }
 
     void Jump()
@@ -315,6 +322,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         //전달 받은 정보에 대해, 데미지를 받은 victim 플레이어의 컴퓨터에서만 Debug.Log 코드 실행, 나머지는 return
         if (!PV.IsMine)
             return;
+
+        playerAnimManager.DamageAnim();
 
         //snow총인 경우 ice 증가
         if (isSnow)
