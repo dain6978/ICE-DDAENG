@@ -221,6 +221,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1773126288 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6297680205883479833, guid: 762f0818ccf7f354d8c1ba54f049d117, type: 3}
+  m_PrefabInstance: {fileID: 1695586781316837769}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1834408060
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,6 +426,14 @@ PrefabInstance:
     - target: {fileID: 1695586782150290484, guid: 762f0818ccf7f354d8c1ba54f049d117, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1695586782150290487, guid: 762f0818ccf7f354d8c1ba54f049d117, type: 3}
+      propertyPath: playerSpine
+      value: 
+      objectReference: {fileID: 1773126288}
+    - target: {fileID: 6297680205873997095, guid: 762f0818ccf7f354d8c1ba54f049d117, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 762f0818ccf7f354d8c1ba54f049d117, type: 3}
