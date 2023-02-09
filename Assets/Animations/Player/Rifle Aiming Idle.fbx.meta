@@ -5,7 +5,7 @@ ModelImporter:
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Aming Idle
+    second: Rifle Aming Idle
   externalObjects: {}
   materials:
     materialImportMode: 0
@@ -36,7 +36,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Aming Idle
+      name: Rifle Aming Idle
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
