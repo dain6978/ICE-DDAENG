@@ -136,6 +136,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (ice >= iceMAX && !isIced)
         {
             isIced = true;
+            rb.constraints = RigidbodyConstraints.FreezePosition ;
             PV.RPC("RPC_Ice", RpcTarget.All, true);
 
             Invoke("ResetIce", iceTime);
@@ -148,6 +149,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     {
         ice = 0;
         isIced = false;
+        rb.constraints = RigidbodyConstraints.None;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
         PV.RPC("RPC_Ice", RpcTarget.All, false);
     }
 
@@ -308,29 +311,29 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     }
 
     //IDamageable 인터페이스의 TakeDamage 함수 구현
-    public void TakeDamage(float damage, bool isSnow) //runs on the shooter's computer
+    public void TakeDamage(float damage) //runs on the shooter's computer
     {
-        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage, isSnow);
+        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+        //RPC 호출하는 법: PV.RPC("함수 이름), 타겟, 함수 파라미터) 
+        //RpcTarget.All: 서버에 있는 모든 플레이어에게 정보 전달
+    }
+
+    public void TakeSnow() 
+    {
+        PV.RPC("RPC_TakeSnow", RpcTarget.All);
         //RPC 호출하는 법: PV.RPC("함수 이름), 타겟, 함수 파라미터) 
         //RpcTarget.All: 서버에 있는 모든 플레이어에게 정보 전달
     }
 
     //to sync damage, RPC 사용
     [PunRPC]
-    void RPC_TakeDamage(float damage, bool isSnow) // runs on everyone's computer, but the '!PV.IsMine' check makes it only run on the victim's computer
+    void RPC_TakeDamage(float damage) // runs on everyone's computer, but the '!PV.IsMine' check makes it only run on the victim's computer
     {
         //전달 받은 정보에 대해, 데미지를 받은 victim 플레이어의 컴퓨터에서만 Debug.Log 코드 실행, 나머지는 return
         if (!PV.IsMine)
             return;
 
         playerAnimManager.DamageAnim();
-
-        //snow총인 경우 ice 증가
-        if (isSnow)
-        {
-            iceCurTime = 0;
-            ice++;
-        }
             
 
         if (isIced)
@@ -338,6 +341,28 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             currentHealth -= damage;
             healthbarImage.fillAmount = currentHealth / maxHealth;
         }
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+
+
+    }
+
+    [PunRPC]
+    void RPC_TakeSnow() // runs on everyone's computer, but the '!PV.IsMine' check makes it only run on the victim's computer
+    {
+        //전달 받은 정보에 대해, 데미지를 받은 victim 플레이어의 컴퓨터에서만 Debug.Log 코드 실행, 나머지는 return
+        if (!PV.IsMine)
+            return;
+
+        playerAnimManager.DamageAnim();
+
+
+        iceCurTime = 0;
+        ice++;
+
 
         if (currentHealth <= 0)
         {

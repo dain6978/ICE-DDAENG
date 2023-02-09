@@ -990,7 +990,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items:
-  - {fileID: 5453312049257027308}
+  - {fileID: 4319435247465045486}
   - {fileID: 3212047353772527245}
   cameraHolder: {fileID: 7816969804797969249}
   mouseSensitivity: 3
@@ -1072,6 +1072,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveMagnitude: 0
+  playerSpineRotation: 0
 --- !u!1 &5826537547745995265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1316,8 +1317,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4163610674064618210}
-  - component: {fileID: 5453312049257027308}
   - component: {fileID: 4288646271816492202}
+  - component: {fileID: 4319435247465045486}
   m_Layer: 0
   m_Name: Rfile
   m_TagString: Untagged
@@ -1341,24 +1342,6 @@ Transform:
   m_Father: {fileID: 6198613569767419480}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5453312049257027308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8020638732165232318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81d2876741f555c4e8743941d58b85ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemInfo: {fileID: 11400000, guid: f34a7805230be4147b2269cf0355f450, type: 2}
-  itemGameObject: {fileID: 7656949856607685905}
-  bulletImpactPrefab: {fileID: 25086794617256619, guid: 4b8ee48e2b584654cbdac00280052a78, type: 3}
-  cam: {fileID: 8714806973997662750}
-  fireRate: 0.1
-  anim: {fileID: 2374720447142908894}
 --- !u!114 &4288646271816492202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1381,6 +1364,24 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &4319435247465045486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8020638732165232318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39e605ccc0c555340b0c9cfa1308515f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemInfo: {fileID: 11400000, guid: f34a7805230be4147b2269cf0355f450, type: 2}
+  itemGameObject: {fileID: 7656949856607685905}
+  bulletImpactPrefab: {fileID: 25086794617256619, guid: 4b8ee48e2b584654cbdac00280052a78, type: 3}
+  cam: {fileID: 8714806973997662750}
+  fireRate: 0.1
+  anim: {fileID: 2374720447142908894}
 --- !u!1 &8356449178718979947
 GameObject:
   m_ObjectHideFlags: 0

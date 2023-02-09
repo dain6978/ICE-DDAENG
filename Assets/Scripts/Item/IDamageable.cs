@@ -3,5 +3,6 @@
 
 public interface IDamageable
 {
-    void TakeDamage(float damage, bool isSnow);
+    void TakeDamage(float damage);
+    void TakeSnow();
 }

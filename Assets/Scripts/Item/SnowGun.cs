@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingleShotGun : Gun
+public class SnowGun : Gun
 {
     [SerializeField] Camera cam;
 
@@ -46,11 +46,7 @@ public class SingleShotGun : Gun
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             //Debug.Log(hit.collider.gameObject);
-            hit.collider.gameObject.GetComponentInParent<IDamageable>()?.TakeDamage(((GunInfo)itemInfo).damage, ((GunInfo)itemInfo).isSnow);
-            // '?' 표시: 게임 오브젝트가 IDamageable 인터페이스를 가지고 있을 때만 TakeDamage 함수가 호출된다는 의미
-            // SingleShotGun 스크립트 (클래스)는 Gun과 Item 클래스를 상속받음 -> Item 클래스의 public 변수인 itemInfo에 접근 가능
-            // (itemInfo를 인스턴스로 갖는 ItemInfo 클래스에는 아이템의 이름에 대한 정보를 담은 itemName 변수 있음)
-            // damaga는 ItemInfo를 상속받은 GunInfo의 변수이기 때문에 GunInfo로 형변환 (언리얼 블루프린트 클래스 형변환 생각하면 될듯)
+            hit.collider.gameObject.GetComponentInParent<IDamageable>()?.TakeSnow();
 
             PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal); //모든 클라이언트에 대해 hit(raycast의 반환값)의 위치를 인자로 하는 RPC_Shoot 함수 호출
             fireTimer = 0.0f;
@@ -75,7 +71,7 @@ public class SingleShotGun : Gun
             Destroy(bulletImpactObj, 10f); 
 
             bulletImpactObj.transform.SetParent(colliders[0].transform);
-            //먼소리야?????????????? 13강 8~9분 다시 듣기 
+
 
         }
     }
