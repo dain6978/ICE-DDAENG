@@ -11,7 +11,6 @@ public class PlayerMoveForAnim : MonoBehaviour
 
     //[Header("Player Movement")]
     [SerializeField] GameObject cameraHolder;
-    [SerializeField] GameObject playerSpine;
     [SerializeField] float mouseSensitivity, sprintSpeed, walkSpeed, jumpForce, smoothTime;
 
     float moveSpeed;
@@ -87,7 +86,7 @@ public class PlayerMoveForAnim : MonoBehaviour
         transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);
 
         verticalLookRotation += Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
-        verticalLookRotation = Mathf.Clamp(verticalLookRotation, -50f, 60f); //카메라 회전 각도 (최소: -90, 최대: +90)
+        verticalLookRotation = Mathf.Clamp(verticalLookRotation, -40f, 80f); //카메라 회전 각도 (최소: -90, 최대: +90)
 
         cameraHolder.transform.localEulerAngles = Vector3.left * verticalLookRotation;
         //mouse y에 따라(2차원에서 y축으로 마우스 움직임에 따라), 3차원에서 x축을 중심으로 camerHolder가 회전

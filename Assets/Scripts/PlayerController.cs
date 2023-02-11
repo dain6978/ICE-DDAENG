@@ -108,6 +108,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (!PV.IsMine)
             return; //플레이어 컨트롤러가 자기 자신의 플레이어만 컨트롤할 수 있게 
         
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            playerAnimManager.ShootAnim();
+            Debug.Log("shoot");
+        }
         Look();
         Move();
         Jump();
@@ -202,6 +207,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
                 return;
 
             items[itemIndex].Use();
+            playerAnimManager.ShootAnim(); // 플레이어의 Shoot 애니메이션 (일단 총이랑 관련 X)
         }
     }
 
@@ -245,10 +251,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         transform.Rotate(Vector3.up * Input.GetAxisRaw("Mouse X") * mouseSensitivity);
 
         verticalLookRotation += Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
-        verticalLookRotation = Mathf.Clamp(verticalLookRotation, -90f, 90f); //카메라 회전 각도 (최소: -90, 최대: +90)
+        verticalLookRotation = Mathf.Clamp(verticalLookRotation, -40f, 80f); //카메라 회전 각도 (최소: -90, 최대: +90)
 
-        //mouse y에 따라(2차원에서 y축으로 마우스 움직임에 따라), 3차원에서 x축을 중심으로 camerHolder가 회전
         cameraHolder.transform.localEulerAngles = Vector3.left * verticalLookRotation;
+        //mouse y에 따라(2차원에서 y축으로 마우스 움직임에 따라), 3차원에서 x축을 중심으로 camerHolder가 회전
+        playerAnimManager.playerSpineRotation = verticalLookRotation;
+        //playerSpine.transform.localRotation = Quaternion.Euler(0, 0, verticalLookRotation);
+        //playerSpine.transform.position
+        //mouse y에 따라(2차원에서 y축으로 마우스 움직임에 따라), 3차원에서 z축을 중심으로 Spine이 회전
     }
 
     public void SetGroundedState(bool _grounded)
@@ -333,7 +343,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (!PV.IsMine)
             return;
 
-        playerAnimManager.DamageAnim();
+        playerAnimManager.DamageAnim(); // 데미지를 받은 victim 플레이어만 Damage 애니메이션 실행
 
         if (isIced)
         {

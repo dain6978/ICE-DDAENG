@@ -37,7 +37,7 @@ public class PlayerAnimManager : MonoBehaviour
     {
         //playerSpineRotation == 카메라의 회전값 (verticalLookRotation) 
         //mouse y에 따라(2차원에서 y축으로 마우스 움직임에 따라), 3차원에서 z축을 중심으로 Spine이 회전
-        playerSpine.localRotation = Quaternion.Euler(0, 0, playerSpineRotation);
+        playerSpine.localRotation = Quaternion.Euler(0, 0, playerSpineRotation * 0.8f);
     }
 
     public void JumpAnim()
@@ -50,13 +50,18 @@ public class PlayerAnimManager : MonoBehaviour
         playerAnimator.SetTrigger("Damage");
     }
 
+    public void ShootAnim()
+    {
+        playerAnimator.SetTrigger("Shoot");
+    }
+
     public void MoveAnim(float moveSpeed)
     {
         if (moveSpeed == 2.5f)
         {
             playerAnimator.SetBool("Run", false);
         }
-        else if (moveSpeed == 6f)
+        else if (moveSpeed == 5f)
         {
             playerAnimator.SetBool("Run", true);
         }
