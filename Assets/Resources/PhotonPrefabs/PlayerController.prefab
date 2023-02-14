@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 3212047353772527245}
   - component: {fileID: 2781316001797235904}
   m_Layer: 0
-  m_Name: Pistol
+  m_Name: DamageGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2669,7 +2669,7 @@ GameObject:
   - component: {fileID: 164935112828169526}
   - component: {fileID: 681957753409651200}
   m_Layer: 0
-  m_Name: PistolObject
+  m_Name: DamageGunObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3871,7 +3871,7 @@ GameObject:
   - component: {fileID: 3650712138510226589}
   - component: {fileID: 2374720447142908894}
   m_Layer: 0
-  m_Name: RfileObject
+  m_Name: SnowGunObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4124,7 +4124,7 @@ GameObject:
   - component: {fileID: 4288646271816492202}
   - component: {fileID: 4319435247465045486}
   m_Layer: 0
-  m_Name: Rfile
+  m_Name: SnowGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

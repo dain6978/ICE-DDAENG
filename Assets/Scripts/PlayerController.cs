@@ -308,8 +308,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     // called when information is received
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        if (!PV.IsMine && targetPlayer == PV.Owner)
-        {//다른 플레이어의 속성이 업데이트 됐을 때 (다른 플레이어가 무기 교체했을 때) 
+        if (changedProps.ContainsKey("itemIndex") && !PV.IsMine && targetPlayer == PV.Owner)
+        {//다른 플레이어의 itemindex 속성이 업데이트 됐을 때 (다른 플레이어가 무기 교체했을 때) 
             EquipItem((int)changedProps["ItemIndex"]);
             //해시 테이블의 ItemIndex를 int로 형변환하고 EquipItem에 대한 정보를 네트워크로 pass...??
         }
@@ -318,25 +318,23 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     //IDamageable 인터페이스의 TakeDamage 함수 구현
     public void TakeDamage(float damage) //runs on the shooter's computer
     {
-        PV.RPC("RPC_TakeDamage", RpcTarget.All, damage);
+        PV.RPC(nameof(RPC_TakeDamage), PV.Owner, damage);
         //RPC 호출하는 법: PV.RPC("함수 이름), 타겟, 함수 파라미터) 
         //RpcTarget.All: 서버에 있는 모든 플레이어에게 정보 전달
+        //PV.Owner은 데미지 입는 본인한테만.
     }
 
     public void TakeSnow() 
     {
-        PV.RPC("RPC_TakeSnow", RpcTarget.All);
+        PV.RPC(nameof(RPC_TakeSnow), PV.Owner);
         //RPC 호출하는 법: PV.RPC("함수 이름), 타겟, 함수 파라미터) 
         //RpcTarget.All: 서버에 있는 모든 플레이어에게 정보 전달
     }
 
     //to sync damage, RPC 사용
     [PunRPC]
-    void RPC_TakeDamage(float damage) // runs on everyone's computer, but the '!PV.IsMine' check makes it only run on the victim's computer
+    void RPC_TakeDamage(float damage, PhotonMessageInfo info) // runs on everyone's computer, but the '!PV.IsMine' check makes it only run on the victim's computer
     {
-        //전달 받은 정보에 대해, 데미지를 받은 victim 플레이어의 컴퓨터에서만 Debug.Log 코드 실행, 나머지는 return
-        if (!PV.IsMine)
-            return;
 
         playerAnimManager.DamageAnim(); // 데미지를 받은 victim 플레이어만 Damage 애니메이션 실행
 
@@ -349,6 +347,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (currentHealth <= 0)
         {
             Die();
+            
+            //Sender의 info전송하고 info.Sender의 GetKill()호출
+            PlayerManager.Find(info.Sender).GetKill();
         }
 
 
@@ -357,8 +358,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     [PunRPC]
     void RPC_TakeSnow() 
     {
-        if (!PV.IsMine)
-            return;
 
         playerAnimManager.DamageAnim();
 

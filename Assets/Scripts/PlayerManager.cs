@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System.IO;
-
+using System.Linq;
+using Photon.Realtime;
+//기존 Hasytable 클래스가 아닌, Photon Hashtable 클래스를 사용할 거라 선언
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class PlayerManager : MonoBehaviour
 {
     // 플레이어의 death와 respawning 관리
 
     PhotonView PV;
     GameObject playerController;
+
+    int kills;
+    int deaths;
 
     private void Awake()
     {
@@ -42,6 +48,34 @@ public class PlayerManager : MonoBehaviour
         PhotonNetwork.Destroy(playerController); // 죽으면 씬에 있는 playerController 파괴
         
         CreateController(); // 리스폰
+
+        deaths++;
+
+        Hashtable hash = new Hashtable();
+        hash.Add("deaths", deaths);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
     }
     
+    //Kill한 클라이언트에게서만 호출되어야하는데
+    //Kill당한 클라이언트에게서도 호출됨..
+    public void GetKill()
+    {
+        PV.RPC(nameof(RPC_GetKill), PV.Owner);
+
+    }
+
+    [PunRPC]
+    void RPC_GetKill()
+    {
+        kills++;
+
+        Hashtable hash = new Hashtable();
+        hash.Add("kills", kills);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+    }
+    public static PlayerManager Find(Player player)
+    {
+        //씬의 모든 플레이어매니저 배열 리턴
+        return FindObjectsOfType<PlayerManager>().SingleOrDefault(x => x.PV.Owner == player);
+    }
 }
