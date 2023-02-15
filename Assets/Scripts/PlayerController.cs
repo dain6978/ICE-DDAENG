@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     public int ice = 0;
     int iceMAX = 4;
     public GameObject snowmanObject;
+    public GameObject playerObject;
 
     //ice개수 초기화 시간
     float iceCurTime = 0f;
@@ -82,6 +83,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         {
             EquipItem(0); //게임 시작할 때 플레이어, 기본으로 0번 인덱스의 무기 장착
             snowmanObject.SetActive(false);
+            
 
             //마우스 커서 안보이게
             Cursor.visible = false;
@@ -158,6 +160,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     void RPC_Ice(bool Ice)
     {
         snowmanObject.SetActive(Ice);
+        playerObject.SetActive(!Ice);
     }
 
     
