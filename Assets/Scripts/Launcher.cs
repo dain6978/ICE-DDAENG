@@ -25,6 +25,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] GameObject playerListItemPrefab;
     [SerializeField] GameObject startGameButton;
 
+    bool isFirstConnection = true;
+
     private void Awake()
     {
         Instance = this;
@@ -37,20 +39,28 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
+
     //OnConnectedToMaster: 마스터 서버에 성공적으로 연결되었을 때 포톤에 의해 호출되는 콜백 함수
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to Master");
         PhotonNetwork.JoinLobby();
         //로비란 기본적으로 룸을 생성하고, 찾을 수 있는 곳
-        PhotonNetwork.AutomaticallySyncScene = true; 
+        PhotonNetwork.AutomaticallySyncScene = true;
         //AutomaticallySyncScene 호스트(마스터)가 씬을 로드할 때 모든 클라이언트가 자동으로 동시에 로드할지 말지 결정
     }
 
-    //로비에 연결될 경우 실행되는 함수
+    //로비에 연결될 경우 실행되는 함수 (OnConnectedToMaster -> PhotonNetwork.JoinLobby -> OnJoinedLobby)
     public override void OnJoinedLobby()
     {
-        MenuManager.Instance.OpenMenu("title");
+        if (isFirstConnection)
+        {
+            MenuManager.Instance.OpenMenu("title");
+        }
+        else
+        {
+            MenuManager.Instance.OpenMenu("room setting");
+        }
         Debug.Log("Joined Lobby");
     }
 
@@ -67,6 +77,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     //성공적으로 생성된 룸에 가입되었을 때 실행되는 콜백 함수
     public override void OnJoinedRoom()
     {
+        isFirstConnection = false;
         MenuManager.Instance.OpenMenu("room");
         roomText.text = PhotonNetwork.CurrentRoom.Name;
 
@@ -111,8 +122,11 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        //leave room 명령이 완료되면 title 메뉴로
-        MenuManager.Instance.OpenMenu("title");
+        //leave room 명령이 완료되면 room setting 메뉴로
+        MenuManager.Instance.OpenMenu("room setting");
+        // LeaveRoom -> PhotonNetwork.LeaveRoom -> OnLeftRoom
+        // PhotonNetwork.LeaveRoom 함수에서 마스터 서버로 돌아가기 때문에 OnConnectedToMaster가 호출됨
+        // OnConnectedToMaster에서 바로 return할 경우 로비 관련 문제 발생 -> 나머지는 그대로 유지하되 open하는 menu만 다르게 설정
     }
 
     // RoomListItemButton을 클릭해서 룸에 가입하면, 네트워크에 명령 & 룸에 가입하는 동안 로딩 메뉴
@@ -150,11 +164,24 @@ public class Launcher : MonoBehaviourPunCallbacks
         Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(newPlayer);
     }
 
-    public void StartGame()
+
+    public void LoadGameScene()
     {
         PhotonNetwork.LoadLevel(1);
         //'Game' 씬 로드 (빌드 세팅에서 Game 씬의 인덱스를 1로 설정했기 때문에)
         // 유니티 SceneManager의 씬 교체 대신 포톤 네트워크의 LoadLevel을 사용하는 이유
         // : 호스트나 특정 플레이어가 씬 교체 함수를 호출하는 대신, 게임의(해당 룸의) 모든 플레이어가 한 번에 레벨을 로드하도록 하기 위해
+    }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;  // 유니티 에디터 플레이 종료  
+#else
+        Application.Quit(); // 어플리케이션 (빌드 파일) 종료
+#endif
+        // Title 메뉴에서 ESC 누르면 게임 종료 하고 싶은데... 
+        //  세팅 메뉴일 때는 세팅 -> 타이틀로 돌아오고 ... 뒤로가기 식으로 하고 싶은데 불가능하려나...??
+        // 아님 언제든지 ESC 누르면 게임을 종료하시겠습니까? 뜨거나.. .. 안하는게낫낭...
     }
 }
