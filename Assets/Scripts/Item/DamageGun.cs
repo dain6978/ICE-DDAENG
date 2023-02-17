@@ -9,6 +9,7 @@ public class DamageGun : Gun
 
 
     PhotonView PV;
+    PlayerAnimManager playerAnimManager;
 
     public Animator anim;
 
@@ -17,6 +18,7 @@ public class DamageGun : Gun
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
+        playerAnimManager = FindObjectOfType<PlayerAnimManager>();
     }
 
     public override void Use()
@@ -49,6 +51,7 @@ public class DamageGun : Gun
             // damaga는 ItemInfo를 상속받은 GunInfo의 변수이기 때문에 GunInfo로 형변환 (언리얼 블루프린트 클래스 형변환 생각하면 될듯)
 
             PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal); //모든 클라이언트에 대해 hit(raycast의 반환값)의 위치를 인자로 하는 RPC_Shoot 함수 호출
+            playerAnimManager.DamageAnim(); // Damage Gun으로 데미지를 받은 플레이어에 대해 Damage 애니메이션 실행
             anim.CrossFadeInFixedTime("Fire", 0.01f);
         }
     }

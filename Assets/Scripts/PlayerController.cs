@@ -338,9 +338,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     [PunRPC]
     void RPC_TakeDamage(float damage, PhotonMessageInfo info) // runs on everyone's computer, but the '!PV.IsMine' check makes it only run on the victim's computer
     {
-
-        playerAnimManager.DamageAnim(); // 데미지를 받은 victim 플레이어만 Damage 애니메이션 실행
-
         if (isIced)
         {
             currentHealth -= damage;
