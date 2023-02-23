@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (ice >= iceMAX && !isIced)
         {
             isIced = true;
-            rb.constraints = RigidbodyConstraints.FreezePosition ;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
             PV.RPC("RPC_Ice", RpcTarget.All, true);
 
             Invoke("ResetIce", iceTime);
@@ -151,7 +151,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     {
         ice = 0;
         isIced = false;
-        rb.constraints = RigidbodyConstraints.None;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         PV.RPC("RPC_Ice", RpcTarget.All, false);
     }
@@ -159,8 +158,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     [PunRPC]
     void RPC_Ice(bool Ice)
     {
-        snowmanObject.SetActive(Ice);
         playerObject.SetActive(!Ice);
+        snowmanObject.SetActive(Ice);
+        
     }
 
     
