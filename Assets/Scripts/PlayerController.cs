@@ -28,9 +28,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     Vector3 moveAmount;
 
     Rigidbody rb;
+    
 
     GameObject playerAnimal;
     SkinnedMeshRenderer[] playerMeshs; // 동물 메시 & face 메시
+    SkinnedMeshRenderer smr;
 
     PlayerAnimManager playerAnimManager;
 
@@ -66,7 +68,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
+        smr = GetComponentInChildren<SkinnedMeshRenderer>();
 
+        
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
         // PV.InstantiationData[0]: PlayerManager의 createController에 생성하고 전송한 viewID에 대한 정보??
         // PhotonView에서 특정 viewID를 가진 게임 오브젝트에서 PlayerManager 컴포넌트를 가져온다. 
@@ -79,11 +83,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     private void Start()
     {
+       
         if (PV.IsMine)
         {
             EquipItem(0); //게임 시작할 때 플레이어, 기본으로 0번 인덱스의 무기 장착
             snowmanObject.SetActive(false);
-            
+
+            SetSkin(PlayerPrefs.GetInt("userskin"));
 
             //마우스 커서 안보이게
             Cursor.visible = false;
@@ -131,6 +137,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             ice = 0;
             
     }
+
+
+    
 
     //ice 개수 체크
     void CheckIce()
@@ -307,10 +316,47 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     }
 
+    //public override void OnPlayerEnteredRoom(Player newPlayer)
+    //{
+    //    PV.RPC(nameof(RPC_SetSkin), newPlayer);
+    //}
+
+    //[PunRPC]
+    //void RPC_SetSkin()
+    //{
+    //    //스킨 설정
+    //    //smr.sharedMesh = PlayerSkinManager.Instance.mesh;
+    //    //smr.material = PlayerSkinManager.Instance.material;
+
+    //    smr.sharedMesh = PlayerSkinManager.Instance.Meshs[PlayerPrefs.GetInt("userskin")];
+    //    smr.material = PlayerSkinManager.Instance.Materials[PlayerPrefs.GetInt("userskin")];
+    //}
+
+    void SetSkin(int _index)
+    {
+
+        smr.sharedMesh = PlayerSkinManager.Instance.Meshs[_index];
+        smr.material = PlayerSkinManager.Instance.Materials[_index];
+        if (PV.IsMine)
+        {
+            Hashtable hash = new Hashtable();
+            hash.Add("skinIndex", _index);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        }
+    }
+
     // 전체 게임 동안 어떤 플레이어의 어떤 속성이 업데이트 될 때마다 실행되는 함수
     // called when information is received
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
+        
+
+        if (changedProps.ContainsKey("skinIndex") && !PV.IsMine && targetPlayer == PV.Owner)
+        {
+            SetSkin((int)changedProps["skinIndex"]);
+
+        }
+
         if (changedProps.ContainsKey("itemIndex") && !PV.IsMine && targetPlayer == PV.Owner)
         {//다른 플레이어의 itemindex 속성이 업데이트 됐을 때 (다른 플레이어가 무기 교체했을 때) 
             EquipItem((int)changedProps["ItemIndex"]);
