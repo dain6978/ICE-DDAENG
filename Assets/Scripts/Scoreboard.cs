@@ -12,6 +12,7 @@ public class Scoreboard : MonoBehaviourPunCallbacks
     [SerializeField] Transform container;
     [SerializeField] GameObject scoreboardItemPrefab;
     [SerializeField] CanvasGroup canvasGroup;
+    [SerializeField] GameObject scoreboardTitle;
 
     //Dictionary·Î °ü¸®
     Dictionary<Player, ScoreboardItem> scoreboardItems = new Dictionary<Player, ScoreboardItem>();
@@ -59,10 +60,12 @@ public class Scoreboard : MonoBehaviourPunCallbacks
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             canvasGroup.alpha = 1;
+            scoreboardTitle.SetActive(true);
         }
         else if (Input.GetKeyUp(KeyCode.Tab))
         {
             canvasGroup.alpha = 0;
+            scoreboardTitle.SetActive(false);
         }
     }
 }
