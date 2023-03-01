@@ -32,6 +32,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+
     void CreateController()
     {
         // Instantiate our player controller

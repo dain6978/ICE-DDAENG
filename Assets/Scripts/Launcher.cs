@@ -180,8 +180,5 @@ public class Launcher : MonoBehaviourPunCallbacks
 #else
         Application.Quit(); // 어플리케이션 (빌드 파일) 종료
 #endif
-        // Title 메뉴에서 ESC 누르면 게임 종료 하고 싶은데... 
-        //  세팅 메뉴일 때는 세팅 -> 타이틀로 돌아오고 ... 뒤로가기 식으로 하고 싶은데 불가능하려나...??
-        // 아님 언제든지 ESC 누르면 게임을 종료하시겠습니까? 뜨거나.. .. 안하는게낫낭...
     }
 }

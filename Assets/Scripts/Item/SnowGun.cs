@@ -9,6 +9,7 @@ public class SnowGun : Gun
 
 
     PhotonView PV;
+    PlayerAnimManager playerAnimManager;
 
     public float fireRate;
     float fireTimer;
@@ -18,6 +19,7 @@ public class SnowGun : Gun
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
+        playerAnimManager = FindObjectOfType<PlayerAnimManager>();
     }
 
     public override void Use()
@@ -50,6 +52,7 @@ public class SnowGun : Gun
 
             PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal); //모든 클라이언트에 대해 hit(raycast의 반환값)의 위치를 인자로 하는 RPC_Shoot 함수 호출
             fireTimer = 0.0f;
+            playerAnimManager.ShootAnim();
             anim.CrossFadeInFixedTime("Fire", 0.01f);
         }
     }

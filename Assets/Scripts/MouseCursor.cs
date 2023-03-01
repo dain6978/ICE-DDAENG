@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MouseCursor : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         Cursor.visible = false; //마우스 커서 안보이게
@@ -12,7 +11,6 @@ public class MouseCursor : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.LeftAlt))
@@ -23,20 +21,22 @@ public class MouseCursor : MonoBehaviour
             }
             else
             {
-                OnCursor(); 
+                OnCursor();
             }
         }
     }
 
-    void OnCursor()
+    public void OnCursor()
     {
         Cursor.lockState = CursorLockMode.None; //일단.. 편의를 위해서 none으로 했는데 나중에는 confined로 바꾸기..?
         Cursor.visible = true;
+        print("oncursor");
     }
 
-    void OffCursor()
+    public void OffCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        print("offcursor");
     }
 }

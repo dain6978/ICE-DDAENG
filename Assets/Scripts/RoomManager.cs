@@ -21,6 +21,9 @@ public class RoomManager : MonoBehaviourPunCallbacks
         Instance = this;
     }
 
+
+    [HideInInspector] public GameObject player;
+
     //Photon 클래스에서 상속받는 OnEnable과 OnDisable 함수는 base 함수를 호출해야 할 필요가 있음
     //왜지?? 다른 애들은 오히려 base를 호출하지 않고 재정의 하는 것이 안전한데 얘네는 필요하대)
 
@@ -46,18 +49,13 @@ public class RoomManager : MonoBehaviourPunCallbacks
         if (scene.buildIndex == 1) //game scene
         {
             //게임 씬이 로드될 때마다 PhotonPrefabs 폴더 안에 PlayerManager를 생성 (프리팹의 위치 & 회전 0)
-            PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+            player = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
         }
-    }
-    
-    void Start()
-    {
-     
-    }
 
-
-    void Update()
-    {
-        
+        else if (scene.buildIndex == 0) //menu scene
+        {
+            //PhotonNetwork.Destroy(playerManager);
+            Debug.Log("게임 매니저 - 메뉴 씬 로드"); // 일단 얘는 항상 무조건 뜸
+        }
     }
 }
