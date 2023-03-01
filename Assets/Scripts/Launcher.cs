@@ -5,6 +5,7 @@ using Photon.Pun;
 using TMPro;
 using Photon.Realtime;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 //포톤 서비스에 연결하고, 마스터 서버(네트워크 상의 다른 게임들과 다른 플레이어들을 찾을 수 있게 하는)에 연결하는 스크립트
 
@@ -25,7 +26,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] GameObject playerListItemPrefab;
     [SerializeField] GameObject startGameButton;
 
+
     bool isFirstConnection = true;
+    StaticValue staticValue;
 
     private void Awake()
     {
@@ -34,6 +37,9 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        staticValue = FindObjectOfType<StaticValue>();
+
+        MenuManager.Instance.OpenMenu("loading");
         //'PhotonServerSettings'의 설정을 활용하여 포톤 마스터 서버에 접근할 수 있게 함
         Debug.Log("Connecting to Master");
         PhotonNetwork.ConnectUsingSettings();
@@ -53,13 +59,28 @@ public class Launcher : MonoBehaviourPunCallbacks
     //로비에 연결될 경우 실행되는 함수 (OnConnectedToMaster -> PhotonNetwork.JoinLobby -> OnJoinedLobby)
     public override void OnJoinedLobby()
     {
-        if (isFirstConnection)
+        if (staticValue == null)
         {
-            MenuManager.Instance.OpenMenu("title");
+            if (isFirstConnection)
+            {
+                MenuManager.Instance.OpenMenu("title");
+            }
+            else
+            {
+                MenuManager.Instance.OpenMenu("room setting");
+            }
         }
         else
         {
-            MenuManager.Instance.OpenMenu("room setting");
+            if (isFirstConnection && !staticValue.leaveGameRoom)
+            {
+                MenuManager.Instance.OpenMenu("title");
+            }
+            else
+            {
+                MenuManager.Instance.OpenMenu("room setting");
+                staticValue.leaveGameRoom = false;
+            }
         }
         Debug.Log("Joined Lobby");
     }
@@ -122,11 +143,15 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        //leave room 명령이 완료되면 room setting 메뉴로
-        MenuManager.Instance.OpenMenu("room setting");
-        // LeaveRoom -> PhotonNetwork.LeaveRoom -> OnLeftRoom
-        // PhotonNetwork.LeaveRoom 함수에서 마스터 서버로 돌아가기 때문에 OnConnectedToMaster가 호출됨
-        // OnConnectedToMaster에서 바로 return할 경우 로비 관련 문제 발생 -> 나머지는 그대로 유지하되 open하는 menu만 다르게 설정
+        // 메뉴 씬에서 방을 떠난 거라면
+        if (SceneManager.GetActiveScene().name == "Menu")
+        {
+            //leave room 명령이 완료되면 room setting 메뉴로
+            MenuManager.Instance.OpenMenu("room setting");
+            // LeaveRoom -> PhotonNetwork.LeaveRoom -> OnLeftRoom
+            // PhotonNetwork.LeaveRoom 함수에서 마스터 서버로 돌아가기 때문에 OnConnectedToMaster가 호출됨
+            // OnConnectedToMaster에서 바로 return할 경우 로비 관련 문제 발생 -> 나머지는 그대로 유지하되 open하는 menu만 다르게 설정
+        }
     }
 
     // RoomListItemButton을 클릭해서 룸에 가입하면, 네트워크에 명령 & 룸에 가입하는 동안 로딩 메뉴

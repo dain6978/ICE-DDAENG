@@ -32,11 +32,6 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
-    {
-        PhotonNetwork.Destroy(playerController); // 플레이어 매니저 파괴될 때 플레이어 컨트롤러도 파괴되도록
-    }
-
     void CreateController()
     {
         // Instantiate our player controller

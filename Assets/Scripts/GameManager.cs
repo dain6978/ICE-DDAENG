@@ -5,13 +5,11 @@ using Photon.Pun;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-
-    private RoomManager roomManager;
-
+    private StaticValue staticValue;
 
     private void Start()
     {
-        roomManager = FindObjectOfType<RoomManager>();
+        staticValue = FindObjectOfType<StaticValue>();
     }
 
     public void QuitGame()
@@ -25,9 +23,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void LeaveRoom()
     {
+        staticValue.leaveGameRoom = true; 
         Debug.Log("On Click Leave Room");
-
-        roomManager.DestroyPlayer();
-        roomManager.LoadMenuScene();
+        PhotonNetwork.Disconnect();
+        // Disconnect: 이 클라이언트를 Photon 서버에서 접속 해제 합니다.룸을 나가고 완료시 OnDisconnectedFromPhoton 이 호출 됩니다.
+        // Disconnect 실행할 경우 LeaveRoom 이 자동으로 실행됨 -> OnLeftRoom -> OnDisconnected
     }
 }

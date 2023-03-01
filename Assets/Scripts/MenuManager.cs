@@ -9,7 +9,7 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] Menu[] menus;
 
-    public void Start()
+    public void Awake()
     {
         Instance = this;
     }
