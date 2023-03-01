@@ -8577,6 +8577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f639237485d8dfc40a3f7d289eb39a56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerManager: {fileID: 0}
 --- !u!4 &1243027244
 Transform:
   m_ObjectHideFlags: 0
@@ -8608,7 +8609,7 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 1
   observableSearch: 2
   ObservedComponents: []
   sceneViewId: 999

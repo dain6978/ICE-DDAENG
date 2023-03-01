@@ -30,13 +30,11 @@ public class MouseCursor : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None; //일단.. 편의를 위해서 none으로 했는데 나중에는 confined로 바꾸기..?
         Cursor.visible = true;
-        print("oncursor");
     }
 
     public void OffCursor()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        print("offcursor");
     }
 }

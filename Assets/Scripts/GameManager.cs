@@ -7,14 +7,11 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
 
     private RoomManager roomManager;
-    private PlayerManager playerManager;
 
 
     private void Start()
     {
         roomManager = FindObjectOfType<RoomManager>();
-        playerManager = FindObjectOfType<PlayerManager>();
-
     }
 
     public void QuitGame()
@@ -30,11 +27,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("On Click Leave Room");
 
-        PhotonNetwork.LeaveRoom();
+        roomManager.DestroyPlayer();
+        roomManager.LoadMenuScene();
     }
-
-    //public override void OnLeftRoom()
-    //{
-    //    PhotonNetwork.LoadLevel(0);
-    //}
 }

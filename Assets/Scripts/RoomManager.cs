@@ -15,14 +15,16 @@ public class RoomManager : MonoBehaviourPunCallbacks
         if (Instance) //checks if another RoomManager exists
         {
             Destroy(gameObject); //there can only be one
+            Debug.Log("이미존재해서파괴했어~");
             return;
         }
         DontDestroyOnLoad(gameObject); //if I am the only one
         Instance = this;
+        Debug.Log("인스턴스 디스 지정하고 다시 생성했어~");
     }
 
 
-    [HideInInspector] public GameObject player;
+    [HideInInspector] public GameObject playerManager;
 
     //Photon 클래스에서 상속받는 OnEnable과 OnDisable 함수는 base 함수를 호출해야 할 필요가 있음
     //왜지?? 다른 애들은 오히려 base를 호출하지 않고 재정의 하는 것이 안전한데 얘네는 필요하대)
@@ -49,13 +51,34 @@ public class RoomManager : MonoBehaviourPunCallbacks
         if (scene.buildIndex == 1) //game scene
         {
             //게임 씬이 로드될 때마다 PhotonPrefabs 폴더 안에 PlayerManager를 생성 (프리팹의 위치 & 회전 0)
-            player = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
+            playerManager = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
         }
 
-        else if (scene.buildIndex == 0) //menu scene
-        {
-            //PhotonNetwork.Destroy(playerManager);
-            Debug.Log("게임 매니저 - 메뉴 씬 로드"); // 일단 얘는 항상 무조건 뜸
-        }
+        //else if (scene.buildIndex == 0) //menu scene
+        //{
+        //    //PhotonNetwork.Destroy(playerManager);
+        //    Debug.Log("게임 매니저 - 메뉴 씬 로드"); // 일단 얘는 항상 무조건 뜸
+        //}
+    }
+
+    public void DestroyPlayer()
+    {
+        PhotonNetwork.Destroy(playerManager);
+    }
+
+    // PhotonView를 가진 객체가 삭제되지 않게 사용한 DontDestoryOnLoad를 사용했을 때, 객체가 이동한 씬에 이미 있는 경우
+    // 즉 RoomManager의 PhotonView가 중복되는 경우 발생하는 에러 방지하기 위해 먼저 객체를 삭제한 후 씬 이동
+    public void LoadMenuScene()
+    {
+        Destroy(gameObject);
+        PhotonNetwork.LoadLevel(0);
+        //MenuManager.Instance.OpenMenu("loading");
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
+        MenuManager.Instance.OpenMenu("room setting");
+        Debug.Log("방을 잘 떠났습니다. 나는 룸 매니저예요");
     }
 }
