@@ -6,7 +6,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Photon.Realtime;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamageable 인터페이스 부착 -> 인터페이스의 함수 반드시 구현해야 함
+public class PlayerController : MonoBehaviourPunCallbacks, IDamageable, IPunObservable //IDamageable 인터페이스 부착 -> 인터페이스의 함수 반드시 구현해야 함
 {
     PhotonView PV;
 
@@ -252,6 +252,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         }
     }
     
+
     void Look()
     {
         //mouse x에 따라(2차원에서 x축으로 마우스 움직임에 따라), 3차원에서 y축을 중심으로 playerController가 회전
@@ -268,10 +269,30 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         //mouse y에 따라(2차원에서 y축으로 마우스 움직임에 따라), 3차원에서 z축을 중심으로 Spine이 회전
     }
 
+    // IPunObservable 상속 시 꼭 구현해야 하는 것으로, 데이터를 네트워크 사용자 간에 보내고 받고 하게 하는 콜백 함수
+    // 갱신이 자주 발생하는 경우의 동기화: OnPhotonSerializeView (참고로 stream은 두 명 이상의 클라이언트가 접속한 경우에만 읽거나 쓴다.)
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        //stream - 데이터를 주고 받는 통로
+        if (stream.IsWriting) // 내가 데이터를 보내는 중이라면
+        {
+            Debug.Log("보내는 데이터" + verticalLookRotation);
+            stream.SendNext(verticalLookRotation);
+        }
+        else // 내가 데이터를 받는 중이라면 
+        {
+            verticalLookRotation = (float)stream.ReceiveNext();
+            Debug.Log("받는 데이터" + stream.ReceiveNext());
+        }
+
+    }
+
     public void SetGroundedState(bool _grounded)
     {
         grounded = _grounded;
     }
+
+
 
     //업데이트 함수는 매 프레임마다 호출되지만, fixedUpdate 함수는 고정된 가격마다 호출된다 
     //따라서 모든 물리 및 움직임 계산은 각 컴퓨터의 fps에 영향을 덜 받도록 fixedUpdate에 적는다

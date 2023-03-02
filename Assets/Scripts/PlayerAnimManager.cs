@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerAnimManager : MonoBehaviour
 {
@@ -25,12 +26,6 @@ public class PlayerAnimManager : MonoBehaviour
     private void Update()
     {
         playerAnimator.SetFloat("Speed", moveMagnitude);
-
-        if (Input.GetKeyDown(KeyCode.K)) //테스트용
-        {
-            playerAnimator.SetTrigger("Damage");
-            playerAnimator.SetBool("Die", true);
-        }
     }
 
     private void LateUpdate()
@@ -66,5 +61,4 @@ public class PlayerAnimManager : MonoBehaviour
             playerAnimator.SetBool("Run", true);
         }
     }
-
 }
