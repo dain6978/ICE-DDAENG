@@ -6,7 +6,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Photon.Realtime;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviourPunCallbacks, IDamageable, IPunObservable //IDamageable 인터페이스 부착 -> 인터페이스의 함수 반드시 구현해야 함
+public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamageable 인터페이스 부착 -> 인터페이스의 함수 반드시 구현해야 함
 {
     PhotonView PV;
 
@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable, IPunObse
         //playerAnimal = transform.GetChild(5).gameObject;
         //playerMeshs = playerAnimal.GetComponentsInChildren<SkinnedMeshRenderer>();
 
-        playerAnimManager = GetComponent<PlayerAnimManager>();
+        playerAnimManager = GetComponentInChildren<PlayerAnimManager>();
     }
 
     private void Start()
@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable, IPunObse
             Destroy(rb);
             //로컬 플레이어의 rigidbody만 사용하도록 파괴
             Destroy(playerUI); //로컬 플레이어의 UI (health바)만 사용
-            Destroy(playerAnimManager); //자기 자신의 것이 아닌 애니메이터 파괴... 차이가 없어보이는데 의미가 있낭?
+            // Destroy(playerAnimManager); 자꾸 애니메이터를 파괴했어서 isWriting이 false가 안 됐었구나!!!!!!!!!!
         }
     }
     private void Update()
@@ -267,32 +267,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable, IPunObse
         //mouse y에 따라(2차원에서 y축으로 마우스 움직임에 따라), 3차원에서 z축을 중심으로 Spine이 회전
     }
 
-    // IPunObservable 상속 시 꼭 구현해야 하는 것으로, 데이터를 네트워크 사용자 간에 보내고 받고 하게 하는 콜백 함수
-    // 갱신이 자주 발생하는 경우의 동기화: OnPhotonSerializeView (참고로 stream은 두 명 이상의 클라이언트가 접속한 경우에만 읽거나 쓴다.)
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        //stream - 데이터를 주고 받는 통로
-        if (stream.IsWriting) // 내가 데이터를 보내는 중이라면
-        {
-            Debug.Log("보내는 데이터" + playerAnimManager.playerSpineRotation);
-            stream.SendNext(playerAnimManager.playerSpineRotation);
-        }
-        else // 내가 데이터를 받는 중이라면 
-        {
-            playerAnimManager.playerSpineRotation = (float)stream.ReceiveNext();
-            //Debug.Log("받는 데이터 1" + stream.ReceiveNext());
-            //Debug.Log("받는 데이터 2" + stream.ReceiveNext());
-            //Debug.Log("받는 데이터 3" + stream.ReceiveNext());
-            //Debug.Log("받는 데이터 4" + stream.ReceiveNext());
-            //Debug.Log("받는 데이터 5" + stream.ReceiveNext());
-            //Debug.Log("받는 데이터 6" + stream.ReceiveNext());
-            //Debug.Log("받는 데이터 7" + stream.ReceiveNext());
-            //Debug.Log("받는 데이터 8" + stream.ReceiveNext());
-            //Debug.Log("받는 데이터 9" + stream.ReceiveNext());
-
-        }
-
-    }
 
     public void SetGroundedState(bool _grounded)
     {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class PlayerAnimManager : MonoBehaviour
+public class PlayerAnimManager : MonoBehaviour, IPunObservable
 {
-    /*[HideInInspector]*/
+    [HideInInspector]
     public float moveMagnitude = 0f;
     public float playerSpineRotation = 0f;
 
@@ -16,9 +16,7 @@ public class PlayerAnimManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerAnimator = GetComponentInChildren<Animator>(); //테스트용
-        //playerAnimator = transform.GetChild(5).GetComponent<Animator>();
-        // MeshRenderer는 자식(Bunny)의 자식(Mesh)의 자식(Bunny/Face) 컴포넌트
+        playerAnimator = GetComponentInParent<Animator>();
         playerSpine = playerAnimator.GetBoneTransform(HumanBodyBones.Spine);
     }
 
@@ -59,6 +57,21 @@ public class PlayerAnimManager : MonoBehaviour
         else if (moveSpeed == 5f)
         {
             playerAnimator.SetBool("Run", true);
+        }
+    }
+
+    // IPunObservable 상속 시 꼭 구현해야 하는 것으로, 데이터를 네트워크 사용자 간에 보내고 받고 하게 하는 콜백 함수
+    // 갱신이 자주 발생하는 경우의 동기화: OnPhotonSerializeView (참고로 stream은 두 명 이상의 클라이언트가 접속한 경우에만 읽거나 쓴다.)
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        //stream - 데이터를 주고 받는 통로
+        if (stream.IsWriting) // 내가 데이터를 보내는 중이라면
+        {
+            stream.SendNext(playerSpineRotation);
+        }
+        else
+        {
+            playerSpineRotation = (float)stream.ReceiveNext();
         }
     }
 }
