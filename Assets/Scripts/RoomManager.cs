@@ -8,7 +8,7 @@ using Photon.Realtime;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
-    //씬이 스위치될 때와 플레이어 매니저 프리팹이 인스턴스화될 때를 감지하기 위해 RoomManager를 싱글톤으로
+    //씬이 스위치되는 시점과 플레이어 매니저 프리팹이 인스턴스화되는 시점을 감지하기 위해 싱글톤으로 구현
     public static RoomManager Instance;
 
     private void Awake() //전형적인 싱글톤 패턴

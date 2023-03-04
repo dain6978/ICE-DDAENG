@@ -13,6 +13,7 @@ public class PlayerManager : MonoBehaviour
 
     PhotonView PV;
     GameObject playerController;
+    SpawnManager spawnManager;
 
     int kills;
     int deaths;
@@ -20,6 +21,7 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
+        spawnManager = FindObjectOfType<SpawnManager>();
     }
 
     void Start()
@@ -35,7 +37,7 @@ public class PlayerManager : MonoBehaviour
     void CreateController()
     {
         // Instantiate our player controller
-        Transform spawnpoint = SpawnManager.Instance.GetSpawnPoint();
+        Transform spawnpoint = spawnManager.GetSpawnPoint();
         playerController = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID });
         // PhotonNetwork.Instantiate(string prefabNames, Vector3 position, Quternion rotation, byte group = 0, object[] data = null) 
         // group: 0 is the group of prefab 

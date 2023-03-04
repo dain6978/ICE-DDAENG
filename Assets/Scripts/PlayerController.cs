@@ -264,8 +264,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable, IPunObse
         cameraHolder.transform.localEulerAngles = Vector3.left * verticalLookRotation;
         //mouse y에 따라(2차원에서 y축으로 마우스 움직임에 따라), 3차원에서 x축을 중심으로 camerHolder가 회전
         playerAnimManager.playerSpineRotation = verticalLookRotation;
-        //playerSpine.transform.localRotation = Quaternion.Euler(0, 0, verticalLookRotation);
-        //playerSpine.transform.position
         //mouse y에 따라(2차원에서 y축으로 마우스 움직임에 따라), 3차원에서 z축을 중심으로 Spine이 회전
     }
 
@@ -276,13 +274,22 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable, IPunObse
         //stream - 데이터를 주고 받는 통로
         if (stream.IsWriting) // 내가 데이터를 보내는 중이라면
         {
-            Debug.Log("보내는 데이터" + verticalLookRotation);
-            stream.SendNext(verticalLookRotation);
+            Debug.Log("보내는 데이터" + playerAnimManager.playerSpineRotation);
+            stream.SendNext(playerAnimManager.playerSpineRotation);
         }
         else // 내가 데이터를 받는 중이라면 
         {
-            verticalLookRotation = (float)stream.ReceiveNext();
-            Debug.Log("받는 데이터" + stream.ReceiveNext());
+            playerAnimManager.playerSpineRotation = (float)stream.ReceiveNext();
+            //Debug.Log("받는 데이터 1" + stream.ReceiveNext());
+            //Debug.Log("받는 데이터 2" + stream.ReceiveNext());
+            //Debug.Log("받는 데이터 3" + stream.ReceiveNext());
+            //Debug.Log("받는 데이터 4" + stream.ReceiveNext());
+            //Debug.Log("받는 데이터 5" + stream.ReceiveNext());
+            //Debug.Log("받는 데이터 6" + stream.ReceiveNext());
+            //Debug.Log("받는 데이터 7" + stream.ReceiveNext());
+            //Debug.Log("받는 데이터 8" + stream.ReceiveNext());
+            //Debug.Log("받는 데이터 9" + stream.ReceiveNext());
+
         }
 
     }
