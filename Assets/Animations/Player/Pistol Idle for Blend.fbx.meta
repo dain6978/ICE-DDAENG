@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: cee253a8855341b4991f2825d40a4516
+guid: e9c7e1106f89d6c489a48ea53fac0fa6
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
       74: -203655887218126122
-    second: Pistol Idle for Blend
+    second: Pistol Idle For Blend
   externalObjects: {}
   materials:
     materialImportMode: 0
@@ -36,11 +36,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Pistol Idle for Blend
+      name: Pistol Idle For Blend
       takeName: mixamo.com
       internalID: 0
       firstFrame: 0
-      lastFrame: 120
+      lastFrame: 20
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

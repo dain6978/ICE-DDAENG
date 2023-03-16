@@ -18,6 +18,9 @@ public class PlayerAnimManager : MonoBehaviour, IPunObservable
     {
         playerAnimator = GetComponentInParent<Animator>();
         playerSpine = playerAnimator.GetBoneTransform(HumanBodyBones.Spine);
+
+        playerAnimator.SetFloat("BlendDamage", 0.7f);
+        playerAnimator.SetFloat("BlendShoot", 0.6f);
     }
 
     // Update is called once per frame
