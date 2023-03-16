@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     [Header ("Items")]
     [SerializeField] Item[] items;
+    [SerializeField] GameObject[] gunMeshes;
 
     int itemIndex;
     int previousItemIndex = -1;
@@ -297,10 +298,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         itemIndex = _index;
         items[itemIndex].itemGameObject.SetActive(true);
+        gunMeshes[itemIndex].SetActive(true);
 
         if (previousItemIndex != -1)
         {
             items[previousItemIndex].itemGameObject.SetActive(false); //item 교체하면 그 전의 item 비활성화
+            gunMeshes[itemIndex].SetActive(false);
         }
 
         previousItemIndex = itemIndex;

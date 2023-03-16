@@ -192,6 +192,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void LoadGameScene()
     {
+        Debug.Log("로드게임씬");
         PhotonNetwork.LoadLevel(1);
         //'Game' 씬 로드 (빌드 세팅에서 Game 씬의 인덱스를 1로 설정했기 때문에)
         // 유니티 SceneManager의 씬 교체 대신 포톤 네트워크의 LoadLevel을 사용하는 이유
