@@ -136,7 +136,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         }
         else
             ice = 0;
-            
     }
 
 
@@ -153,7 +152,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
             Invoke("ResetIce", iceTime);
         }
-            
     }
 
     //ice 초기화
@@ -303,7 +301,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (previousItemIndex != -1)
         {
             items[previousItemIndex].itemGameObject.SetActive(false); //item 교체하면 그 전의 item 비활성화
-            gunMeshes[itemIndex].SetActive(false);
+            gunMeshes[previousItemIndex].SetActive(false);
         }
 
         previousItemIndex = itemIndex;
