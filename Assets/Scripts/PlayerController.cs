@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     [SerializeField] Item[] items;
     [SerializeField] GameObject[] gunMeshes;
 
+    int inputIndex = 1;
     int itemIndex;
     int previousItemIndex = -1;
 
@@ -122,6 +123,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         Jump();
 
         Item();
+        Fire();
         CheckIce();
 
         // 플레이어 무한 추락 방지
@@ -179,34 +181,26 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         {
             if (Input.GetKeyDown((i + 1).ToString())) //GetKeyDonw("string")이니까 ToString() 한 것
             {
-                EquipItem(i);
+                PV.RPC(nameof(EquipItem), RpcTarget.All, i);
                 break;
             }
         }
 
-        if (Input.GetAxisRaw("Mouse ScrollWheel") > 0f) //scrolling Up 
-        {
-            if (itemIndex >= items.Length - 1) //아이템 개수 초과 x 오류 방지 
-            {
-                EquipItem(0);
-            }
-            else
-            {
-                EquipItem(itemIndex + 1); //start 함수에서 EquipItem(0) -> itemIndex 디폴트값: 0
-            }
-        }
-        else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0f) //scrolling Donw
-        {
-            if (itemIndex <= 0) //아이템 개수 초과 x 오류 방지 
-            {
-                EquipItem(items.Length - 1);
-            }
-            else
-            {
-                EquipItem(itemIndex - 1);
-            }
-        }
 
+        int mouseWheel = (int)Input.GetAxisRaw("Mouse ScrollWheel");
+        if (mouseWheel == 0) return;
+
+
+        itemIndex = (itemIndex + mouseWheel) % (items.Length);
+        if (itemIndex < 0) itemIndex *= -1;
+
+        
+        PV.RPC(nameof(EquipItem), RpcTarget.All, itemIndex);
+        
+    }
+
+    void Fire()
+    {
         if (Input.GetButton("Fire1")) //마우스 왼쪽 버튼 누르면 해당 총에 대해 Use (shoot)
         {
             if (isIced)
@@ -289,6 +283,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 //무기 
 
     //showing and hiding items
+    [PunRPC]
     void EquipItem(int _index)
     {
         if (_index == previousItemIndex)
@@ -310,12 +305,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         // 네트워크 상의 플레이어들 간의 무기 교체(EquipItem)에 대한 Syncing
         
         //Send out syncing datas (customPlayerProperties) from local player to network
-        if (PV.IsMine)
-        {
-            Hashtable hash = new Hashtable(); //네트워크에 customPlayerProperties 데이터를 전송하기 위해, 해시테이블 정의? (해시테이블: 딕셔너리 기반)
-            hash.Add("ItemIndex", itemIndex);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-        }
+        //if (PV.IsMine)
+        //{
+        //    Hashtable hash = new Hashtable(); //네트워크에 customPlayerProperties 데이터를 전송하기 위해, 해시테이블 정의? (해시테이블: 딕셔너리 기반)
+        //    hash.Add("ItemIndex", itemIndex);
+        //    PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        //}
 
     }
 
@@ -360,11 +355,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         }
 
-        if (changedProps.ContainsKey("itemIndex") && !PV.IsMine && targetPlayer == PV.Owner)
-        {//다른 플레이어의 itemindex 속성이 업데이트 됐을 때 (다른 플레이어가 무기 교체했을 때) 
-            EquipItem((int)changedProps["ItemIndex"]);
-            //해시 테이블의 ItemIndex를 int로 형변환하고 EquipItem에 대한 정보를 네트워크로 pass...??
-        }
+        //if (changedProps.ContainsKey("itemIndex") && !PV.IsMine && targetPlayer == PV.Owner)
+        //{//다른 플레이어의 itemindex 속성이 업데이트 됐을 때 (다른 플레이어가 무기 교체했을 때) 
+        //    EquipItem((int)changedProps["ItemIndex"]);
+        //    //해시 테이블의 ItemIndex를 int로 형변환하고 EquipItem에 대한 정보를 네트워크로 pass...??
+        //}
     }
 
     //IDamageable 인터페이스의 TakeDamage 함수 구현
