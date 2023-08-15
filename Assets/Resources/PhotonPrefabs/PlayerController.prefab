@@ -2511,6 +2511,7 @@ MonoBehaviour:
   gunMeshes:
   - {fileID: 1564927144132844320}
   - {fileID: 2195402043013422979}
+  skinIndex: 0
   cameraHolder: {fileID: 7816969804797969249}
   mouseSensitivity: 3
   sprintSpeed: 5

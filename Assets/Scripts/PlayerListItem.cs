@@ -9,6 +9,7 @@ using TMPro;
 public class PlayerListItem : MonoBehaviourPunCallbacks
 {
     [SerializeField] TMP_Text text;
+    
 
     Player player;
 
@@ -17,6 +18,8 @@ public class PlayerListItem : MonoBehaviourPunCallbacks
         player = _player;
         text.text = _player.NickName;
     }
+
+
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {

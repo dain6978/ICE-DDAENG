@@ -18,6 +18,7 @@ public class PlayerManager : MonoBehaviour
     int kills;
     int deaths;
 
+    int skinIndex;
     private void Awake()
     {
         PV = GetComponent<PhotonView>();
@@ -31,6 +32,7 @@ public class PlayerManager : MonoBehaviour
         //playerManager 프리팹은 각각 다른 오너/플레이어 가짐 -> 우리 게임에선 인스턴스화된 각 플레이어 매니저에 대해 true
         {
             CreateController();
+            skinIndex = PlayerPrefs.GetInt("userskin");
         }
     }
 
@@ -39,6 +41,9 @@ public class PlayerManager : MonoBehaviour
         // Instantiate our player controller
         Transform spawnpoint = spawnManager.GetSpawnPoint();
         playerController = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID });
+
+        playerController.GetComponent<PlayerController>().SetCharacterSkin(skinIndex);
+
         // PhotonNetwork.Instantiate(string prefabNames, Vector3 position, Quternion rotation, byte group = 0, object[] data = null) 
         // group: 0 is the group of prefab 
         // data : actual parameters that pass into the prefab we instantiate -> send the view id into the instantiation method

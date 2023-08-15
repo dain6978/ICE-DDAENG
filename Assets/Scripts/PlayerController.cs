@@ -14,9 +14,20 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     [SerializeField] Item[] items;
     [SerializeField] GameObject[] gunMeshes;
 
-    int inputIndex = 1;
+
     int itemIndex;
     int previousItemIndex = -1;
+
+    [SerializeField]
+    int skinIndex;
+    public int SkinIndex
+    {
+        get => skinIndex;
+        set
+        {
+            skinIndex = value;
+        }
+    }
 
 
     [Header ("Player Movement")]
@@ -91,7 +102,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             EquipItem(0); //게임 시작할 때 플레이어, 기본으로 0번 인덱스의 무기 장착
             snowmanObject.SetActive(false);
 
-            SetSkin(PlayerPrefs.GetInt("userskin"));
+            
+            //SetSkin(PlayerPrefs.GetInt("userskin"));
 
             //마우스 커서 안보이게
             Cursor.visible = false;
@@ -314,53 +326,54 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     }
 
-    //public override void OnPlayerEnteredRoom(Player newPlayer)
-    //{
-    //    PV.RPC(nameof(RPC_SetSkin), newPlayer);
-    //}
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        if (PV.IsMine)
+            PV.RPC(nameof(SetSkin), newPlayer, SkinIndex);
 
-    //[PunRPC]
-    //void RPC_SetSkin()
-    //{
-    //    //스킨 설정
-    //    //smr.sharedMesh = PlayerSkinManager.Instance.mesh;
-    //    //smr.material = PlayerSkinManager.Instance.material;
+    }
 
-    //    smr.sharedMesh = PlayerSkinManager.Instance.Meshs[PlayerPrefs.GetInt("userskin")];
-    //    smr.material = PlayerSkinManager.Instance.Materials[PlayerPrefs.GetInt("userskin")];
-    //}
 
+
+    public void SetCharacterSkin(int _index)
+    {
+        SkinIndex = _index;
+        if(PV.IsMine)
+            PV.RPC(nameof(SetSkin), RpcTarget.AllBufferedViaServer, SkinIndex);
+    }
+
+    [PunRPC]
     void SetSkin(int _index)
     {
-
+        Debug.Log($"name: {PV.Owner.NickName}, userskin: { _index} ");
         smr.sharedMesh = PlayerSkinManager.Instance.Meshs[_index];
         smr.material = PlayerSkinManager.Instance.Materials[_index];
-        if (PV.IsMine)
-        {
-            Hashtable hash = new Hashtable();
-            hash.Add("skinIndex", _index);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-        }
+        //if (PV.IsMine)
+        //{
+        //    Hashtable hash = new Hashtable();
+        //    hash.Add("skinIndex", _index);
+        //    PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        //}
     }
 
     // 전체 게임 동안 어떤 플레이어의 어떤 속성이 업데이트 될 때마다 실행되는 함수
     // called when information is received
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
-    {
+    //public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    //{
         
 
-        if (changedProps.ContainsKey("skinIndex") && !PV.IsMine && targetPlayer == PV.Owner)
-        {
-            SetSkin((int)changedProps["skinIndex"]);
+    //    if (changedProps.ContainsKey("skinIndex") && !PV.IsMine && targetPlayer == PV.Owner)
+    //    {
+    //        SetSkin((int)changedProps["skinIndex"]);
 
-        }
+    //    }
 
-        //if (changedProps.ContainsKey("itemIndex") && !PV.IsMine && targetPlayer == PV.Owner)
-        //{//다른 플레이어의 itemindex 속성이 업데이트 됐을 때 (다른 플레이어가 무기 교체했을 때) 
-        //    EquipItem((int)changedProps["ItemIndex"]);
-        //    //해시 테이블의 ItemIndex를 int로 형변환하고 EquipItem에 대한 정보를 네트워크로 pass...??
-        //}
-    }
+    //    //if (changedProps.ContainsKey("itemIndex") && !PV.IsMine && targetPlayer == PV.Owner)
+    //    //{//다른 플레이어의 itemindex 속성이 업데이트 됐을 때 (다른 플레이어가 무기 교체했을 때) 
+    //    //    EquipItem((int)changedProps["ItemIndex"]);
+    //    //    //해시 테이블의 ItemIndex를 int로 형변환하고 EquipItem에 대한 정보를 네트워크로 pass...??
+    //    //}
+    //}
 
     //IDamageable 인터페이스의 TakeDamage 함수 구현
     public void TakeDamage(float damage) //runs on the shooter's computer

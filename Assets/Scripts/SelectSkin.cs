@@ -31,7 +31,6 @@ public class SelectSkin : MonoBehaviour
     public void BeforeSkin()
     {
         SkinList[currentSkinIndex].SetActive(false);
-        SkinList[currentSkinIndex].SetActive(false);
         currentSkinIndex--;
         if (currentSkinIndex < 0 )
         {

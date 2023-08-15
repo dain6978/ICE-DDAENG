@@ -45,6 +45,7 @@ MonoBehaviour:
   - RPC_TakeSnow
   - RPC_GetKill
   - EquipItem
+  - SetSkin
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

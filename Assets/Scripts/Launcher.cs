@@ -26,17 +26,24 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] GameObject playerListItemPrefab;
     [SerializeField] GameObject startGameButton;
 
+    List<RoomInfo> rooms;
+
 
     bool isFirstConnection = true;
+
+    int minPlayers = 2;
+    int maxPlayers = 8;
     StaticValue staticValue;
 
     private void Awake()
     {
         Instance = this;
+        rooms = new List<RoomInfo>();
     }
 
     void Start()
     {
+        
         staticValue = FindObjectOfType<StaticValue>();
 
         MenuManager.Instance.OpenMenu("loading");
@@ -59,6 +66,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     //로비에 연결될 경우 실행되는 함수 (OnConnectedToMaster -> PhotonNetwork.JoinLobby -> OnJoinedLobby)
     public override void OnJoinedLobby()
     {
+        Debug.Log("Joined Lobby");
         if (staticValue == null)
         {
             if (isFirstConnection)
@@ -72,7 +80,12 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
         else
         {
-            if (isFirstConnection && !staticValue.leaveGameRoom)
+            if(staticValue.roomName != null)
+            {
+                ReturnRoom();
+                return;
+            }
+            else if (isFirstConnection && !staticValue.leaveGameRoom)
             {
                 MenuManager.Instance.OpenMenu("title");
             }
@@ -82,7 +95,7 @@ public class Launcher : MonoBehaviourPunCallbacks
                 staticValue.leaveGameRoom = false;
             }
         }
-        Debug.Log("Joined Lobby");
+        
     }
 
     public void CreateRoom()
@@ -91,7 +104,13 @@ public class Launcher : MonoBehaviourPunCallbacks
         {//만약 입력한 룸 네임이 공백이면
             return; //생성 x
         }
-        PhotonNetwork.CreateRoom(roomNameInputField.text);
+
+        RoomOptions ro = new RoomOptions();
+        ro.MaxPlayers = (byte)maxPlayers;
+        ro.IsOpen = true;
+
+
+        PhotonNetwork.CreateRoom(roomNameInputField.text, ro);
         MenuManager.Instance.OpenMenu("loading"); //플레이어가 룸네임 인풋필드를 입력하고 서버에 룸이 생성될 때까지 loading 띄워 다른 클릭 방지
     }
 
@@ -139,6 +158,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         //Leave Room 버튼을 클릭하면, 서버에 룸을 떠나겠다는 명령을 내리고 떠나는 동안 loading 출력
         PhotonNetwork.LeaveRoom();
         MenuManager.Instance.OpenMenu("loading");
+        
     }
 
     public override void OnLeftRoom()
@@ -157,7 +177,19 @@ public class Launcher : MonoBehaviourPunCallbacks
     // RoomListItemButton을 클릭해서 룸에 가입하면, 네트워크에 명령 & 룸에 가입하는 동안 로딩 메뉴
     public void JoinRoom(RoomInfo info)
     {
+        if (!info.IsOpen)
+        {
+            Debug.Log("게임이 이미 시작되었습니다.");
+            return;
+        }
+        else if(info.PlayerCount == info.MaxPlayers)
+        {
+            Debug.Log("방이 꽉 찼습니다.");
+            return;
+        }
+
         PhotonNetwork.JoinRoom(info.Name);
+        
         MenuManager.Instance.OpenMenu("loading");
     }
 
@@ -173,13 +205,24 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         for (int i=0; i<roomList.Count; i++)
         {
+            
             if (roomList[i].RemovedFromList)
             {
-                continue; //룸 리스트 아이템이 삭제될 경우 continue, 즉 해당 프리팹 생성 X, 즉 룸 리스트에서 바로 삭제
+                rooms.Remove(roomList[i]);
+                continue; //룸 리스트 아이템이 삭제된 경우 continue, 즉 해당 프리팹 생성 X, 즉 룸 리스트에서 바로 삭제
             }
+
+            if (!rooms.Contains(roomList[i]))
+                rooms.Add(roomList[i]);
             //Instantiate()함수: 게임을 실행하는 도중에 게임오브젝트 생성
             //roomListContent 컨테이너 안에 있는 rooListItemPrefab에서 RoomListItem 스크립트를 가져와서, Setup함수 호출
-            Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);
+            //Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);
+        }
+
+        Debug.Log(rooms.Count);
+        for (int i = 0; i<rooms.Count; i++)
+        {
+            Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(rooms[i]);
         }
     }
 
@@ -192,11 +235,45 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void LoadGameScene()
     {
-        Debug.Log("로드게임씬");
+        if(PhotonNetwork.CurrentRoom.PlayerCount < minPlayers)
+        {
+            Debug.Log($"인원 {minPlayers}명부터 게임 시작이 가능합니다.");
+            return;
+        }
+        
+        PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.LoadLevel(1);
         //'Game' 씬 로드 (빌드 세팅에서 Game 씬의 인덱스를 1로 설정했기 때문에)
         // 유니티 SceneManager의 씬 교체 대신 포톤 네트워크의 LoadLevel을 사용하는 이유
         // : 호스트나 특정 플레이어가 씬 교체 함수를 호출하는 대신, 게임의(해당 룸의) 모든 플레이어가 한 번에 레벨을 로드하도록 하기 위해
+    }
+
+    public void ReturnRoom()
+    {
+        RoomOptions ro = new RoomOptions();
+        ro.MaxPlayers = (byte)maxPlayers;
+        ro.IsOpen = true;
+
+        PhotonNetwork.JoinOrCreateRoom(staticValue.roomName, ro, null);        
+        MenuManager.Instance.OpenMenu("room");
+        roomText.text = staticValue.roomName;
+
+        foreach (Transform child in playerListContent)
+        {
+            Destroy(child.gameObject);
+            //룸에 가입할 때마다 PlayerListContent의 자식들 (플레이어들) 초기화
+        }
+
+        Player[] players = PhotonNetwork.PlayerList;
+
+        //플레이어가 처음 룸에 들어갔을 때, 해당 룸에 접속해있는 플레이어들 이름 모두 표시
+        for (int i = 0; i < players.Count(); i++)
+        {
+            Instantiate(playerListItemPrefab, playerListContent).GetComponent<PlayerListItem>().SetUp(players[i]);
+        }
+
+        startGameButton.SetActive(PhotonNetwork.IsMasterClient); //만약 마스터 클라이언트라면 스타트버튼 활성화 (호스트만 게임 시작할 수 있게)
+        staticValue.roomName = null;
     }
 
     public void QuitGame()

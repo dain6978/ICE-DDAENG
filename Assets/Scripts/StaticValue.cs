@@ -7,6 +7,7 @@ public class StaticValue : MonoBehaviour
     public static StaticValue staticValue;
 
     public bool leaveGameRoom;
+    public string roomName = null;
 
     private void Awake()
     {
