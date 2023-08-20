@@ -26,7 +26,15 @@ public class PlayerAnimManager : MonoBehaviour, IPunObservable
     // Update is called once per frame
     private void Update()
     {
-        playerAnimator.SetFloat("Speed", moveMagnitude);
+        //if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
+        //{
+        //    moveMagnitude = 1.0f;
+        //}
+        //else
+        //{
+        //    moveMagnitude = 0.0f;
+        //}
+        //playerAnimator.SetFloat("Speed", moveMagnitude);
     }
 
     private void LateUpdate()
@@ -51,17 +59,17 @@ public class PlayerAnimManager : MonoBehaviour, IPunObservable
         playerAnimator.SetTrigger("Shoot");
     }
 
-    public void MoveAnim(float moveSpeed)
+    public void MoveAnim(Vector3 moveDir)
     {
-        if (moveSpeed == 2.5f)
-        {
-            playerAnimator.SetBool("Run", false);
-        }
-        else if (moveSpeed == 5f)
-        {
+        playerAnimator.SetFloat("Speed", Vector3.SqrMagnitude(moveDir));
+        
+        if (Input.GetKey(KeyCode.LeftShift))
             playerAnimator.SetBool("Run", true);
-        }
+        else
+            playerAnimator.SetBool("Run", false);
     }
+
+
 
     // IPunObservable 상속 시 꼭 구현해야 하는 것으로, 데이터를 네트워크 사용자 간에 보내고 받고 하게 하는 콜백 함수
     // 갱신이 자주 발생하는 경우의 동기화: OnPhotonSerializeView (참고로 stream은 두 명 이상의 클라이언트가 접속한 경우에만 읽거나 쓴다.)
@@ -71,10 +79,12 @@ public class PlayerAnimManager : MonoBehaviour, IPunObservable
         if (stream.IsWriting) // 내가 데이터를 보내는 중이라면
         {
             stream.SendNext(playerSpineRotation);
+            //stream.SendNext(moveMagnitude);
         }
         else
         {
             playerSpineRotation = (float)stream.ReceiveNext();
+            //moveMagnitude = (float)stream.ReceiveNext();
         }
     }
 }

@@ -66,7 +66,7 @@ public class PlayerMoveForAnim : MonoBehaviour
         //smooth damp: 움직임을 smooth하게 만들어주는 역할
 
         playerAnimManager.moveMagnitude = Vector3.SqrMagnitude(moveDir);
-        playerAnimManager.MoveAnim(moveSpeed);
+        playerAnimManager.MoveAnim(moveDir);
 
             
     }

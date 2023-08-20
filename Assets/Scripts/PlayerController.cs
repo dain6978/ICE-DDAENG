@@ -241,9 +241,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         // : left shift 키를 누르고 있는 상태면 sprintSpeed를, 아니면 walkSpeed를 움직이고 있는 방향인 moveDir에 곱함
         //smooth damp: 움직임을 smooth하게 만들어주는 역할
 
-        playerAnimManager.moveMagnitude = Vector3.SqrMagnitude(moveDir);
-        playerAnimManager.MoveAnim(moveSpeed);
+        playerAnimManager.MoveAnim(moveDir);
     }
+
 
     void Jump()
     {
