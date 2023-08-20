@@ -23,19 +23,6 @@ public class PlayerAnimManager : MonoBehaviour, IPunObservable
         playerAnimator.SetFloat("BlendShoot", 0.6f);
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-        //if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
-        //{
-        //    moveMagnitude = 1.0f;
-        //}
-        //else
-        //{
-        //    moveMagnitude = 0.0f;
-        //}
-        //playerAnimator.SetFloat("Speed", moveMagnitude);
-    }
 
     private void LateUpdate()
     {
@@ -79,12 +66,10 @@ public class PlayerAnimManager : MonoBehaviour, IPunObservable
         if (stream.IsWriting) // 내가 데이터를 보내는 중이라면
         {
             stream.SendNext(playerSpineRotation);
-            //stream.SendNext(moveMagnitude);
         }
         else
         {
             playerSpineRotation = (float)stream.ReceiveNext();
-            //moveMagnitude = (float)stream.ReceiveNext();
         }
     }
 }
