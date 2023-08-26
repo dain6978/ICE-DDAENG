@@ -11,17 +11,16 @@ using UnityEngine;
 
 public class UIManager2 : MonoBehaviour
 {
+    private MouseCursor mouseCursor;
+
+
     // 현재 시점에서 가장 최근에 사용한 order (고정 UI와 겹치지 않도록 10부터 ++로 count)
     // order가 높을수록 늦게 생성된 것으로, 가장 위에 그려져야 함
     int _order = 10; 
 
+    Stack<UI_Popup> _popupStack = new Stack<UI_Popup>(); // 팝업 UI의 캔버스(컴포넌트)를 스택에 저장 
 
-    // 팝업 UI의 캔버스(컴포넌트)를 스택에 저장 
-    // Stack으로 관리하는 이유? 가장 나중에 생성된 팝업이 가장 먼저 닫혀야 하므로
-    Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
-
-    // 현재 활성화된 고정 캔버스 UI (스택으로 관리될 필요 x)
-    UI_Scene _sceneUI = null; 
+    UI_Scene _sceneUI = null; // 현재 활성화된 고정 캔버스 UI
 
 
     // UI를 종류별로 그룹화하고 정리하기 위해 사용하는 프로퍼티 
@@ -37,8 +36,14 @@ public class UIManager2 : MonoBehaviour
         }
     }
 
-    
-    public void SetCanvs(GameObject go, bool sort = true)
+
+    private void Start()
+    {
+        mouseCursor = GetComponent<MouseCursor>();
+    }
+
+
+    public void SetCanvas(GameObject go, bool sort = true)
     {
         Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
