@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     private float time;
     private float gameTime = 300f;
     bool isEnd;
+    
+    
     private void Start()
     {
         staticValue = FindObjectOfType<StaticValue>();
