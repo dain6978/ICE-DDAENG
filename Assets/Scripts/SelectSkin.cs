@@ -1,14 +1,15 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Realtime;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class SelectSkin : MonoBehaviour
+public class SelectSkin : MonoBehaviourPunCallbacks
 {
     public List<GameObject> SkinList;
     GameObject currentSkin;
     int currentSkinIndex = 0;
-
-    
 
     private void Start()
     {
@@ -42,9 +43,9 @@ public class SelectSkin : MonoBehaviour
 
     public void SetSkin()
     {
-        PlayerPrefs.SetInt("userskin", currentSkinIndex);
-        //PlayerSkinManager.Instance.mesh = currentSkin.GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh;
-        //PlayerSkinManager.Instance.material = currentSkin.GetComponentInChildren<SkinnedMeshRenderer>().materials[0];
+        Hashtable hash = new Hashtable();
+        hash.Add("skinIndex", currentSkinIndex);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
     }
 
 }

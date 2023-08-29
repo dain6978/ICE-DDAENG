@@ -313,33 +313,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         previousItemIndex = itemIndex;
 
-        
-        // 네트워크 상의 플레이어들 간의 무기 교체(EquipItem)에 대한 Syncing
-        
-        //Send out syncing datas (customPlayerProperties) from local player to network
-        //if (PV.IsMine)
-        //{
-        //    Hashtable hash = new Hashtable(); //네트워크에 customPlayerProperties 데이터를 전송하기 위해, 해시테이블 정의? (해시테이블: 딕셔너리 기반)
-        //    hash.Add("ItemIndex", itemIndex);
-        //    PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-        //}
+
 
     }
 
-    public override void OnPlayerEnteredRoom(Player newPlayer)
+
+    public void SetCharacterSkin()
     {
         if (PV.IsMine)
-            PV.RPC(nameof(SetSkin), newPlayer, SkinIndex);
-
-    }
-
-
-
-    public void SetCharacterSkin(int _index)
-    {
-        SkinIndex = _index;
-        if(PV.IsMine)
-            PV.RPC(nameof(SetSkin), RpcTarget.AllBufferedViaServer, SkinIndex);
+            PV.RPC(nameof(SetSkin), RpcTarget.AllBuffered, (int)PhotonNetwork.LocalPlayer.CustomProperties["skinIndex"]);
     }
 
     [PunRPC]
@@ -348,12 +330,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         Debug.Log($"name: {PV.Owner.NickName}, userskin: { _index} ");
         smr.sharedMesh = PlayerSkinManager.Instance.Meshs[_index];
         smr.material = PlayerSkinManager.Instance.Materials[_index];
-        //if (PV.IsMine)
-        //{
-        //    Hashtable hash = new Hashtable();
-        //    hash.Add("skinIndex", _index);
-        //    PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-        //}
     }
 
     // 전체 게임 동안 어떤 플레이어의 어떤 속성이 업데이트 될 때마다 실행되는 함수

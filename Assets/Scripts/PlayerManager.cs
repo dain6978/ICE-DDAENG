@@ -42,7 +42,7 @@ public class PlayerManager : MonoBehaviour
         Transform spawnpoint = spawnManager.GetSpawnPoint();
         playerController = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID });
 
-        playerController.GetComponent<PlayerController>().SetCharacterSkin(skinIndex);
+        playerController.GetComponent<PlayerController>().SetCharacterSkin();
 
         // PhotonNetwork.Instantiate(string prefabNames, Vector3 position, Quternion rotation, byte group = 0, object[] data = null) 
         // group: 0 is the group of prefab 
