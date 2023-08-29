@@ -10,6 +10,7 @@ public class UI_Button : UI_Popup
     enum Buttons
     {
         CloseButton,
+        OpenButton,
     }
 
     enum Texts
@@ -39,12 +40,18 @@ public class UI_Button : UI_Popup
         Bind<GameObject>(typeof(GameObjects));
         Bind<Image>(typeof(Images));
 
-        GetButton((int)Buttons.CloseButton).gameObject.BindEvent(OnButtonClicked);
+        GetButton((int)Buttons.CloseButton).gameObject.BindEvent(OnCloseButtonClicked);
+        GetButton((int)Buttons.OpenButton).gameObject.BindEvent(OnOpenButtonClicked);
     }
     
 
-    public void OnButtonClicked(PointerEventData data)
+    public void OnCloseButtonClicked(PointerEventData data)
     {
-        ClosePopupUI();
+        Debug.Log("클로즈버튼");
+    }
+
+    public void OnOpenButtonClicked(PointerEventData data)
+    {
+        Debug.Log("오픈버튼");
     }
 }
