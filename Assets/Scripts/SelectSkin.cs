@@ -5,7 +5,7 @@ using UnityEngine;
 using Photon.Realtime;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-public class SelectSkin : MonoBehaviourPunCallbacks
+public class SelectSkin : MonoBehaviour
 {
     public List<GameObject> SkinList;
     GameObject currentSkin;

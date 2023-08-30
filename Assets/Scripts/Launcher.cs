@@ -12,7 +12,6 @@ using UnityEngine.SceneManagement;
 public class Launcher : MonoBehaviourPunCallbacks
 //MonoBehavior에서 MonoBehaviourPunCallbacks로 클래스를 확장함으로써, 룸 생성, 오류 제어, 로비에 가입 등 포톤 서버 연결에 필요한 콜백에 접근할 수 있다.
 {
-
     public static Launcher Instance; //싱글톤
 
     [SerializeField] TMP_InputField roomNameInputField;
@@ -26,7 +25,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] GameObject playerListItemPrefab;
     [SerializeField] GameObject startGameButton;
 
-    //List<RoomInfo> rooms;
     Dictionary<RoomInfo, GameObject> roomdict;
 
     bool isFirstConnection = true;
@@ -38,7 +36,6 @@ public class Launcher : MonoBehaviourPunCallbacks
     private void Awake()
     {
         Instance = this;
-        //rooms = new List<RoomInfo>();
         roomdict = new Dictionary<RoomInfo, GameObject>();
     }
 
@@ -197,44 +194,24 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         //roomList 포톤의 room information 클래스인 RoomInfo의 클래스에 대한 클래스
-        //룸의 이름, 최대 유저 수 등의 속성 
-        //foreach(Transform trans in roomListContent)
-        //{
-        //    Destroy(trans.gameObject);
-        //    //룸 리스트가 업데이트 될 때마다, roomListContent의 게임오브젝트들을(roomListItem) 파괴해서 리스트 삭제 후 재생성 (업데이트)
-        //}
-
+        //룸의 이름, 최대 유저 수, 오픈 여부 등의 속성 
         for (int i=0; i<roomList.Count; i++)
         {
-            
-            if (roomList[i].RemovedFromList)
+            //삭제된 경우
+            if (roomList[i].RemovedFromList)    
             {
-                //rooms.Remove(roomList[i]);
                 Destroy(roomdict[roomList[i]]);
                 roomdict.Remove(roomList[i]);
-                continue; //룸 리스트 아이템이 삭제된 경우 continue, 즉 해당 프리팹 생성 X, 즉 룸 리스트에서 바로 삭제
+                continue; 
             }
 
-            //if (!rooms.Contains(roomList[i]))
-            //    rooms.Add(roomList[i]);
-
-            if (!roomdict.ContainsKey(roomList[i]))
-            {
+            //추가된 경우
+            if (!roomdict.ContainsKey(roomList[i]))     
                 roomdict.Add((roomList[i]), Instantiate(roomListItemPrefab, roomListContent));
-            }
 
-            roomdict[roomList[i]].GetComponent<RoomListItem>().SetUp(roomList[i]);
-
-            //Instantiate()함수: 게임을 실행하는 도중에 게임오브젝트 생성
-            //roomListContent 컨테이너 안에 있는 rooListItemPrefab에서 RoomListItem 스크립트를 가져와서, Setup함수 호출
-            //Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(roomList[i]);
+            //변경된 경우
+            roomdict[roomList[i]].GetComponent<RoomListItem>().SetUp(roomList[i]);      
         }
-
-        //Debug.Log(rooms.Count);
-        //for (int i = 0; i<rooms.Count; i++)
-        //{
-        //    roomdict[roomList[i]] = Instantiate(roomListItemPrefab, roomListContent).GetComponent<RoomListItem>().SetUp(rooms[i]);
-        //}
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
