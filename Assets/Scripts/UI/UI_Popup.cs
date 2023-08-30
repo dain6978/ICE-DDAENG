@@ -2,17 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_Popup : UI_Base
+public class UI_Popup : UIView
 {
-    // UI canvas 세팅 
-    public override void Init()
+
+    public void Show()
     {
-        // 팝업 UI이므로 true를 전달해 오브젝트에 canvas 컴포넌트의 sorting order 세팅
-        Managers.UI.SetCanvas(gameObject, true);
+        UIManager.Instance.Push(gameObject);
+        gameObject.SetActive(true);
+        Debug.Log("Show");
     }
 
-    public virtual void ClosePopupUI()
+
+    public void Hide()
     {
-        Managers.UI.ClosePopupUI(this);
+        if (UIManager.Instance.GetStackCount() == 0)
+        {
+            Debug.Log("하이드할수없다");
+            return;
+        }
+
+        GameObject popup = UIManager.Instance.Pop();
+        popup.SetActive(false);
+        Debug.Log("Hide");
+    }
+
+
+    public void HideAll()
+    {
+        while (UIManager.Instance.GetStackCount() > 0)
+            Hide();
     }
 }

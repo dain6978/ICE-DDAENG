@@ -5,20 +5,32 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    //[Header ("Window")]
-    [SerializeField] private UIView managingWindow;
-    [SerializeField] private UIView helpWindow;
-    [SerializeField] private UIView settingWindow;
-    [SerializeField] private UIView quitGameWindow;
+    private static UIManager _instance;
 
+    public static UIManager Instance
+    {
+        get
+        {
+            // 생성된 인스턴스가 없으면 생성합니다.
+            if (_instance == null)
+            {
+                _instance = new UIManager();
+            }
+            return _instance;
+        }
+    }
+
+
+    [SerializeField] private UIView managingWindow;
     private MouseCursor mouseCursor;
-    private UIView[] windows;
+
+    private Stack<GameObject> popupStack = new Stack<GameObject>();
+    public int stackCount;
+
 
     private void Start()
     {
         mouseCursor = GetComponent<MouseCursor>();
-
-        windows = new UIView[] { managingWindow, helpWindow, settingWindow, quitGameWindow };
     }
 
 
@@ -30,23 +42,56 @@ public class UIManager : MonoBehaviour
         }
     }
 
+
+
+    public void Push(GameObject popup)
+    {
+        popupStack.Push(popup);
+
+        foreach (GameObject go in popupStack)
+        {
+            Debug.Log($"popup : {go}");
+        }
+        Debug.Log(popupStack.Count);
+    }
+
+    public GameObject Pop()
+    {
+        Debug.Log("POP");
+        GameObject popup = popupStack.Pop();
+        //popup = null;
+        return popup;
+    }
+
+    public int GetStackCount()
+    {
+        return popupStack.Count;
+    }
+
+    public void ShowPopup(GameObject popup)
+    {
+        Push(popup);
+        popup.SetActive(true);
+
+    }
+
+
     public void ShowOrHideMangingWindow()
     {
-        if (managingWindow.GetIsActive())
+        if (popupStack.Count == 0)
         {
-            managingWindow.Hide();
-            mouseCursor.OffCursor();
+            ShowPopup(managingWindow.gameObject);
+            mouseCursor.OnCursor();
         }
         else
         {
-            // 단, 다른 window (QuitGame, Setting, Help) 중 아무것도 안 켜져 있을 때만 켜기
-            // (현재 켜져 있는 windodw에 따라서 esc 누를 때마다 닫고 켜고 하는 건... 일단 나중에 필요하면 수정...ㅠㅠ)
-            foreach (UIView window in windows) {
-                if (window.GetIsActive())
-                    return;
+            while (popupStack.Count > 0)
+            {
+                GameObject popup = Pop();
+                popup.SetActive(false);
+                Debug.Log("Hide" + popup + "Window");
             }
-            managingWindow.Show();
-            mouseCursor.OnCursor();
+            mouseCursor.OffCursor();
         }
     }
 

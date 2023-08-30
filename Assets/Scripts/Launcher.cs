@@ -223,11 +223,11 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void LoadGameScene()
     {
-        if(PhotonNetwork.CurrentRoom.PlayerCount < minPlayers)
-        {
-            Debug.Log($"인원 {minPlayers}명부터 게임 시작이 가능합니다.");
-            return;
-        }
+        //if(PhotonNetwork.CurrentRoom.PlayerCount < minPlayers)
+        //{
+        //    Debug.Log($"인원 {minPlayers}명부터 게임 시작이 가능합니다.");
+        //    return;
+        //}
         
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.LoadLevel(1);

@@ -572,10 +572,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39ab16d5d98767c459898bc47a6ee057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  managingWindow: {fileID: 2096986461}
-  helpWindow: {fileID: 997722964}
-  settingWindow: {fileID: 1870681712}
-  quitGameWindow: {fileID: 2138381368}
+  managingWindow: {fileID: 2096986464}
 --- !u!1 &50214172
 GameObject:
   m_ObjectHideFlags: 0
@@ -8932,20 +8929,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2096986461}
-        m_TargetAssemblyTypeName: UIView, Assembly-CSharp
-        m_MethodName: Hide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 997722964}
-        m_TargetAssemblyTypeName: UIView, Assembly-CSharp
+      - m_Target: {fileID: 997722967}
+        m_TargetAssemblyTypeName: UI_Popup, Assembly-CSharp
         m_MethodName: Show
         m_Mode: 1
         m_Arguments:
@@ -10253,7 +10238,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 997722964}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIView, Assembly-CSharp
         m_MethodName: Hide
         m_Mode: 1
@@ -11599,8 +11584,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2138381368}
-        m_TargetAssemblyTypeName: UIView, Assembly-CSharp
+      - m_Target: {fileID: 2138381370}
+        m_TargetAssemblyTypeName: UI_Popup, Assembly-CSharp
         m_MethodName: Hide
         m_Mode: 1
         m_Arguments:
@@ -13999,21 +13984,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2096986461}
-        m_TargetAssemblyTypeName: UIView, Assembly-CSharp
-        m_MethodName: Hide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2138381368}
-        m_TargetAssemblyTypeName: UIView, Assembly-CSharp
-        m_MethodName: Show
+      - m_Target: {fileID: 1482396724}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14169,8 +14142,8 @@ GameObject:
   m_Component:
   - component: {fileID: 997722963}
   - component: {fileID: 997722966}
-  - component: {fileID: 997722964}
   - component: {fileID: 997722965}
+  - component: {fileID: 997722967}
   m_Layer: 5
   m_Name: HelpWindow
   m_TagString: Untagged
@@ -14199,18 +14172,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &997722964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 997722962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b68e9d0395b3db43ac7ec4d7f683bec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &997722965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14249,6 +14210,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 997722962}
   m_CullTransparentMesh: 1
+--- !u!114 &997722967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 997722962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24240960a72318c489bdf553bdfb9f47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1010062674
 GameObject:
   m_ObjectHideFlags: 0
@@ -20806,9 +20779,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1870681712}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIView, Assembly-CSharp
-        m_MethodName: Hide
+        m_MethodName: HidePopup
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26424,8 +26397,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2096986461}
-        m_TargetAssemblyTypeName: UIView, Assembly-CSharp
+      - m_Target: {fileID: 2096986464}
+        m_TargetAssemblyTypeName: UI_Popup, Assembly-CSharp
         m_MethodName: Hide
         m_Mode: 1
         m_Arguments:
@@ -28539,8 +28512,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1870681711}
   - component: {fileID: 1870681714}
-  - component: {fileID: 1870681712}
   - component: {fileID: 1870681713}
+  - component: {fileID: 1870681715}
   m_Layer: 5
   m_Name: SettingWindow
   m_TagString: Untagged
@@ -28569,18 +28542,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1870681712
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1870681710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b68e9d0395b3db43ac7ec4d7f683bec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1870681713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28619,6 +28580,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1870681710}
   m_CullTransparentMesh: 1
+--- !u!114 &1870681715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1870681710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24240960a72318c489bdf553bdfb9f47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1878585527
 GameObject:
   m_ObjectHideFlags: 0
@@ -30700,20 +30673,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2096986461}
-        m_TargetAssemblyTypeName: UIView, Assembly-CSharp
-        m_MethodName: Hide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1870681712}
-        m_TargetAssemblyTypeName: UIView, Assembly-CSharp
+      - m_Target: {fileID: 1870681715}
+        m_TargetAssemblyTypeName: UI_Popup, Assembly-CSharp
         m_MethodName: Show
         m_Mode: 1
         m_Arguments:
@@ -31361,7 +31322,7 @@ GameObject:
   - component: {fileID: 2096986460}
   - component: {fileID: 2096986463}
   - component: {fileID: 2096986462}
-  - component: {fileID: 2096986461}
+  - component: {fileID: 2096986464}
   m_Layer: 5
   m_Name: ManagingWindow
   m_TagString: Untagged
@@ -31390,18 +31351,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2096986461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096986459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b68e9d0395b3db43ac7ec4d7f683bec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2096986462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31440,6 +31389,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2096986459}
   m_CullTransparentMesh: 1
+--- !u!114 &2096986464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2096986459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24240960a72318c489bdf553bdfb9f47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2099860220
 GameObject:
   m_ObjectHideFlags: 0
@@ -32233,7 +32194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2138381369}
-  - component: {fileID: 2138381368}
+  - component: {fileID: 2138381370}
   m_Layer: 5
   m_Name: QuitGameWindow
   m_TagString: Untagged
@@ -32241,18 +32202,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &2138381368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2138381367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b68e9d0395b3db43ac7ec4d7f683bec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &2138381369
 RectTransform:
   m_ObjectHideFlags: 0
@@ -32277,6 +32226,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2138381370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138381367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24240960a72318c489bdf553bdfb9f47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2144786761
 GameObject:
   m_ObjectHideFlags: 0
