@@ -5,18 +5,13 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    private static UIManager _instance;
+    public static UIManager Instance;
 
-    public static UIManager Instance
+    private void Awake()
     {
-        get
+        if (Instance == null)
         {
-            // 생성된 인스턴스가 없으면 생성합니다.
-            if (_instance == null)
-            {
-                _instance = new UIManager();
-            }
-            return _instance;
+            Instance = this;
         }
     }
 
@@ -24,13 +19,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UIView managingWindow;
     private MouseCursor mouseCursor;
 
-    private Stack<GameObject> popupStack = new Stack<GameObject>();
+    private Stack<GameObject> popupStack;
     public int stackCount;
 
 
     private void Start()
     {
         mouseCursor = GetComponent<MouseCursor>();
+        popupStack = new Stack<GameObject>();
     }
 
 
@@ -40,6 +36,8 @@ public class UIManager : MonoBehaviour
         {
             ShowOrHideMangingWindow();
         }
+
+        stackCount = GetStackCount();
     }
 
 
