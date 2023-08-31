@@ -18,10 +18,4 @@ public class StaticValue : MonoBehaviour
             staticValue = this;
         }
     }
-
-    private void Start()
-    {
-        leaveGameRoom = false;
-        Debug.Log("static value start");
-    }
 }

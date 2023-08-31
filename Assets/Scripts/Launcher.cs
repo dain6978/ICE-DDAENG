@@ -65,35 +65,18 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("Joined Lobby");
-        if (staticValue == null)
+
+        if (staticValue != null)
         {
-            if (isFirstConnection)
-            {
-                MenuManager.Instance.OpenMenu("title");
-            }
-            else
-            {
-                MenuManager.Instance.OpenMenu("room setting");
-            }
-        }
-        else
-        {
-            if(staticValue.roomName != null)
+            if (staticValue.roomName != null)
             {
                 ReturnRoom();
+                Debug.Log(staticValue.roomName);
                 return;
             }
-            else if (isFirstConnection && !staticValue.leaveGameRoom)
-            {
-                MenuManager.Instance.OpenMenu("title");
-            }
-            else
-            {
-                MenuManager.Instance.OpenMenu("room setting");
-                staticValue.leaveGameRoom = false;
-            }
         }
-        
+
+        MenuManager.Instance.OpenMenu("title");
     }
 
     public void CreateRoom()
