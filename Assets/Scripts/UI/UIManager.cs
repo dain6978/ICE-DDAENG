@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,17 +7,27 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject managingWindow;
-    [SerializeField] private GameObject aimUI;
+
+    private PlayerManager playerManager;
+    private PlayerUI playerUI;
+    private PhotonView PV;
 
     private MouseCursor mouseCursor;
-
     private Stack<GameObject> popupStack;
 
+
+    //왜 없다 하지... playerController에선 되는데...
+    private void Awake()
+    {
+        //playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
+    }
 
     private void Start()
     {
         mouseCursor = GetComponent<MouseCursor>();
         popupStack = new Stack<GameObject>();
+
+        playerUI = playerManager.GetPlayerController().GetComponentInChildren<PlayerUI>();
     }
 
 
@@ -29,9 +40,7 @@ public class UIManager : MonoBehaviour
     }
 
 
-
     // scene UI
-
     public void ShowSceneUI(GameObject scene)
     {
         scene.SetActive(true);
@@ -43,9 +52,7 @@ public class UIManager : MonoBehaviour
     }
 
 
-
     // pop up UI
-
     public void ShowPopupUI(GameObject popup)
     {
         popupStack.Push(popup);
@@ -75,6 +82,9 @@ public class UIManager : MonoBehaviour
     {
         if (popupStack.Count == 0)
         {
+            if (playerUI != null)
+                playerUI.HideAim();
+
             ShowPopupUI(managingWindow);
             mouseCursor.OnCursor();
         }
@@ -82,6 +92,9 @@ public class UIManager : MonoBehaviour
         {
             HidePopupUI();
             mouseCursor.OffCursor();
+
+            if (playerUI != null)
+                playerUI.ShowAim();
         }
     }
 

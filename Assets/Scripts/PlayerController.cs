@@ -44,9 +44,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     
 
     GameObject playerAnimal;
-    SkinnedMeshRenderer[] playerMeshs; // 동물 메시 & face 메시
+    //SkinnedMeshRenderer[] playerMeshs; // 동물 메시 & face 메시
     SkinnedMeshRenderer smr;
-
     PlayerAnimManager playerAnimManager;
 
 
@@ -58,7 +57,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     float currentHealth = maxHealth;
 
     PlayerManager playerManager;
-    
+    UIManager uiManager;
+
+
 
     //여기서부터 ice 관련!!
     [Header("Ice")]
@@ -119,10 +120,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             Destroy(GetComponentInChildren<Camera>().gameObject);
             //자기 자신의 플레이어(로컬 플레이어) 컨트롤러가 아닐 경우 카메라 파괴 to 자기 자신의 카메라만 사용할 수 있도록
             //카메라뿐만 아니라 gameObject 파괴 -> 오디오 리스너도 함께 파괴 (cameraHolder를 사용한 이유라는데 잘 모르겠당...)
-            Destroy(rb);
+            Destroy(rb); 
             //로컬 플레이어의 rigidbody만 사용하도록 파괴
             Destroy(playerUI); //로컬 플레이어의 UI (health바)만 사용
-            // Destroy(playerAnimManager); 자꾸 애니메이터를 파괴했어서 isWriting이 false가 안 됐었구나!!!!!!!!!!
         }
     }
     private void Update()

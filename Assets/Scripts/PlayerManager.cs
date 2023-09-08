@@ -88,6 +88,16 @@ public class PlayerManager : MonoBehaviour
         return FindObjectsOfType<PlayerManager>().SingleOrDefault(x => x.PV.Owner == player);
     }
 
-
+    public GameObject GetPlayerController()
+    {
+        if (playerController != null)
+        {
+            return playerController;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
 }

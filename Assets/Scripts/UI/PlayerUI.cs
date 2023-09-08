@@ -1,18 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    [SerializeField] GameObject playerUI;
+    [SerializeField] GameObject aimUI;
+
+
+    public void Hide()
     {
-        
+        playerUI.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Show()
     {
-        
+        playerUI.SetActive(true);
+    }
+
+    public void HideAim()
+    {
+        aimUI.SetActive(false);
+    }
+
+    public void ShowAim()
+    {
+        aimUI.SetActive(true);
+    }
+
+
+    public void Destroy()
+    {
+        Destroy(playerUI);
     }
 }
