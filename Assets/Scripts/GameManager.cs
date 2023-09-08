@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
+using System;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    private StaticValue staticValue;
     private float time;
-    private float gameTime = 300f;
+    private float gameTime = 5f;
     bool isEnd;
-    
+
     
     private void Start()
     {
-        staticValue = FindObjectOfType<StaticValue>();
         StartGame();
-        
     }
 
     private void StartGame()
@@ -38,15 +38,27 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         isEnd = true;
         Debug.Log("게임 종료");
+        Player winner = PhotonNetwork.LocalPlayer;  //위너가 없으면.. 일단 로컬플레이어로 초기화 하겠음 ㅎ
+        int mostKillCount = 0;
+
+        foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
+        {
+            if ((int)(player.CustomProperties["kills"]) > mostKillCount)
+            {
+                mostKillCount = (int)player.CustomProperties["kills"];
+                winner = player;
+            }
+        }
+
+        Debug.Log($"Winner: {winner}, Kill: {mostKillCount}");
         Invoke("OnGameEnd", 5f);
     }
 
     private void OnGameEnd()
     {
         PhotonNetwork.CurrentRoom.IsOpen = true;
-        staticValue.roomName = PhotonNetwork.CurrentRoom.Name;
-        PhotonNetwork.Disconnect();
-        
+        RoomManager.roomName = PhotonNetwork.CurrentRoom.Name;
+        PhotonNetwork.Disconnect();        
     }
     
     public void QuitGame()
@@ -62,11 +74,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     
     public void LeaveRoom()
     {
-        
-        staticValue.leaveGameRoom = true; 
-        Debug.Log("On Click Leave Room");
-        PhotonNetwork.Disconnect();
-        // Disconnect: 이 클라이언트를 Photon 서버에서 접속 해제 합니다.룸을 나가고 완료시 OnDisconnectedFromPhoton 이 호출 됩니다.
-        // Disconnect 실행할 경우 LeaveRoom 이 자동으로 실행됨 -> OnLeftRoom -> OnDisconnected
+        if (!isEnd)
+        {
+            Debug.Log("On Click Leave Room");
+            PhotonNetwork.Disconnect();
+            // Disconnect: 이 클라이언트를 Photon 서버에서 접속 해제 합니다.룸을 나가고 완료시 OnDisconnectedFromPhoton 이 호출 됩니다.
+            // Disconnect 실행할 경우 LeaveRoom 이 자동으로 실행됨 -> OnLeftRoom -> OnDisconnected
+        }
+
     }
 }
