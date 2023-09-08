@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     [SerializeField] Item[] items;
     [SerializeField] GameObject[] gunMeshes;
 
-
+    bool isEnd = false;
     int itemIndex;
     int previousItemIndex = -1;
 
@@ -127,8 +127,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     }
     private void Update()
     {
-        if (!PV.IsMine)
+        if (!PV.IsMine || isEnd)
             return; //플레이어 컨트롤러가 자기 자신의 플레이어만 컨트롤할 수 있게 
+
         
         Look();
         Move();
@@ -153,7 +154,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     }
 
 
-    
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        if (propertiesThatChanged.ContainsKey("isEnd"))
+        {
+            isEnd = (bool)propertiesThatChanged["isEnd"];
+        }
+    }
 
     //ice 개수 체크
     void CheckIce()
@@ -284,7 +291,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     //따라서 모든 물리 및 움직임 계산은 각 컴퓨터의 fps에 영향을 덜 받도록 fixedUpdate에 적는다
     private void FixedUpdate()
     {
-        if (!PV.IsMine)
+        if (!PV.IsMine || isEnd)
             return;
 
         //Update 함수에서 계산한 moveAmount를 바탕으로 FixedUpdate마다 실제 PlayerController의 rigidbody에 영향

@@ -20,7 +20,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
         }
         DontDestroyOnLoad(gameObject); //if I am the only one
         Instance = this;
-        //roomName = null;
     }
 
 

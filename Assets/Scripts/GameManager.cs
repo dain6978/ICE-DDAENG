@@ -9,19 +9,24 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     private float time;
-    private float gameTime = 5f;
+    private float gameTime = 30f;
+
     bool isEnd;
 
     
     private void Start()
     {
         StartGame();
+        
     }
 
     private void StartGame()
     {
         time = 0;
         isEnd = false;
+        Hashtable hash = new Hashtable();
+        hash.Add("isEnd", false);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
     }
 
     private void Update()
@@ -37,6 +42,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void EndGame()
     {
         isEnd = true;
+
+        Hashtable hash = new Hashtable();
+        hash.Add("isEnd", true);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
+        
         Debug.Log("게임 종료");
         Player winner = PhotonNetwork.LocalPlayer;  //위너가 없으면.. 일단 로컬플레이어로 초기화 하겠음 ㅎ
         int mostKillCount = 0;
