@@ -10,7 +10,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
 {
     //씬이 스위치되는 시점과 플레이어 매니저 프리팹이 인스턴스화되는 시점을 감지하기 위해 싱글톤으로 구현
     public static RoomManager Instance;
-
+    public static string roomName = null;
     private void Awake() //전형적인 싱글톤 패턴
     {
         if (Instance) //checks if another RoomManager exists
@@ -20,6 +20,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         }
         DontDestroyOnLoad(gameObject); //if I am the only one
         Instance = this;
+        //roomName = null;
     }
 
 
@@ -52,10 +53,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void DestroyPlayer()
-    {
-        //PhotonNetwork.Destroy(playerManager);
-    }
 
     // PhotonView를 가진 객체가 삭제되지 않게 사용한 DontDestoryOnLoad를 사용했을 때, 객체가 이동한 씬에 이미 있는 경우
     // 즉 RoomManager의 PhotonView가 중복되는 경우 발생하는 에러 방지하기 위해 먼저 객체를 삭제한 후 씬 이동

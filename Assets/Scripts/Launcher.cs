@@ -31,23 +31,24 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     int minPlayers = 2;
     int maxPlayers = 8;
-    StaticValue staticValue;
+    //StaticValue staticValue;
 
     private void Awake()
     {
         Instance = this;
         roomdict = new Dictionary<RoomInfo, GameObject>();
+        Cursor.visible = true;
     }
 
     void Start()
     {
-        
-        staticValue = FindObjectOfType<StaticValue>();
 
         MenuManager.Instance.OpenMenu("loading");
         //'PhotonServerSettings'의 설정을 활용하여 포톤 마스터 서버에 접근할 수 있게 함
         Debug.Log("Connecting to Master");
+
         PhotonNetwork.ConnectUsingSettings();
+
     }
 
 
@@ -65,16 +66,14 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log("Joined Lobby");
-
-        if (staticValue != null)
+        Debug.Log("RoomName" + RoomManager.roomName);
+        if (RoomManager.roomName != null)
         {
-            if (staticValue.roomName != null)
-            {
-                ReturnRoom();
-                Debug.Log(staticValue.roomName);
-                return;
-            }
+            ReturnRoom();
+
+            return;
         }
+
 
         MenuManager.Instance.OpenMenu("title");
     }
@@ -225,9 +224,9 @@ public class Launcher : MonoBehaviourPunCallbacks
         ro.MaxPlayers = (byte)maxPlayers;
         ro.IsOpen = true;
 
-        PhotonNetwork.JoinOrCreateRoom(staticValue.roomName, ro, null);        
+        PhotonNetwork.JoinOrCreateRoom(RoomManager.roomName, ro, null);
         MenuManager.Instance.OpenMenu("room");
-        roomText.text = staticValue.roomName;
+        roomText.text = RoomManager.roomName;
 
         foreach (Transform child in playerListContent)
         {
@@ -244,7 +243,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         }
 
         startGameButton.SetActive(PhotonNetwork.IsMasterClient); //만약 마스터 클라이언트라면 스타트버튼 활성화 (호스트만 게임 시작할 수 있게)
-        staticValue.roomName = null;
+        RoomManager.roomName = null;
     }
 
     public void QuitGame()

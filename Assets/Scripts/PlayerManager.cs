@@ -14,6 +14,7 @@ public class PlayerManager : MonoBehaviour
     PhotonView PV;
     GameObject playerController;
     SpawnManager spawnManager;
+    //GameManager gameManager;
 
     int kills;
     int deaths;
@@ -33,6 +34,11 @@ public class PlayerManager : MonoBehaviour
         {
             CreateController();
             skinIndex = PlayerPrefs.GetInt("userskin");
+            Hashtable hash = new Hashtable();
+            hash.Add("kills", 0);
+            hash.Add("deaths", 0);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+
         }
     }
 
@@ -43,10 +49,6 @@ public class PlayerManager : MonoBehaviour
         playerController = PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerController"), spawnpoint.position, spawnpoint.rotation, 0, new object[] { PV.ViewID });
 
         playerController.GetComponent<PlayerController>().SetCharacterSkin();
-
-        // PhotonNetwork.Instantiate(string prefabNames, Vector3 position, Quternion rotation, byte group = 0, object[] data = null) 
-        // group: 0 is the group of prefab 
-        // data : actual parameters that pass into the prefab we instantiate -> send the view id into the instantiation method
         // 플레이어 컨트롤러 생성할 때마다(플레이어 매니저 & 컨트롤러 1:1 관계) 각 플레이어 컨트롤러에 대한 viewID를 생성하겠다는 건가? 
     }
 
@@ -85,4 +87,7 @@ public class PlayerManager : MonoBehaviour
         //씬의 모든 플레이어매니저 배열 리턴
         return FindObjectsOfType<PlayerManager>().SingleOrDefault(x => x.PV.Owner == player);
     }
+
+
+
 }
