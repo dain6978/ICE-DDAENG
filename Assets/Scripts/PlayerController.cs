@@ -91,6 +91,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         //playerAnimal = transform.GetChild(5).gameObject;
         //playerMeshs = playerAnimal.GetComponentsInChildren<SkinnedMeshRenderer>();
+       
+        //PhotonNetwork.LocalPlayer.TagObject = gameObject;
 
         playerAnimManager = GetComponentInChildren<PlayerAnimManager>();
     }
@@ -152,6 +154,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         else
             ice = 0;
     }
+
 
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)

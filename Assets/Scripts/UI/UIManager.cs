@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject managingWindow;
 
-    private PlayerManager playerManager;
+    private GameObject player;
     private PlayerUI playerUI;
     private PhotonView PV;
 
@@ -19,7 +19,6 @@ public class UIManager : MonoBehaviour
     //왜 없다 하지... playerController에선 되는데...
     private void Awake()
     {
-        //playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
     }
 
     private void Start()
@@ -27,7 +26,8 @@ public class UIManager : MonoBehaviour
         mouseCursor = GetComponent<MouseCursor>();
         popupStack = new Stack<GameObject>();
 
-        playerUI = playerManager.GetPlayerController().GetComponentInChildren<PlayerUI>();
+        // player 가져오는 법
+        //player = (GameObject)PhotonNetwork.LocalPlayer.TagObject;
     }
 
 
@@ -39,6 +39,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void SetPlayer(GameObject playerController)
+    {
+        player = playerController;
+
+        if (player != null)
+            playerUI = player.GetComponentInChildren<PlayerUI>();
+    }
 
     // scene UI
     public void ShowSceneUI(GameObject scene)
