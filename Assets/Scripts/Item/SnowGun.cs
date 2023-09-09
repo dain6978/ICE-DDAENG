@@ -6,7 +6,7 @@ using UnityEngine;
 public class SnowGun : Gun
 {
     [SerializeField] Camera cam;
-
+    [SerializeField] LayerMask cameraLayer;
 
     PhotonView PV;
     PlayerAnimManager playerAnimManager;
@@ -27,6 +27,7 @@ public class SnowGun : Gun
         Shoot();
     }
 
+
     private void Update()
     {
         if(fireTimer < fireRate)
@@ -43,13 +44,13 @@ public class SnowGun : Gun
 
         //raycast 
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f)); //스크린(1인칭 카메라)의 중앙으로부터 뻗어 나오는 ray
-        ray.origin = cam.transform.position; // ray의 시작점을 카메라의 위치로
+        ray.origin = cam.transform.position + new Vector3(0.2f, 0, 0); // ray의 시작점을 카메라의 위치로
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            //Debug.Log(hit.collider.gameObject);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, ~cameraLayer))
+        {         
             hit.collider.gameObject.GetComponentInParent<IDamageable>()?.TakeSnow();
-
+            Debug.Log(hit.collider.gameObject);
             PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal); //모든 클라이언트에 대해 hit(raycast의 반환값)의 위치를 인자로 하는 RPC_Shoot 함수 호출
             fireTimer = 0.0f;
             playerAnimManager.ShootAnim();

@@ -41,27 +41,27 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     private void EndGame()
     {
-        isEnd = true;
+        //isEnd = true;
 
-        Hashtable hash = new Hashtable();
-        hash.Add("isEnd", true);
-        PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
+        //Hashtable hash = new Hashtable();
+        //hash.Add("isEnd", true);
+        //PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
         
-        Debug.Log("게임 종료");
-        Player winner = PhotonNetwork.LocalPlayer;  //위너가 없으면.. 일단 로컬플레이어로 초기화 하겠음 ㅎ
-        int mostKillCount = 0;
+        //Debug.Log("게임 종료");
+        //Player winner = PhotonNetwork.LocalPlayer;  //위너가 없으면.. 일단 로컬플레이어로 초기화 하겠음 ㅎ
+        //int mostKillCount = 0;
 
-        foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
-        {
-            if ((int)(player.CustomProperties["kills"]) > mostKillCount)
-            {
-                mostKillCount = (int)player.CustomProperties["kills"];
-                winner = player;
-            }
-        }
+        //foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
+        //{
+        //    if ((int)(player.CustomProperties["kills"]) > mostKillCount)
+        //    {
+        //        mostKillCount = (int)player.CustomProperties["kills"];
+        //        winner = player;
+        //    }
+        //}
 
-        Debug.Log($"Winner: {winner}, Kill: {mostKillCount}");
-        Invoke("OnGameEnd", 5f);
+        //Debug.Log($"Winner: {winner}, Kill: {mostKillCount}");
+        //Invoke("OnGameEnd", 5f);
     }
 
     private void OnGameEnd()
