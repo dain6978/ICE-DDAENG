@@ -8,6 +8,7 @@ public class MenuManager : MonoBehaviour
     public static MenuManager Instance; //어디서든 접근 가능하게 싱글톤으로
 
     [SerializeField] Menu[] menus;
+    private Stack<GameObject> popupStack;
 
     public void Awake()
     {
@@ -43,8 +44,10 @@ public class MenuManager : MonoBehaviour
         }
         menu.Open();
     }
+
     public void CloseMenu(Menu menu)
     {
         menu.Close();
     }
+
 }

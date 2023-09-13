@@ -17,13 +17,15 @@ public class Launcher : MonoBehaviourPunCallbacks
     [SerializeField] TMP_InputField roomNameInputField;
     [SerializeField] TMP_Text errorText;
     [SerializeField] TMP_Text roomText;
-    
+    [SerializeField] TMP_Text noticeText;
+
     [SerializeField] Transform roomListContent;
     [SerializeField] Transform playerListContent;
     
     [SerializeField] GameObject roomListItemPrefab;
     [SerializeField] GameObject playerListItemPrefab;
     [SerializeField] GameObject startGameButton;
+    [SerializeField] GameObject noticeWindow;
 
     Dictionary<RoomInfo, GameObject> roomdict;
 
@@ -159,12 +161,14 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         if (!info.IsOpen)
         {
-            Debug.Log("게임이 이미 시작되었습니다.");
+            noticeText.text = "이미 게임이 시작된 방입니다.";
+            noticeWindow.SetActive(true);
             return;
         }
         else if(info.PlayerCount == info.MaxPlayers)
         {
-            Debug.Log("방이 꽉 찼습니다.");
+            noticeText.text = "방이 꽉 찼습니다..";
+            noticeWindow.SetActive(true);
             return;
         }
 
