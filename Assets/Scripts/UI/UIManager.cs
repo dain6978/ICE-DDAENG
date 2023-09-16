@@ -1,28 +1,29 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject managingWindow;
+    [SerializeField] private TextMeshProUGUI timerText;
 
     private GameObject player;
     private PlayerUI playerUI;
     private PhotonView PV;
 
+    private GameManager gameManager;
     private MouseCursor mouseCursor;
     private Stack<GameObject> popupStack;
 
 
-    //왜 없다 하지... playerController에선 되는데...
-    private void Awake()
-    {
-    }
 
     private void Start()
     {
+        gameManager = FindObjectOfType<GameManager>();
         mouseCursor = GetComponent<MouseCursor>();
         popupStack = new Stack<GameObject>();
 
@@ -33,6 +34,8 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
+        updateTimer();
+
         if (Input.GetKeyDown(KeyCode.Escape)) 
         {
             SwitchMangingWindow();
@@ -85,7 +88,7 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void SwitchMangingWindow()
+    private void SwitchMangingWindow()
     {
         if (popupStack.Count == 0)
         {
@@ -105,4 +108,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void updateTimer()
+    {
+        float time = gameManager.GetGameTime();
+        timerText.text = Convert.ToString(time);
+    }
 }

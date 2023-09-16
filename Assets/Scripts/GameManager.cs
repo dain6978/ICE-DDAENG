@@ -63,6 +63,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         //Debug.Log($"Winner: {winner}, Kill: {mostKillCount}");
         //Invoke("OnGameEnd", 5f);
     }
+    
+    public float GetGameTime()
+    {
+        return time;
+    }
 
     private void OnGameEnd()
     {
