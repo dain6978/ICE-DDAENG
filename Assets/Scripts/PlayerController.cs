@@ -42,22 +42,21 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     Rigidbody rb;
     
-
     GameObject playerAnimal;
     //SkinnedMeshRenderer[] playerMeshs; // 동물 메시 & face 메시
     SkinnedMeshRenderer smr;
     PlayerAnimManager playerAnimManager;
 
 
-    [Header("Health")]
-    [SerializeField] Image healthbarImage;
-    [SerializeField] GameObject playerUI;
+
+    [Header("UI")]
+    //[SerializeField] Image healthbarImage;
+    private PlayerUI playerUI;
+    private PlayerManager playerManager;
+    private UIManager uiManager;
 
     const float maxHealth = 100f;
     float currentHealth = maxHealth;
-
-    PlayerManager playerManager;
-    UIManager uiManager;
 
 
 
@@ -91,10 +90,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         //playerAnimal = transform.GetChild(5).gameObject;
         //playerMeshs = playerAnimal.GetComponentsInChildren<SkinnedMeshRenderer>();
-       
-        //PhotonNetwork.LocalPlayer.TagObject = gameObject;
 
         playerAnimManager = GetComponentInChildren<PlayerAnimManager>();
+        playerUI = GetComponentInChildren<PlayerUI>();
     }
 
     private void Start()
@@ -152,7 +150,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             iceCurTime += Time.deltaTime;
         }
         else
-            ice = 0;
+        {
+            if (ice != 0)
+            {
+                ice = 0;
+                playerUI.ResetIce();
+            }
+        }
     }
 
 
@@ -183,6 +187,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     {
         ice = 0;
         isIced = false;
+        playerUI.ResetIce();
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         PV.RPC("RPC_Ice", RpcTarget.All, false);
     }
@@ -384,7 +389,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (isIced)
         {
             currentHealth -= damage;
-            healthbarImage.fillAmount = currentHealth / maxHealth;
+            //healthbarImage.fillAmount = currentHealth / maxHealth;
         }
 
         if (currentHealth <= 0)
@@ -406,6 +411,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         iceCurTime = 0;
         ice++;
+        playerUI.AddIce();
 
     }
 
@@ -414,4 +420,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         // 플레이어 매니저에서 플레이어의 death와 respawning 관리
         playerManager.Die();
     }
+
+    //public int GetIceCount()
+    //{
+    //    return ice;
+    //}
 }
