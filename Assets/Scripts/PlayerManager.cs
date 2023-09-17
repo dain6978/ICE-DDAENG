@@ -13,7 +13,7 @@ public class PlayerManager : MonoBehaviour
     // 플레이어의 death와 respawning 관리
 
     PhotonView PV;
-    GameObject playerController;
+    public GameObject playerController;
     SpawnManager spawnManager;
     UIManager uiManager;
     //GameManager gameManager;
@@ -41,6 +41,8 @@ public class PlayerManager : MonoBehaviour
             hash.Add("kills", 0);
             hash.Add("deaths", 0);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+
+            RoomManager.Instance.playerDict.Add(PhotonNetwork.LocalPlayer, gameObject);
         }
     }
 

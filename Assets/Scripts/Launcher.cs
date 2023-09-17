@@ -87,6 +87,16 @@ public class Launcher : MonoBehaviourPunCallbacks
             return; //생성 x
         }
 
+        foreach(RoomInfo roomInfo in roomdict.Keys)
+        {
+            if(roomInfo.Name == roomNameInputField.text)
+            {
+                Debug.Log("이미 존재하는 방입니다.");
+                return;
+            }
+        }
+        
+
         RoomOptions ro = new RoomOptions();
         ro.MaxPlayers = (byte)maxPlayers;
         ro.IsOpen = true;

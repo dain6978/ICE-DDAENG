@@ -5,12 +5,15 @@ using Photon.Pun;
 using UnityEngine.SceneManagement;
 using System.IO; //to access to the path class
 using Photon.Realtime;
+using System.Linq;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
     //씬이 스위치되는 시점과 플레이어 매니저 프리팹이 인스턴스화되는 시점을 감지하기 위해 싱글톤으로 구현
     public static RoomManager Instance;
     public static string roomName = null;
+    public Dictionary<Player, GameObject> playerDict = new Dictionary<Player, GameObject>();
+    //public Dictionary<Player, int> rankingDict = new Dictionary<Player, int>();
     private void Awake() //전형적인 싱글톤 패턴
     {
         if (Instance) //checks if another RoomManager exists
@@ -48,8 +51,9 @@ public class RoomManager : MonoBehaviourPunCallbacks
         if (scene.buildIndex == 1) //game scene
         {
             //게임 씬이 로드될 때마다 PhotonPrefabs 폴더 안에 PlayerManager를 생성 (프리팹의 위치 & 회전 0)
+            
             PhotonNetwork.Instantiate(Path.Combine("PhotonPrefabs", "PlayerManager"), Vector3.zero, Quaternion.identity);
-        }
+        }            
     }
 
 
@@ -65,11 +69,13 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
+        
         Debug.Log("On Left Room");
         // 게임 씬에서 방을 떠난 거라면
-        if (SceneManager.GetActiveScene().name == "Game")
+        if (SceneManager.GetActiveScene().name == "Ranking")
         {
             Destroy(gameObject);
+            Destroy(RankingManager.Instance.gameObject);
             SceneManager.LoadScene(0);
 
             Debug.Log("방을 잘 떠났습니다. 나는 룸 매니저예요");

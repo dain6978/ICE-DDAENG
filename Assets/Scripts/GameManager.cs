@@ -5,6 +5,8 @@ using Photon.Pun;
 using Photon.Realtime;
 using System;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -39,15 +41,16 @@ public class GameManager : MonoBehaviourPunCallbacks
             EndGame();
     }
 
+
     private void EndGame()
     {
-        //isEnd = true;
+        isEnd = true;
 
-        //Hashtable hash = new Hashtable();
-        //hash.Add("isEnd", true);
-        //PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
-        
-        //Debug.Log("게임 종료");
+        Hashtable hash = new Hashtable();
+        hash.Add("isEnd", true);
+        PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
+
+        Debug.Log("게임 종료");
         //Player winner = PhotonNetwork.LocalPlayer;  //위너가 없으면.. 일단 로컬플레이어로 초기화 하겠음 ㅎ
         //int mostKillCount = 0;
 
@@ -59,22 +62,43 @@ public class GameManager : MonoBehaviourPunCallbacks
         //        winner = player;
         //    }
         //}
-
         //Debug.Log($"Winner: {winner}, Kill: {mostKillCount}");
-        //Invoke("OnGameEnd", 5f);
+
+
+        //Dictionary<Player, int> rankingDict = new Dictionary<Player, int>();
+        //foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
+        //{
+        //    rankingDict.Add(player, (int)(player.CustomProperties["kills"]));
+        //}
+
+        //var sortVar = from item in rankingDict
+        //              orderby item.Value descending
+        //              select item;
+
+        //RankingManager.Instance.rankingDict = sortVar.ToDictionary(x => x.Key, x => x.Value);
+
+
+        //RoomManager.Instance.rankingDict = rankingDict;
+
+        //SceneManager.LoadScene(2);
+
+
+        //Invoke("OnGameEnd", 10f);
+        RankingManager.Instance.ShowRanking();
     }
-    
+
+    //private void OnGameEnd()
+    //{
+    //    PhotonNetwork.CurrentRoom.IsOpen = true;
+    //    RoomManager.roomName = PhotonNetwork.CurrentRoom.Name;
+    //    PhotonNetwork.Disconnect();        
+    //}
+
     public float GetGameTime()
     {
         return time;
     }
 
-    private void OnGameEnd()
-    {
-        PhotonNetwork.CurrentRoom.IsOpen = true;
-        RoomManager.roomName = PhotonNetwork.CurrentRoom.Name;
-        PhotonNetwork.Disconnect();        
-    }
     
     public void QuitGame()
     {

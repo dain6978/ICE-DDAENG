@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     [SerializeField] Item[] items;
     [SerializeField] GameObject[] gunMeshes;
 
-    bool isEnd = false;
+    public bool isEnd = false;
     int itemIndex;
     int previousItemIndex = -1;
 
