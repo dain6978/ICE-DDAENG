@@ -10,9 +10,13 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 {
     PhotonView PV;
 
+    public GameObject cameraObject;
+
     [Header ("Items")]
     [SerializeField] Item[] items;
     [SerializeField] GameObject[] gunMeshes;
+
+    
 
     public bool isEnd = false;
     int itemIndex;
@@ -67,6 +71,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     int iceMAX = 4;
     public GameObject snowmanObject;
     public GameObject playerObject;
+
+
 
     //ice개수 초기화 시간
     float iceCurTime = 0f;
@@ -328,8 +334,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         previousItemIndex = itemIndex;
 
-
-
     }
 
 
@@ -425,4 +429,20 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     //{
     //    return ice;
     //}
+
+    public void SetRanking(int ranking)
+    {
+        if (ranking < 3) isEnd = false; //이거 햇는데 왜 입력 안받아짐? 수정요망
+        PV.RPC(nameof(RPC_SetRanking), RpcTarget.All, ranking);
+        cameraObject.transform.position = RankingManager.Instance.rankingPoints[3].position;
+        cameraObject.transform.rotation = RankingManager.Instance.rankingPoints[3].rotation;
+        PV.RPC("RPC_Ice", RpcTarget.All, false);    //만약 눈사람인 경우, 눈사람 해제
+    }
+
+    [PunRPC]
+    void RPC_SetRanking(int ranking)
+    {
+        this.transform.position = RankingManager.Instance.rankingPoints[ranking].position;
+        this.transform.rotation = RankingManager.Instance.rankingPoints[ranking].rotation;
+    }
 }

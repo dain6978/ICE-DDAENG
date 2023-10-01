@@ -32,31 +32,26 @@ public class RankingManager : MonoBehaviourPunCallbacks
         }
 
         var sortVar = from item in scoreboardDict
-                      orderby item.Value descending
-                      select item;
+                    orderby item.Value descending
+                    select item;
 
         rankingDict = sortVar.ToDictionary(x => x.Key, x => x.Value);
 
         List<Player> rankingList = rankingDict.Keys.ToList();
 
-
         int i = 0;
         foreach(Player player in rankingList)
         {
+            Debug.Log(i+1 + "µî: "+ player.ToString());
             if (player == null) continue;
 
             if (PhotonNetwork.CurrentRoom.PlayerCount <= i)
                 break;
-
-            if (i < 3)
-            {
-                RoomManager.Instance.playerDict[player].GetComponent<PlayerManager>().playerController.transform.position = rankingPoints[i].position;
-                RoomManager.Instance.playerDict[player].GetComponent<PlayerManager>().playerController.GetComponent<PlayerController>().isEnd = false;
-            }
-            else
-            {
-                RoomManager.Instance.playerDict[player].GetComponent<PlayerManager>().playerController.transform.position = rankingPoints[3].position;
-            }
+            
+            if (player.IsLocal)
+                RoomManager.Instance.playerDict[player].playerController.GetComponent<PlayerController>().SetRanking(i);
+            
+            i++;
         }
 
         //Invoke("OnGameEnd", 10f);

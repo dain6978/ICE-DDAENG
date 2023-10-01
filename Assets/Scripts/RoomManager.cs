@@ -12,7 +12,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     //씬이 스위치되는 시점과 플레이어 매니저 프리팹이 인스턴스화되는 시점을 감지하기 위해 싱글톤으로 구현
     public static RoomManager Instance;
     public static string roomName = null;
-    public Dictionary<Player, GameObject> playerDict = new Dictionary<Player, GameObject>();
+    public Dictionary<Player, PlayerManager> playerDict = new Dictionary<Player, PlayerManager>();
     //public Dictionary<Player, int> rankingDict = new Dictionary<Player, int>();
     private void Awake() //전형적인 싱글톤 패턴
     {

@@ -41,10 +41,10 @@ public class PlayerManager : MonoBehaviour
             hash.Add("kills", 0);
             hash.Add("deaths", 0);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-
-            RoomManager.Instance.playerDict.Add(PhotonNetwork.LocalPlayer, gameObject);
         }
+        RoomManager.Instance.playerDict.Add(PV.Owner, this);
     }
+
 
     void CreateController()
     {
@@ -61,6 +61,7 @@ public class PlayerManager : MonoBehaviour
     public void Die()
     {
         PhotonNetwork.Destroy(playerController); // Á×À¸¸é ¾À¿¡ ÀÖ´Â playerController ÆÄ±«
+        playerController = null;
         uiManager.SetPlayer(null);
 
 
