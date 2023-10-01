@@ -19,6 +19,8 @@ public class UIManager : MonoBehaviour
     private MouseCursor mouseCursor;
     private Stack<GameObject> popupStack;
 
+    public float sec = 0f;
+    public int min = 0;
 
 
     private void Start()
@@ -110,7 +112,12 @@ public class UIManager : MonoBehaviour
 
     private void updateTimer()
     {
-        float time = gameManager.GetGameTime();
-        timerText.text = Convert.ToString(time);
+        sec += Time.deltaTime;
+        if (sec >= 60f)
+        {
+            min += 1;
+            sec = 0;
+        }
+        timerText.text = string.Format("{0:D2}:{1:D2}", min, (int)sec);
     }
 }

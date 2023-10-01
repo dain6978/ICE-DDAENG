@@ -11,7 +11,7 @@ using System.Linq;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     private float time;
-    private float gameTime = 30f;
+    private float gameTime = 300f;
 
     bool isEnd;
 
@@ -94,10 +94,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     //    PhotonNetwork.Disconnect();        
     //}
 
-    public float GetGameTime()
-    {
-        return time;
-    }
 
     
     public void QuitGame()
