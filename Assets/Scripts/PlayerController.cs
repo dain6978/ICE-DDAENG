@@ -59,9 +59,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     private PlayerManager playerManager;
     private UIManager uiManager;
 
-    const float maxHealth = 100f;
-    float currentHealth = maxHealth;
-
 
 
     //여기서부터 ice 관련!!
@@ -94,8 +91,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         // PV.InstantiationData[0]: PlayerManager의 createController에 생성하고 전송한 viewID에 대한 정보??
         // PhotonView에서 특정 viewID를 가진 게임 오브젝트에서 PlayerManager 컴포넌트를 가져온다. 
 
-        //playerAnimal = transform.GetChild(5).gameObject;
-        //playerMeshs = playerAnimal.GetComponentsInChildren<SkinnedMeshRenderer>();
 
         playerAnimManager = GetComponentInChildren<PlayerAnimManager>();
         playerUI = GetComponentInChildren<PlayerUI>();
@@ -351,29 +346,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         smr.material = PlayerSkinManager.Instance.Materials[_index];
     }
 
-    // 전체 게임 동안 어떤 플레이어의 어떤 속성이 업데이트 될 때마다 실행되는 함수
-    // called when information is received
-    //public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
-    //{
-        
-
-    //    if (changedProps.ContainsKey("skinIndex") && !PV.IsMine && targetPlayer == PV.Owner)
-    //    {
-    //        SetSkin((int)changedProps["skinIndex"]);
-
-    //    }
-
-    //    //if (changedProps.ContainsKey("itemIndex") && !PV.IsMine && targetPlayer == PV.Owner)
-    //    //{//다른 플레이어의 itemindex 속성이 업데이트 됐을 때 (다른 플레이어가 무기 교체했을 때) 
-    //    //    EquipItem((int)changedProps["ItemIndex"]);
-    //    //    //해시 테이블의 ItemIndex를 int로 형변환하고 EquipItem에 대한 정보를 네트워크로 pass...??
-    //    //}
-    //}
-
     //IDamageable 인터페이스의 TakeDamage 함수 구현
-    public void TakeDamage(float damage) //runs on the shooter's computer
+    public void TakeDamage() //runs on the shooter's computer
     {
-        PV.RPC(nameof(RPC_TakeDamage), PV.Owner, damage);
+        
+        PV.RPC(nameof(RPC_TakeDamage), PV.Owner);
         //RPC 호출하는 법: PV.RPC("함수 이름), 타겟, 함수 파라미터) 
         //RpcTarget.All: 서버에 있는 모든 플레이어에게 정보 전달
         //PV.Owner은 데미지 입는 본인한테만.
@@ -388,23 +365,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     //to sync damage, RPC 사용
     [PunRPC]
-    void RPC_TakeDamage(float damage, PhotonMessageInfo info) // runs on everyone's computer, but the '!PV.IsMine' check makes it only run on the victim's computer
+    void RPC_TakeDamage(PhotonMessageInfo info) // runs on everyone's computer, but the '!PV.IsMine' check makes it only run on the victim's computer
     {
+
         if (isIced)
         {
-            currentHealth -= damage;
-            //healthbarImage.fillAmount = currentHealth / maxHealth;
-        }
-
-        if (currentHealth <= 0)
-        {
-            Die();
-            
-            //Sender의 info전송하고 info.Sender의 GetKill()호출
             PlayerManager.Find(info.Sender).GetKill();
+            Die();
         }
-
-
+            
     }
 
     [PunRPC]
@@ -432,7 +401,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     public void SetRanking(int ranking)
     {
-        if (ranking < 3) isEnd = false; //이거 햇는데 왜 입력 안받아짐? 수정요망
+        if (ranking < 3) 
+            //입력받을수있도록 변경해야 함.
         PV.RPC(nameof(RPC_SetRanking), RpcTarget.All, ranking);
         cameraObject.transform.position = RankingManager.Instance.rankingPoints[3].position;
         cameraObject.transform.rotation = RankingManager.Instance.rankingPoints[3].rotation;
