@@ -91,7 +91,8 @@ public class Launcher : MonoBehaviourPunCallbacks
         {
             if(roomInfo.Name == roomNameInputField.text)
             {
-                Debug.Log("이미 존재하는 방입니다.");
+                noticeText.text = "이미 존재하는 방입니다.";
+                noticeWindow.SetActive(true);
                 return;
             }
         }

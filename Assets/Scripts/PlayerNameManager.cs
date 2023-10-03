@@ -32,4 +32,12 @@ public class PlayerNameManager : MonoBehaviour
         //PlayerPrefs: 유니티에서 제공하는 데이터 관리 클래스로, 데이터의 저장 및 불러오기 가능
         // 만약 PlayerPrefs을 초기화하고 싶다면, `Edit` > `Clear All PalyerPrefs`
     }
+
+    public void OpenRoomSettingMenu()
+    {
+        if (string.IsNullOrEmpty(usernameInput.text))
+            return;
+
+        MenuManager.Instance.OpenMenu("room setting");
+    }
 }
