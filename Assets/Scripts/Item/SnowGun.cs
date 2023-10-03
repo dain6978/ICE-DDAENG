@@ -6,7 +6,7 @@ using UnityEngine;
 public class SnowGun : Gun
 {
     [SerializeField] Camera cam;
-    [SerializeField] LayerMask cameraLayer;
+    int playerLayer = (1 << 8);  
 
     PhotonView PV;
     PlayerAnimManager playerAnimManager;
@@ -45,17 +45,10 @@ public class SnowGun : Gun
         //raycast 
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f)); //스크린(1인칭 카메라)의 중앙으로부터 뻗어 나오는 ray
         ray.origin = cam.transform.position; // ray의 시작점을 카메라의 위치로
-        RaycastHit[] hits = Physics.RaycastAll(ray);
         RaycastHit hit;
 
-        hit = hits[0];
-        if (hits[0].collider.gameObject.name == "Camera")
-            hit = hits[1];
-        // RaycastHit hit = Physics.RaycastAll(ray).OrderBy(h => h.distance).Where(h => h.transform.tag != "Camera").FirstOrDefault(); // 이렇게하면 지금 playercontroller 나옴 ㅠ
-        // 거리 제한 해야할 듯
-
-        if (hit.collider.gameObject != null)
-        {         
+        if (Physics.Raycast(ray, out hit, playerLayer)) // 거리 제한 필요? 총알. 두께도 보기 
+        {
             hit.collider.gameObject.GetComponentInParent<IDamageable>()?.TakeSnow();
             Debug.Log(hit.collider.gameObject);
             PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal); //모든 클라이언트에 대해 hit(raycast의 반환값)의 위치를 인자로 하는 RPC_Shoot 함수 호출

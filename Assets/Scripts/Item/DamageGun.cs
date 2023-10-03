@@ -7,13 +7,13 @@ public class DamageGun : Gun
 {
     [SerializeField] Camera cam;
 
-
     PhotonView PV;
     PlayerAnimManager playerAnimManager;
-
     public Animator anim;
 
     bool canShoot = true;
+    int playerLayer = (1 << 8);
+
 
     private void Awake()
     {
@@ -41,7 +41,7 @@ public class DamageGun : Gun
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f)); //스크린(1인칭 카메라)의 중앙으로부터 뻗어 나오는 ray
         ray.origin = cam.transform.position; // ray의 시작점을 카메라의 위치로
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit, playerLayer))
         {
             //Debug.Log(hit.collider.gameObject);
             hit.collider.gameObject.GetComponentInParent<IDamageable>()?.TakeDamage();
