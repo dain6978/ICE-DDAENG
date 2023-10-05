@@ -12,6 +12,15 @@ public class RankingManager : MonoBehaviourPunCallbacks
     public static RankingManager Instance;
     public Dictionary<Player, int> rankingDict = new Dictionary<Player, int>();
     public Transform[] rankingPoints;
+
+    [SerializeField] Transform container;
+    [SerializeField] GameObject ranking_scoreboardItemPrefab;
+    [SerializeField] CanvasGroup canvasGroup;
+    [SerializeField] GameObject scoreboardTitle;
+
+    //Dictionary로 관리
+    //Dictionary<Player, ScoreboardItem> scoreboardItems = new Dictionary<Player, ScoreboardItem>();
+
     private void Awake() //전형적인 싱글톤 패턴
     {
         if (Instance) //checks if another RoomManager exists
@@ -54,6 +63,7 @@ public class RankingManager : MonoBehaviourPunCallbacks
             i++;
         }
 
+        ShowScoreboard(rankingList);
         //Invoke("OnGameEnd", 10f);
 
     }
@@ -63,6 +73,21 @@ public class RankingManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.IsOpen = true;
         RoomManager.roomName = PhotonNetwork.CurrentRoom.Name;
         PhotonNetwork.Disconnect();
+    }
+
+    private void ShowScoreboard(List<Player> rankingList)
+    {
+        int rank = 1;
+        foreach (Player player in rankingList)
+        {
+            if (player == null) continue;
+
+            Ranking_ScoreboardItem item = Instantiate(ranking_scoreboardItemPrefab, container).GetComponent<Ranking_ScoreboardItem>();
+            item.Initialize(player, rank);
+            rank++;
+        }
+        canvasGroup.alpha = 1;
+        scoreboardTitle.SetActive(true);
     }
 
 }

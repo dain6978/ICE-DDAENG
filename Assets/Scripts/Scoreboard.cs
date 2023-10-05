@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Realtime;
 using Photon.Pun;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 //MonoBehaviour을 상속하도록 하면 .. 자기가 들어왔을때만 생성됨
 //어떤 플레이어든 들어오면 업데이트 되게 해줘야 하므로
@@ -16,6 +17,8 @@ public class Scoreboard : MonoBehaviourPunCallbacks
 
     //Dictionary로 관리
     Dictionary<Player, ScoreboardItem> scoreboardItems = new Dictionary<Player, ScoreboardItem>();
+
+    bool isEnd = false;
     private void Start()
     {
         foreach(Player player in PhotonNetwork.PlayerList)
@@ -56,6 +59,9 @@ public class Scoreboard : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        if (isEnd)
+            return;
+
         //킬데쓰 끄고 켜기(투명도 조절)
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -66,6 +72,21 @@ public class Scoreboard : MonoBehaviourPunCallbacks
         {
             canvasGroup.alpha = 0;
             scoreboardTitle.SetActive(false);
+        }
+    }
+
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        if (propertiesThatChanged.ContainsKey("isEnd"))
+        {
+            isEnd = (bool)propertiesThatChanged["isEnd"];
+
+            if(isEnd == true)
+            {
+                canvasGroup.alpha = 0;
+                scoreboardTitle.SetActive(false);
+            }
+
         }
     }
 }

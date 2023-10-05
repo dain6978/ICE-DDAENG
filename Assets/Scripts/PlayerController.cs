@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     PhotonView PV;
 
     public GameObject cameraObject;
+    [SerializeField] GameObject canvasForGun;
 
     [Header ("Items")]
     [SerializeField] Item[] items;
@@ -407,6 +408,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         cameraObject.transform.position = RankingManager.Instance.rankingPoints[3].position;
         cameraObject.transform.rotation = RankingManager.Instance.rankingPoints[3].rotation;
         PV.RPC("RPC_Ice", RpcTarget.All, false);    //만약 눈사람인 경우, 눈사람 해제
+        canvasForGun.SetActive(false);
     }
 
     [PunRPC]
