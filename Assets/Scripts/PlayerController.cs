@@ -17,11 +17,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     [SerializeField] Item[] items;
     [SerializeField] GameObject[] gunMeshes;
 
-    
-
     public bool isEnd = false;
     int itemIndex;
     int previousItemIndex = -1;
+
 
     [SerializeField]
     int skinIndex;
@@ -53,7 +52,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     PlayerAnimManager playerAnimManager;
 
 
-
     [Header("UI")]
     //[SerializeField] Image healthbarImage;
     private PlayerUI playerUI;
@@ -69,6 +67,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     int iceMAX = 4;
     public GameObject snowmanObject;
     public GameObject playerObject;
+    public GameObject brokeSnowmanObject;
 
 
 
@@ -104,7 +103,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         {
             EquipItem(0); //게임 시작할 때 플레이어, 기본으로 0번 인덱스의 무기 장착
             snowmanObject.SetActive(false);
-
+            brokeSnowmanObject.SetActive(false);
             
             //SetSkin(PlayerPrefs.GetInt("userskin"));
 
@@ -132,7 +131,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (!PV.IsMine || isEnd)
             return; //플레이어 컨트롤러가 자기 자신의 플레이어만 컨트롤할 수 있게 
 
-        
         Look();
         Move();
         Jump();
@@ -371,11 +369,20 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         if (isIced)
         {
+            PV.RPC("RPC_Break", RpcTarget.All);
             PlayerManager.Find(info.Sender).GetKill();
-            Die();
+            Invoke("Die", 2.0f);
         }
-            
     }
+
+    [PunRPC]
+    void RPC_Break()
+    {
+        snowmanObject.SetActive(false);
+        brokeSnowmanObject.SetActive(true);
+        Debug.Log("브레이크왜안해");
+    }
+
 
     [PunRPC]
     void RPC_TakeSnow() 

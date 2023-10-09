@@ -48,6 +48,7 @@ MonoBehaviour:
   - SetSkin
   - RPC_SetRanking
   - RPC_AddPlayerDict
+  - RPC_Break
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
