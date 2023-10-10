@@ -41,9 +41,9 @@ public class DamageGun : Gun
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f)); //스크린(1인칭 카메라)의 중앙으로부터 뻗어 나오는 ray
         ray.origin = cam.transform.position; // ray의 시작점을 카메라의 위치로
 
-        if (Physics.Raycast(ray, out RaycastHit hit, playerLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, 50.0f, playerLayer))
         {
-            //Debug.Log(hit.collider.gameObject);
+            Debug.Log(hit.collider.gameObject);
             hit.collider.gameObject.GetComponentInParent<IDamageable>()?.TakeDamage();
             // '?' 표시: 게임 오브젝트가 IDamageable 인터페이스를 가지고 있을 때만 TakeDamage 함수가 호출된다는 의미
             // SingleShotGun 스크립트 (클래스)는 Gun과 Item 클래스를 상속받음 -> Item 클래스의 public 변수인 itemInfo에 접근 가능

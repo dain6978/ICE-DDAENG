@@ -47,7 +47,7 @@ public class SnowGun : Gun
         ray.origin = cam.transform.position; // ray의 시작점을 카메라의 위치로
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, playerLayer)) // 거리 제한 필요? 총알. 두께도 보기 
+        if (Physics.Raycast(ray, out hit, 50.0f, playerLayer)) // 거리 제한 필요? 총알. 두께도 보기 
         {
             hit.collider.gameObject.GetComponentInParent<IDamageable>()?.TakeSnow();
             Debug.Log(hit.collider.gameObject);
