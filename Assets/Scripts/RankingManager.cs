@@ -51,7 +51,7 @@ public class RankingManager : MonoBehaviourPunCallbacks
         int i = 0;
         foreach(Player player in rankingList)
         {
-            Debug.Log(i+1 + "µî: "+ player.ToString());
+            
             if (player == null) continue;
 
             if (PhotonNetwork.CurrentRoom.PlayerCount <= i)
@@ -59,7 +59,7 @@ public class RankingManager : MonoBehaviourPunCallbacks
             
             if (player.IsLocal)
                 RoomManager.Instance.playerDict[player].playerController.GetComponent<PlayerController>().SetRanking(i);
-            
+            Debug.Log(i + 1 + "µî: " + player.ToString());
             i++;
         }
 

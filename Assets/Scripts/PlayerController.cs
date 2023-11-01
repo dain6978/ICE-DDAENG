@@ -78,6 +78,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     //isIced상태 지속시간
     float iceTime = 5f;
 
+    bool canDance = false;
 
 
     private void Awake()
@@ -128,8 +129,16 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     }
     private void Update()
     {
-        if (!PV.IsMine || isEnd)
+        if (!PV.IsMine)
             return; //플레이어 컨트롤러가 자기 자신의 플레이어만 컨트롤할 수 있게 
+
+        if(canDance)
+            if (Input.GetKeyDown(KeyCode.K))
+                Debug.Log("Dance~~!!");
+                //여기다 춤추는 입력 넣기
+
+        if (isEnd)
+            return;
 
         Look();
         Move();
@@ -141,22 +150,17 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         // 플레이어 무한 추락 방지
         if (transform.position.y < -10f)
-        {
             Die();
-        }
 
         if (iceCurTime < iceCoolTime)
-        {
             iceCurTime += Time.deltaTime;
-        }
         else
-        {
             if (ice != 0)
             {
                 ice = 0;
                 playerUI.ResetIce();
             }
-        }
+        
     }
 
 
@@ -410,7 +414,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     public void SetRanking(int ranking)
     {
         if (ranking < 3) 
-            //입력받을수있도록 변경해야 함.
+            canDance = true;
+
+        Debug.Log($"{ranking}등, {photonView.name}, isEnd: {isEnd}");
+        //입력받을수있도록 변경해야 함.
         PV.RPC(nameof(RPC_SetRanking), RpcTarget.All, ranking);
         cameraObject.transform.position = RankingManager.Instance.rankingPoints[3].position;
         cameraObject.transform.rotation = RankingManager.Instance.rankingPoints[3].rotation;

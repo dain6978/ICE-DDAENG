@@ -11,7 +11,7 @@ using System.Linq;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     private float time;
-    private float gameTime = 300f;
+    private float gameTime = 5f;
 
     bool isEnd;
 
@@ -47,43 +47,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         isEnd = true;
 
         Hashtable hash = new Hashtable();
-        hash.Add("isEnd", true);
+        hash.Add("isEnd", isEnd);
         PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
 
         Debug.Log("게임 종료");
-        //Player winner = PhotonNetwork.LocalPlayer;  //위너가 없으면.. 일단 로컬플레이어로 초기화 하겠음 ㅎ
-        //int mostKillCount = 0;
 
-        //foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
-        //{
-        //    if ((int)(player.CustomProperties["kills"]) > mostKillCount)
-        //    {
-        //        mostKillCount = (int)player.CustomProperties["kills"];
-        //        winner = player;
-        //    }
-        //}
-        //Debug.Log($"Winner: {winner}, Kill: {mostKillCount}");
-
-
-        //Dictionary<Player, int> rankingDict = new Dictionary<Player, int>();
-        //foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
-        //{
-        //    rankingDict.Add(player, (int)(player.CustomProperties["kills"]));
-        //}
-
-        //var sortVar = from item in rankingDict
-        //              orderby item.Value descending
-        //              select item;
-
-        //RankingManager.Instance.rankingDict = sortVar.ToDictionary(x => x.Key, x => x.Value);
-
-
-        //RoomManager.Instance.rankingDict = rankingDict;
-
-        //SceneManager.LoadScene(2);
-
-
-        //Invoke("OnGameEnd", 10f);
         RankingManager.Instance.ShowRanking();
     }
 
@@ -94,8 +62,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     //    PhotonNetwork.Disconnect();        
     //}
 
-
-    
     public void QuitGame()
     {
 
