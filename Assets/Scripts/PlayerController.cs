@@ -102,6 +102,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
        
         if (PV.IsMine)
         {
+            ChangeLayerRecursively(transform, LayerMask.NameToLayer("LocalPlayer"));
             EquipItem(0); //게임 시작할 때 플레이어, 기본으로 0번 인덱스의 무기 장착
             snowmanObject.SetActive(false);
             brokeSnowmanObject.SetActive(false);
@@ -170,6 +171,16 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (propertiesThatChanged.ContainsKey("isEnd"))
         {
             isEnd = (bool)propertiesThatChanged["isEnd"];
+        }
+    }
+
+    private void ChangeLayerRecursively(Transform trans, int layer)
+    {
+        trans.gameObject.layer = layer;
+
+        foreach (Transform child in trans.transform)
+        {
+            ChangeLayerRecursively(child, layer);
         }
     }
 

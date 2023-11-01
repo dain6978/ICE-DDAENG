@@ -11,7 +11,7 @@ using System.Linq;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     private float time;
-    private float gameTime = 5f;
+    private float gameTime = 10f;
 
     bool isEnd;
 
@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         StartGame();
-        
     }
 
     private void StartGame()
@@ -27,7 +26,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         time = 0;
         isEnd = false;
         Hashtable hash = new Hashtable();
-        hash.Add("isEnd", false);
+        hash.Add("isEnd", isEnd);
         PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
     }
 
@@ -53,14 +52,18 @@ public class GameManager : MonoBehaviourPunCallbacks
         Debug.Log("게임 종료");
 
         RankingManager.Instance.ShowRanking();
+
+        Invoke(nameof(OnGameEnd), 5f);
     }
 
-    //private void OnGameEnd()
-    //{
-    //    PhotonNetwork.CurrentRoom.IsOpen = true;
-    //    RoomManager.roomName = PhotonNetwork.CurrentRoom.Name;
-    //    PhotonNetwork.Disconnect();        
-    //}
+    private void OnGameEnd()
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = true;
+        RoomManager.roomName = PhotonNetwork.CurrentRoom.Name;
+        PhotonNetwork.LeaveRoom();
+        //PhotonNetwork.Disconnect();
+        //SceneManager.LoadScene(0);
+    }
 
     public void QuitGame()
     {
@@ -79,6 +82,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             Debug.Log("On Click Leave Room");
             PhotonNetwork.Disconnect();
+            SceneManager.LoadScene(0);
+            //
             // Disconnect: 이 클라이언트를 Photon 서버에서 접속 해제 합니다.룸을 나가고 완료시 OnDisconnectedFromPhoton 이 호출 됩니다.
             // Disconnect 실행할 경우 LeaveRoom 이 자동으로 실행됨 -> OnLeftRoom -> OnDisconnected
         }

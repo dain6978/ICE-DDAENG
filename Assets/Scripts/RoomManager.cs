@@ -16,13 +16,22 @@ public class RoomManager : MonoBehaviourPunCallbacks
     //public Dictionary<Player, int> rankingDict = new Dictionary<Player, int>();
     private void Awake() //전형적인 싱글톤 패턴
     {
-        if (Instance) //checks if another RoomManager exists
+        //if (Instance) //checks if another RoomManager exists
+        //{
+        //    Destroy(gameObject); //there can only be one
+        //    return;
+        //}
+        //DontDestroyOnLoad(gameObject); //if I am the only one
+        //Instance = this;
+
+        if (Instance == null)
         {
-            Destroy(gameObject); //there can only be one
-            return;
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        DontDestroyOnLoad(gameObject); //if I am the only one
-        Instance = this;
+        else
+            Destroy(gameObject);
+
     }
 
 
@@ -36,6 +45,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         base.OnEnable();
         //델리게이트 체인 추가 
         SceneManager.sceneLoaded += OnSceneLoaded;
+        Debug.Log("Room Manager Enabled.");
     }
 
     public override void OnDisable()
@@ -43,6 +53,8 @@ public class RoomManager : MonoBehaviourPunCallbacks
         base.OnDisable();
         //델리게이트 체인 제거
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        Debug.Log("Room Manager Disabled.");
+        Instance = null;
     }
     
     //씬이 로드될 때마다 실행되는 함수
@@ -72,7 +84,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         
         Debug.Log("On Left Room");
         // 게임 씬에서 방을 떠난 거라면
-        if (SceneManager.GetActiveScene().name == "Ranking")
+        if (SceneManager.GetActiveScene().name == "Game")
         {
             Destroy(gameObject);
             Destroy(RankingManager.Instance.gameObject);
