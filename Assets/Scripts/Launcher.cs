@@ -192,11 +192,15 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         //roomList 포톤의 room information 클래스인 RoomInfo의 클래스에 대한 클래스
         //룸의 이름, 최대 유저 수, 오픈 여부 등의 속성 
+        
         for (int i=0; i<roomList.Count; i++)
         {
             //삭제된 경우
             if (roomList[i].RemovedFromList)    
             {
+                if (roomdict.Count == 0)
+                    return;
+
                 Destroy(roomdict[roomList[i]]);
                 roomdict.Remove(roomList[i]);
                 continue; 
