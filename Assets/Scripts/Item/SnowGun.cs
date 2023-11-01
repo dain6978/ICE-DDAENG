@@ -47,10 +47,13 @@ public class SnowGun : Gun
         ray.origin = cam.transform.position; // ray의 시작점을 카메라의 위치로
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 50.0f, playerLayer)) // 거리 제한 필요? 총알. 두께도 보기 
+        if (Physics.Raycast(ray, out hit, 50.0f)) // 거리 제한 필요? 총알. 두께도 보기 
         {
-            hit.collider.gameObject.GetComponentInParent<IDamageable>()?.TakeSnow();
-            Debug.Log(hit.collider.gameObject);
+            if (!hit.collider.gameObject.GetComponent<PhotonView>().IsMine)
+            {
+                hit.collider.gameObject.GetComponentInParent<IDamageable>()?.TakeSnow();
+                Debug.Log(hit.collider.gameObject);
+            }
             PV.RPC("RPC_Shoot", RpcTarget.All, hit.point, hit.normal); //모든 클라이언트에 대해 hit(raycast의 반환값)의 위치를 인자로 하는 RPC_Shoot 함수 호출
             fireTimer = 0.0f;
             playerAnimManager.ShootAnim();
