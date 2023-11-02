@@ -2614,7 +2614,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9e96079b86e2294a90f5b202260f75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerUI: {fileID: 4665144760258830378}
+  playerCanvas: {fileID: 4665144760258830378}
   aimUI: {fileID: 1406208443599080494}
   iceState:
   - {fileID: 21300000, guid: 8dc445f0b1eea3148990e094375d4763, type: 3}

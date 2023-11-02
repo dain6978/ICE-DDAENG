@@ -5,20 +5,19 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
-
-    [SerializeField] GameObject playerUI;
+    [SerializeField] GameObject playerCanvas;
     [SerializeField] GameObject aimUI;
     [SerializeField] Sprite[] iceState;
     [SerializeField] Image[] iceUI;
 
     public void Hide()
     {
-        playerUI.SetActive(false);
+        playerCanvas.SetActive(false);
     }
 
     public void Show()
     {
-        playerUI.SetActive(true);
+        playerCanvas.SetActive(true);
     }
 
     public void HideAim()
@@ -34,7 +33,8 @@ public class PlayerUI : MonoBehaviour
 
     public void Destroy()
     {
-        Destroy(playerUI);
+        Debug.Log("»Ï..");
+        Destroy(playerCanvas);
     }
 
     public void AddIce()
