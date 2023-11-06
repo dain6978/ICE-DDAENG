@@ -12,9 +12,7 @@ public class PlayerAnimManager : MonoBehaviour, IPunObservable
     //GameObject playerAnimal;
     Animator playerAnimator;
     Transform playerSpine;
-
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         playerAnimator = GetComponentInParent<Animator>();
         playerSpine = playerAnimator.GetBoneTransform(HumanBodyBones.Spine);
@@ -22,7 +20,6 @@ public class PlayerAnimManager : MonoBehaviour, IPunObservable
         playerAnimator.SetFloat("BlendDamage", 0.7f);
         playerAnimator.SetFloat("BlendShoot", 0.6f);
     }
-
 
     private void LateUpdate()
     {
