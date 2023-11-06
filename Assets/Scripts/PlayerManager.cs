@@ -16,7 +16,6 @@ public class PlayerManager : MonoBehaviour
     public GameObject playerController;
     SpawnManager spawnManager;
     UIManager uiManager;
-    //GameManager gameManager;
 
     int kills;
     int deaths;
@@ -112,7 +111,7 @@ public class PlayerManager : MonoBehaviour
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
-            Debug.Log("커서 잠금 해제");
+            //Debug.Log("커서 잠금 해제");
         }
     }
 

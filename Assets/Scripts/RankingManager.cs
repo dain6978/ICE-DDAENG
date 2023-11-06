@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
-using System.IO; //to access to the path class
+using System.IO; 
 using Photon.Realtime;
 using System.Linq;
 
@@ -18,14 +18,11 @@ public class RankingManager : MonoBehaviourPunCallbacks
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] GameObject scoreboardTitle;
 
-    //Dictionary로 관리
-    //Dictionary<Player, ScoreboardItem> scoreboardItems = new Dictionary<Player, ScoreboardItem>();
-
-    private void Awake() //전형적인 싱글톤 패턴
+    private void Awake()
     {
-        if (Instance) //checks if another RoomManager exists
+        if (Instance)
         {
-            Destroy(gameObject); //there can only be one
+            Destroy(gameObject); 
             return;
         }
         Instance = this;
@@ -59,20 +56,11 @@ public class RankingManager : MonoBehaviourPunCallbacks
             
             if (player.IsLocal)
                 RoomManager.Instance.playerDict[player].playerController.GetComponent<PlayerController>().SetRanking(i);
-            Debug.Log(i + 1 + "등: " + player.ToString());
+            //Debug.Log(i + 1 + "등: " + player.ToString());
             i++;
         }
 
         ShowScoreboard(rankingList);
-        //Invoke("OnGameEnd", 10f);
-
-    }
-    private void OnGameEnd()
-    {
-        Debug.Log("Hi");
-        PhotonNetwork.CurrentRoom.IsOpen = true;
-        RoomManager.roomName = PhotonNetwork.CurrentRoom.Name;
-        PhotonNetwork.Disconnect();
     }
 
     private void ShowScoreboard(List<Player> rankingList)

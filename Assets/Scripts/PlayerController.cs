@@ -417,10 +417,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         playerManager.Die();
     }
 
-    //public int GetIceCount()
-    //{
-    //    return ice;
-    //}
 
     public void SetRanking(int ranking)
     {

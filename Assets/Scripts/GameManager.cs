@@ -62,8 +62,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.IsOpen = true;
         RoomManager.roomName = PhotonNetwork.CurrentRoom.Name;
         PhotonNetwork.LeaveRoom();
-        //PhotonNetwork.Disconnect();
-        //SceneManager.LoadScene(0);
     }
 
     public void QuitGame()
