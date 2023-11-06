@@ -74,12 +74,9 @@ public class PlayerManager : MonoBehaviour
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
     }
     
-    //Kill한 클라이언트에게서만 호출되어야하는데
-    //Kill당한 클라이언트에게서도 호출됨..
     public void GetKill()
     {
         PV.RPC(nameof(RPC_GetKill), PV.Owner);
-
     }
 
     [PunRPC]
@@ -106,6 +103,16 @@ public class PlayerManager : MonoBehaviour
         else
         {
             return null;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (PV.IsMine)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            Debug.Log("커서 잠금 해제");
         }
     }
 
