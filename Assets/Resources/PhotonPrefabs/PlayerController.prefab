@@ -564,6 +564,7 @@ GameObject:
   - component: {fileID: 3684214869704463517}
   - component: {fileID: 703690022115580876}
   - component: {fileID: 5845082756095694199}
+  - component: {fileID: 8507949539944089869}
   m_Layer: 7
   m_Name: Camera
   m_TagString: Untagged
@@ -673,6 +674,27 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.5, z: 0}
   m_Center: {x: 0, y: 0, z: 0.3}
+--- !u!114 &8507949539944089869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321827355768667022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9044ef733a99ffa4aa7a986bb5e9a7f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FrostAmount: 0
+  EdgeSharpness: 1
+  minFrost: 0
+  maxFrost: 1
+  seethroughness: 0.2
+  distortion: 0.1
+  Frost: {fileID: 2800000, guid: 210743b88c99bcf45b28c3a4a4a3e178, type: 3}
+  FrostNormals: {fileID: 2800000, guid: 065247d136abaa042a330ab6a7b030fc, type: 3}
+  Shader: {fileID: 4800000, guid: db8aebe950ae3794aae5ed890f38549b, type: 3}
 --- !u!1 &1406208443599080494
 GameObject:
   m_ObjectHideFlags: 0

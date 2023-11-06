@@ -80,14 +80,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     bool canDance = false;
 
+    FrostEffect frostEffect;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
         smr = GetComponentInChildren<SkinnedMeshRenderer>();
+        frostEffect = cameraObject.GetComponent<FrostEffect>();
 
-        
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
         // PV.InstantiationData[0]: PlayerManager의 createController에 생성하고 전송한 viewID에 대한 정보??
         // PhotonView에서 특정 viewID를 가진 게임 오브젝트에서 PlayerManager 컴포넌트를 가져온다. 
@@ -160,6 +161,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             {
                 ice = 0;
                 playerUI.ResetIce();
+                frostEffect.FrostAmount = 0;
             }
         
     }
@@ -203,6 +205,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         ice = 0;
         isIced = false;
         playerUI.ResetIce();
+        frostEffect.ResetFrost();
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         PV.RPC("RPC_Ice", RpcTarget.All, false);
     }
@@ -407,6 +410,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         iceCurTime = 0;
         ice++;
+        frostEffect.AddFrost();
         playerUI.AddIce();
 
     }
@@ -435,6 +439,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     [PunRPC]
     void RPC_SetRanking(int ranking)
     {
+        frostEffect.ResetFrost();
         this.transform.position = RankingManager.Instance.rankingPoints[ranking].position;
         this.transform.rotation = RankingManager.Instance.rankingPoints[ranking].rotation;
     }

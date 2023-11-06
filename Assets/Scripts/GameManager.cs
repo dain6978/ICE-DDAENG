@@ -11,7 +11,7 @@ using System.Linq;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     private float time;
-    private float gameTime = 10f;
+    private float gameTime = 100f;
 
     [HideInInspector]
     public bool isEnd;
