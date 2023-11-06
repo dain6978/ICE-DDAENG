@@ -280,10 +280,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     void Jump()
     {
-        if (isIced)
+        if (isIced || !grounded)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Space) && grounded) //스페이스 키 눌렀을 때 땅에 닿아있으면 점프 (중복 점프 방지)
+        if (Input.GetKeyDown(KeyCode.Space)) //스페이스 키 눌렀을 때 땅에 닿아있으면 점프 (중복 점프 방지)
         {
             rb.AddForce(transform.up * jumpForce);
             playerAnimManager.JumpAnim();

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6834129177014910980}
   - component: {fileID: 6834129177014910981}
   - component: {fileID: 6834129177014910982}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Ice1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 6834129177873045645}
   - component: {fileID: 6834129177873045646}
   - component: {fileID: 6834129177873045647}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Ice3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 6834129178047078312}
   - component: {fileID: 6834129178047078313}
   - component: {fileID: 6834129178047078314}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Ice2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 6834129178581331134}
   - component: {fileID: 6834129178581331135}
   - component: {fileID: 6834129178581331120}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Hexagon_BreakIce
   m_TagString: Untagged
   m_Icon: {fileID: 0}

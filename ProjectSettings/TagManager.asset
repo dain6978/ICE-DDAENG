@@ -15,8 +15,8 @@ TagManager:
   - Camera
   - Player
   - LocalPlayer
-  - 
-  - 
+  - GroundCheck
+  - Ground
   - 
   - 
   - 
