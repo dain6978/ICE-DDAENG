@@ -16,6 +16,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject playerController;
     SpawnManager spawnManager;
     UIManager uiManager;
+    DancingManager dancingManager;
 
     int kills;
     int deaths;
@@ -26,6 +27,7 @@ public class PlayerManager : MonoBehaviour
         PV = GetComponent<PhotonView>();
         spawnManager = FindObjectOfType<SpawnManager>();
         uiManager = FindObjectOfType<UIManager>();
+        dancingManager = FindObjectOfType<DancingManager>();
     }
 
     void Start()
@@ -55,6 +57,7 @@ public class PlayerManager : MonoBehaviour
         // 플레이어 컨트롤러 생성할 때마다(플레이어 매니저 & 컨트롤러 1:1 관계) 각 플레이어 컨트롤러에 대한 viewID를 생성하겠다는 건가? 
 
         uiManager.SetPlayer(playerController);
+        dancingManager.SetPlayer(playerController);
     }
 
     public void Die()
@@ -62,6 +65,7 @@ public class PlayerManager : MonoBehaviour
         PhotonNetwork.Destroy(playerController); // 죽으면 씬에 있는 playerController 파괴
         playerController = null;
         uiManager.SetPlayer(null);
+        dancingManager.SetPlayer(null);
 
 
         CreateController(); // 리스폰
@@ -93,17 +97,6 @@ public class PlayerManager : MonoBehaviour
         return FindObjectsOfType<PlayerManager>().SingleOrDefault(x => x.PV.Owner == player);
     }
 
-    public GameObject GetPlayerController()
-    {
-        if (playerController != null)
-        {
-            return playerController;
-        }
-        else
-        {
-            return null;
-        }
-    }
 
     private void OnDisable()
     {

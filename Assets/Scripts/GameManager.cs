@@ -11,7 +11,7 @@ using System.Linq;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     private float time;
-    private float gameTime = 100f;
+    private float gameTime = 5f;
 
     [HideInInspector]
     public bool isEnd;
@@ -53,9 +53,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         Debug.Log("게임 종료");
 
         RankingManager.Instance.ShowRanking();
+        //player.AddComponent<DancingAnimation>();
 
         Invoke(nameof(OnGameEnd), 10f);
     }
+
 
     private void OnGameEnd()
     {
