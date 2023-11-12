@@ -7,12 +7,13 @@ public class DancingManager : MonoBehaviour
     GameObject player;
     GameManager gameManager;
     DancingAnimation dancingAnimaton;
+    PlayerController playerController;
     
     public RuntimeAnimatorController dancingAnimator;
     Animator playerAnimator;
 
-    // item ²ô±â
-    private GameObject itemHolder;
+    // item ï¿½ï¿½ï¿½ï¿½
+    private GameObject items;
 
 
     private void Start()
@@ -31,8 +32,9 @@ public class DancingManager : MonoBehaviour
                 dancingAnimaton = player.GetComponent<DancingAnimation>();
                 dancingAnimaton.dancingAnimator = player.GetComponent<Animator>();
 
-                //itemHolder = player.transform.Find("ItemHolder").gameObject;
-                //itemHolder.SetActive(false);
+                playerController = player.GetComponent<PlayerController>();
+                items = playerController.GetItems();
+                items.SetActive(false);
 
                 Destroy(this);
 

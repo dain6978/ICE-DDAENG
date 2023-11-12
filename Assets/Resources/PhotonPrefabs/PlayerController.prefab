@@ -2783,6 +2783,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraObject: {fileID: 1321827355768667022}
   canvasForGun: {fileID: 5285942321487221848}
+  itemHolder: {fileID: 934814335250044265}
   items:
   - {fileID: 4319435247465045486}
   - {fileID: 3212047353772527245}

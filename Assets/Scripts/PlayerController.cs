@@ -13,7 +13,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     public GameObject cameraObject;
     [SerializeField] GameObject canvasForGun;
 
-    [Header ("Items")]
+    [Header("Items")]
+    [SerializeField] GameObject itemHolder;
     [SerializeField] Item[] items;
     [SerializeField] GameObject[] gunMeshes;
 
@@ -442,5 +443,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         frostEffect.ResetFrost();
         this.transform.position = RankingManager.Instance.rankingPoints[ranking].position;
         this.transform.rotation = RankingManager.Instance.rankingPoints[ranking].rotation;
+    }
+
+    public GameObject GetItems()
+    {
+        return itemHolder;
     }
 }
