@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class DancingManager : MonoBehaviour
 {
-    GameObject player;
     GameManager gameManager;
     DancingAnimation dancingAnimaton;
     PlayerController playerController;
     
     public RuntimeAnimatorController dancingAnimator;
     Animator playerAnimator;
+    List<GameObject> playerLists;
 
-    // item ����
+    // item 
     private GameObject items;
 
 
@@ -21,37 +23,39 @@ public class DancingManager : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         
     }
-    private void Update()
+
+    public void SetAnimator(Player player)
     {
-        if (gameManager.isEnd)
+        Debug.Log("set animator 호출");
+        GameObject playerObject = RoomManager.Instance.playerDict[player].playerController;
+
+        if (playerObject != null) // if (player != null)
         {
-            if (player != null)
-            { 
-                playerAnimator.runtimeAnimatorController = dancingAnimator;
-                player.AddComponent<DancingAnimation>();
-                dancingAnimaton = player.GetComponent<DancingAnimation>();
-                dancingAnimaton.dancingAnimator = player.GetComponent<Animator>();
+            Destroy(playerObject.GetComponent<PlayerAnimManager>());
+            playerObject.GetComponent<Animator>().runtimeAnimatorController = dancingAnimator;
+            playerObject.AddComponent<DancingAnimation>();
+            dancingAnimaton = playerObject.GetComponent<DancingAnimation>();
+            dancingAnimaton.dancingAnimator = playerObject.GetComponent<Animator>();
 
-                playerController = player.GetComponent<PlayerController>();
-                items = playerController.GetItems();
-                items.SetActive(false);
-
-                Destroy(this);
-
-            }
-            else
-            {
-                Debug.Log("player is null");
-            }
+            playerController = playerObject.GetComponent<PlayerController>();
+            items = playerController.GetItems();
+            items.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("player object is null");
         }
     }
 
-    public void SetPlayer(GameObject playerController)
-    {
-        player = playerController;
-        playerAnimator = player.GetComponent<Animator>();
-        Debug.Log("SetPlayer");
-    }
+    //public void SetPlayer(GameObject playerController)
+    //{
+    //    player = playerController;
+    //    if (player != null)
+    //    {
+    //        playerAnimator = player.GetComponent<Animator>();
+    //        Debug.Log("SetPlayer");
+    //    }
+    //}
 
-    
+
 }

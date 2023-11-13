@@ -88,7 +88,6 @@ public class RoomManager : MonoBehaviourPunCallbacks
         {
             Destroy(gameObject);
             SceneManager.LoadScene(0);
-            Debug.Log("방을 잘 떠났습니다. 나는 룸 매니저예요");
         }
     }
 

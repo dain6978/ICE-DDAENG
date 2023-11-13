@@ -56,16 +56,16 @@ public class PlayerManager : MonoBehaviour
         playerController.GetComponent<PlayerController>().SetCharacterSkin();
         // 플레이어 컨트롤러 생성할 때마다(플레이어 매니저 & 컨트롤러 1:1 관계) 각 플레이어 컨트롤러에 대한 viewID를 생성하겠다는 건가? 
 
-        uiManager.SetPlayer(playerController);
-        dancingManager.SetPlayer(playerController);
+        //uiManager.SetPlayer(playerController);
+        //dancingManager.SetPlayer(playerController);
     }
 
     public void Die()
     {
         PhotonNetwork.Destroy(playerController); // 죽으면 씬에 있는 playerController 파괴
         playerController = null;
-        uiManager.SetPlayer(null);
-        dancingManager.SetPlayer(null);
+        //uiManager.SetPlayer(null);
+        //dancingManager.SetPlayer(null);
 
 
         CreateController(); // 리스폰

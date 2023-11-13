@@ -38,13 +38,13 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         // °ÔÀÓ Á¾·á
-        if (gameManager.isEnd)
-        {
-            foreach (Transform child in gameCanvas.transform)
-                Destroy(child.gameObject); // °ÔÀÓ ¾À Äµ¹ö½º ÆÄ±« 
-            playerUI.Destroy(); // ÇÃ·¹ÀÌ¾î Äµ¹ö½º ÆÄ±«
-            Destroy(this); 
-        }
+        //if (gameManager.isEnd)
+        //{
+        //    foreach (Transform child in gameCanvas.transform)
+        //        Destroy(child.gameObject); // °ÔÀÓ ¾À Äµ¹ö½º ÆÄ±« 
+        //    playerUI.Destroy(); // ÇÃ·¹ÀÌ¾î Äµ¹ö½º ÆÄ±«
+        //    Destroy(this); 
+        //}
 
         updateTimer();
 

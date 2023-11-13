@@ -22719,6 +22719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb46309bdb6d9c449b701ac89e99d4df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dancingManager: {fileID: 1020265798}
   isEnd: 0
 --- !u!1 &1484559234
 GameObject:

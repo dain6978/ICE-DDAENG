@@ -10,6 +10,9 @@ using System.Linq;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    private DancingManager dancingManager;
+    private UIManager uiManager;
+
     private float time;
     private float gameTime = 5f;
 
@@ -20,6 +23,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         StartGame();
+
+        dancingManager = FindObjectOfType<DancingManager>();
+        uiManager = FindObjectOfType<UIManager>();
     }
 
     private void StartGame()
@@ -52,7 +58,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         Debug.Log("게임 종료");
 
+        SetPlayers();
         RankingManager.Instance.ShowRanking();
+
+
         //player.AddComponent<DancingAnimation>();
 
         Invoke(nameof(OnGameEnd), 10f);
@@ -76,17 +85,32 @@ public class GameManager : MonoBehaviourPunCallbacks
 #endif
     }
 
-    
-    public void LeaveRoom()
+    public void SetPlayers()
     {
-        if (!isEnd)
+        foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
         {
-            Debug.Log("On Click Leave Room");
-            PhotonNetwork.Disconnect();
-            SceneManager.LoadScene(0);
-            //
-            // Disconnect: 이 클라이언트를 Photon 서버에서 접속 해제 합니다.룸을 나가고 완료시 OnDisconnectedFromPhoton 이 호출 됩니다.
-            // Disconnect 실행할 경우 LeaveRoom 이 자동으로 실행됨 -> OnLeftRoom -> OnDisconnected
+            if (player != null)
+            {
+                dancingManager.SetAnimator(player);
+                //uiManager.SetUI(player);
+            }
+            else
+            {
+                Debug.Log("player is null");
+            }
         }
     }
+
+    //public void LeaveRoom()
+    //{
+    //    if (!isEnd)
+    //    {
+    //        Debug.Log("On Click Leave Room");
+    //        PhotonNetwork.Disconnect();
+    //        SceneManager.LoadScene(0);
+    //        //
+    //        // Disconnect: 이 클라이언트를 Photon 서버에서 접속 해제 합니다.룸을 나가고 완료시 OnDisconnectedFromPhoton 이 호출 됩니다.
+    //        // Disconnect 실행할 경우 LeaveRoom 이 자동으로 실행됨 -> OnLeftRoom -> OnDisconnected
+    //    }
+    //}
 }
