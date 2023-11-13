@@ -10,8 +10,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 {
     PhotonView PV;
 
+    [Header("Camera")]
     public GameObject cameraObject;
+    Camera camera;
     [SerializeField] GameObject canvasForGun;
+    public int cameraZoom;
 
     [Header("Items")]
     [SerializeField] GameObject itemHolder;
@@ -58,7 +61,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     private PlayerUI playerUI;
     private PlayerManager playerManager;
     private UIManager uiManager;
-
+    public Transform snowGunTransform;
+    public Transform damageGunTransform;
+    int snowGunZoom = 1000;
+    int damageGunZoom = 750;
+    public GameObject targettingUI;
 
 
     //여기서부터 ice 관련!!
@@ -80,7 +87,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     float iceTime = 5f;
 
     bool canDance = false;
-
+    bool isZoom = false;
     FrostEffect frostEffect;
 
     private void Awake()
@@ -89,6 +96,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         PV = GetComponent<PhotonView>();
         smr = GetComponentInChildren<SkinnedMeshRenderer>();
         frostEffect = cameraObject.GetComponent<FrostEffect>();
+        camera = cameraObject.GetComponent<Camera>();
 
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
         // PV.InstantiationData[0]: PlayerManager의 createController에 생성하고 전송한 viewID에 대한 정보??
@@ -144,6 +152,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             return;
 
         Look();
+        Zoom();
         Move();
         Jump();
 
@@ -186,6 +195,22 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             ChangeLayerRecursively(child, layer);
         }
     }
+
+    void Zoom()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            cameraZoom *= -1;
+            snowGunZoom *= -1;
+            damageGunZoom *= -1;
+            camera.fieldOfView += cameraZoom;
+            snowGunTransform.localPosition = new Vector3(snowGunTransform.localPosition.x+snowGunZoom, snowGunTransform.localPosition.y, snowGunTransform.localPosition.z);
+            damageGunTransform.localPosition = new Vector3(damageGunTransform.localPosition.x + damageGunZoom, damageGunTransform.localPosition.y, damageGunTransform.localPosition.z);
+            targettingUI.SetActive(!targettingUI.activeSelf);
+        }
+       
+    }
+
 
     //ice 개수 체크
     void CheckIce()
@@ -434,8 +459,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         PV.RPC(nameof(RPC_SetRanking), RpcTarget.All, ranking);
         cameraObject.transform.position = RankingManager.Instance.rankingPoints[3].position;
         cameraObject.transform.rotation = RankingManager.Instance.rankingPoints[3].rotation;
+        camera.fieldOfView = 70; //기본 FoV로 설정
         PV.RPC("RPC_Ice", RpcTarget.All, false);    //만약 눈사람인 경우, 눈사람 해제
         canvasForGun.SetActive(false);
+        targettingUI.SetActive(false);
     }
 
     [PunRPC]
