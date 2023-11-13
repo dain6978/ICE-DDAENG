@@ -425,6 +425,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     public void SetRanking(int ranking)
     {
+        isEnd = true;
         if (ranking < 3) 
             canDance = true;
 
