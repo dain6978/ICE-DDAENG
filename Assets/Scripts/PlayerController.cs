@@ -451,11 +451,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     public void SetRanking(int ranking)
     {
         isEnd = true;
-        if (ranking < 3) 
+        if (ranking < 3)
             canDance = true;
+        else
+            ranking = 4;
 
         Debug.Log($"{ranking}등, {photonView.name}, isEnd: {isEnd}");
         //입력받을수있도록 변경해야 함.
+
         PV.RPC(nameof(RPC_SetRanking), RpcTarget.All, ranking);
         cameraObject.transform.position = RankingManager.Instance.rankingPoints[3].position;
         cameraObject.transform.rotation = RankingManager.Instance.rankingPoints[3].rotation;
