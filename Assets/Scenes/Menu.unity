@@ -10817,7 +10817,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC138\uC740\uC774\uC640 \uB2E4\uC778\uC774\uC758 \nICE GAME"
+  m_text: ICE DDAENG !
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6a572fecbf0e3904485a7fc337ff2c87, type: 2}
   m_sharedMaterial: {fileID: -6246644444420263141, guid: 6a572fecbf0e3904485a7fc337ff2c87, type: 2}
@@ -10844,8 +10844,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 120
+  m_fontSizeBase: 120
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

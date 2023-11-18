@@ -6,7 +6,8 @@ public class BreakingManager : MonoBehaviour
 {
     public enum ice {ice1, ice2, ice3, ice4};
     public ice currnetIce;
-    
+
+    private bool check = false;
     private int count = 0;
     private GameObject brokenIce;
 
@@ -19,17 +20,21 @@ public class BreakingManager : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        bool check = false;
         if (!collision.gameObject.CompareTag("Player"))
             return;
 
-        StartCoroutine(CheckIce());
+        if (!check)
+            StartCoroutine(CheckIce());
     }
 
     IEnumerator CheckIce()
     {
         yield return new WaitForSeconds(1f);
+        check = true;
         
         count++;
+        Debug.Log("체크아이스 카운트 증가");
         switch (currnetIce)
         {
             case ice.ice1:
