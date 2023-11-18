@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5179528492164380352}
   - component: {fileID: 1495205914757429079}
   - component: {fileID: 7770163465721738338}
+  - component: {fileID: 2469179902562610318}
+  - component: {fileID: 4497434639253780667}
   m_Layer: 0
   m_Name: Hexagon_IceLand_01_001_cell.003
   m_TagString: Untagged
@@ -61,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 84a04a05805b4b04aa8e5c3ed1a81d1c, type: 2}
+  - {fileID: 2100000, guid: 6563c55fb65d9a448a1a8b234b558408, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,6 +85,36 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &2469179902562610318
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2620017759990671830}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4566936354282176733, guid: 19d0e6bf88437894da962d90f2e80638, type: 3}
+--- !u!54 &4497434639253780667
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2620017759990671830}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3252701294958814876
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +126,8 @@ GameObject:
   - component: {fileID: 1819837470767012638}
   - component: {fileID: 2254394239073619359}
   - component: {fileID: 7052942397807872060}
+  - component: {fileID: 3284614900034057632}
+  - component: {fileID: 7196749021957251819}
   m_Layer: 0
   m_Name: Hexagon_IceLand_01_001_cell
   m_TagString: Untagged
@@ -144,7 +178,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 84a04a05805b4b04aa8e5c3ed1a81d1c, type: 2}
+  - {fileID: 2100000, guid: 6563c55fb65d9a448a1a8b234b558408, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -166,6 +200,36 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3284614900034057632
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3252701294958814876}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6306604076246222907, guid: 19d0e6bf88437894da962d90f2e80638, type: 3}
+--- !u!54 &7196749021957251819
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3252701294958814876}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3901187938423738557
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,6 +241,8 @@ GameObject:
   - component: {fileID: 7944253352221283884}
   - component: {fileID: 2987474201968373527}
   - component: {fileID: 3418855743946106830}
+  - component: {fileID: 8838295483865830699}
+  - component: {fileID: 2118902364367618692}
   m_Layer: 0
   m_Name: Hexagon_IceLand_01_001_cell.002
   m_TagString: Untagged
@@ -227,7 +293,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 84a04a05805b4b04aa8e5c3ed1a81d1c, type: 2}
+  - {fileID: 2100000, guid: 6563c55fb65d9a448a1a8b234b558408, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -249,6 +315,36 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8838295483865830699
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3901187938423738557}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 5973438744257169992, guid: 19d0e6bf88437894da962d90f2e80638, type: 3}
+--- !u!54 &2118902364367618692
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3901187938423738557}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4056492817283678387
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,6 +356,8 @@ GameObject:
   - component: {fileID: 6448507441565276900}
   - component: {fileID: 9217267445883130219}
   - component: {fileID: 4075995526916023660}
+  - component: {fileID: 5175272050346917150}
+  - component: {fileID: 8815099149591142932}
   m_Layer: 0
   m_Name: Hexagon_IceLand_01_001_cell.004
   m_TagString: Untagged
@@ -310,7 +408,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 84a04a05805b4b04aa8e5c3ed1a81d1c, type: 2}
+  - {fileID: 2100000, guid: 6563c55fb65d9a448a1a8b234b558408, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -332,6 +430,36 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5175272050346917150
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4056492817283678387}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3984793945144898537, guid: 19d0e6bf88437894da962d90f2e80638, type: 3}
+--- !u!54 &8815099149591142932
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4056492817283678387}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4251871947195406106
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,7 +472,7 @@ GameObject:
   - component: {fileID: 4251871947198303002}
   - component: {fileID: 4251871947197336026}
   - component: {fileID: 4251871947195306431}
-  - component: {fileID: 8255787077733939363}
+  - component: {fileID: 6916955002971118707}
   m_Layer: 0
   m_Name: BrokenIce_1
   m_TagString: Untagged
@@ -396,7 +524,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 84a04a05805b4b04aa8e5c3ed1a81d1c, type: 2}
+  - {fileID: 2100000, guid: 6563c55fb65d9a448a1a8b234b558408, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -432,7 +560,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: b0ab10082a1a58b439536872bbbc1034, type: 3}
---- !u!114 &8255787077733939363
+--- !u!114 &6916955002971118707
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -441,12 +569,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4251871947195406106}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c02bc5d7c8a885042a256292d8497257, type: 3}
+  m_Script: {fileID: 11500000, guid: 27dd70c6308f13d4db4107eef6cd061a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ice1: {fileID: 0}
-  ice2: {fileID: 0}
-  ice3: {fileID: 0}
+  currnetIce: 0
 --- !u!1 &4251871948078738206
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,7 +588,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4251871948078738205
 Transform:
   m_ObjectHideFlags: 0
@@ -494,6 +620,8 @@ GameObject:
   - component: {fileID: 6206531845699367102}
   - component: {fileID: 4103011469299563515}
   - component: {fileID: 3819460739996136261}
+  - component: {fileID: 2398611440176703757}
+  - component: {fileID: 6334179875813642343}
   m_Layer: 0
   m_Name: Hexagon_IceLand_01_001_cell.001
   m_TagString: Untagged
@@ -544,7 +672,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 84a04a05805b4b04aa8e5c3ed1a81d1c, type: 2}
+  - {fileID: 2100000, guid: 6563c55fb65d9a448a1a8b234b558408, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -566,3 +694,33 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &2398611440176703757
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8626654787213017861}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3316629702451580207, guid: 19d0e6bf88437894da962d90f2e80638, type: 3}
+--- !u!54 &6334179875813642343
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8626654787213017861}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
