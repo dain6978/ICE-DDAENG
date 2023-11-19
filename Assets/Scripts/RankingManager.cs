@@ -17,6 +17,8 @@ public class RankingManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject ranking_scoreboardItemPrefab;
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] GameObject scoreboardTitle;
+    [SerializeField] GameObject rankingCamera;
+
 
     private void Awake()
     {
@@ -76,6 +78,11 @@ public class RankingManager : MonoBehaviourPunCallbacks
         }
         canvasGroup.alpha = 1;
         scoreboardTitle.SetActive(true);
+    }
+
+    public void RankingCameraOn()
+    {
+        rankingCamera.SetActive(true);
     }
 
 }

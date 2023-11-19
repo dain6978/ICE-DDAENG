@@ -453,17 +453,18 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     {
         isEnd = true;
         if (ranking < 3)
+        {
+            PV.RPC(nameof(RPC_SetRanking), RpcTarget.All, ranking);
             canDance = true;
-        else
-            ranking = 4;
+        }
 
         Debug.Log($"{ranking}등, {photonView.name}, isEnd: {isEnd}");
         //입력받을수있도록 변경해야 함.
 
-        PV.RPC(nameof(RPC_SetRanking), RpcTarget.All, ranking);
-        cameraObject.transform.position = RankingManager.Instance.rankingPoints[3].position;
-        cameraObject.transform.rotation = RankingManager.Instance.rankingPoints[3].rotation;
-        camera.fieldOfView = 70; //기본 FoV로 설정
+        
+        RankingManager.Instance.RankingCameraOn();
+        cameraObject.SetActive(false);
+
         PV.RPC("RPC_Ice", RpcTarget.All, false);    //만약 눈사람인 경우, 눈사람 해제
         canvasForGun.SetActive(false);
         targettingUI.SetActive(false);
@@ -475,6 +476,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     {
         this.transform.position = RankingManager.Instance.rankingPoints[ranking].position;
         this.transform.rotation = RankingManager.Instance.rankingPoints[ranking].rotation;
+        //rb.constraints = RigidbodyConstraints.FreezeAll;
+        rb.mass = 10;
     }
 
     public GameObject GetItems()

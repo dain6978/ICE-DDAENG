@@ -8,7 +8,6 @@ public class PlayerSound : MonoBehaviour
     public AudioClip[] footstepSounds_Run;
 
     public AudioClip landSound;
-    public AudioClip shootSound;
 
     AudioSource source;
 
@@ -32,10 +31,4 @@ public class PlayerSound : MonoBehaviour
     {
         source.PlayOneShot(landSound);
     }
-
-    public void PlayShootSound()
-    {
-        source.PlayOneShot(shootSound);
-    }
-
 }

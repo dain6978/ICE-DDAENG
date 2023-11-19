@@ -3192,7 +3192,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f20b2086edb0fa14194625121c56cecc, type: 3}
   - {fileID: 8300000, guid: 763409ee05f3fce4a8e83df52710a28e, type: 3}
   landSound: {fileID: 8300000, guid: 18ffef6e634a1be4eacb2c4c57d73520, type: 3}
-  shootSound: {fileID: 8300000, guid: 83c38cc4f6a9bb849b633571f3eed0a4, type: 3}
 --- !u!1 &4941760474556279426
 GameObject:
   m_ObjectHideFlags: 0
