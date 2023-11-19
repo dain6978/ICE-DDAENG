@@ -3068,9 +3068,9 @@ AudioSource:
   m_GameObject: {fileID: 4871754176705797031}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 1061981735243837343, guid: b9a9c6895ec87d34b94e7d3e9a33ebcc, type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -3191,9 +3191,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 32074fca44eace649a885ce0e7f5aaaf, type: 3}
   - {fileID: 8300000, guid: f20b2086edb0fa14194625121c56cecc, type: 3}
   - {fileID: 8300000, guid: 763409ee05f3fce4a8e83df52710a28e, type: 3}
-  landSound: {fileID: 8300000, guid: 5039e24f35fce8b4ea426f1543234bba, type: 3}
+  landSound: {fileID: 8300000, guid: 18ffef6e634a1be4eacb2c4c57d73520, type: 3}
   shootSound: {fileID: 8300000, guid: 83c38cc4f6a9bb849b633571f3eed0a4, type: 3}
-  freezeSound: {fileID: 8300000, guid: e822b06387ae05d4395781acaed1d9ed, type: 3}
 --- !u!1 &4941760474556279426
 GameObject:
   m_ObjectHideFlags: 0

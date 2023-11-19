@@ -9,7 +9,6 @@ public class PlayerSound : MonoBehaviour
 
     public AudioClip landSound;
     public AudioClip shootSound;
-    public AudioClip freezeSound;
 
     AudioSource source;
 
@@ -37,11 +36,6 @@ public class PlayerSound : MonoBehaviour
     public void PlayShootSound()
     {
         source.PlayOneShot(shootSound);
-    }
-
-    public void PlayFreezeSound()
-    {
-        source.PlayOneShot(freezeSound);
     }
 
 }

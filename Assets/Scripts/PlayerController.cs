@@ -219,6 +219,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         {
             isIced = true;
             rb.constraints = RigidbodyConstraints.FreezeAll;
+            AudioManager.Instacne.PlaySFX("Freeze");
             PV.RPC("RPC_Ice", RpcTarget.All, true);
 
             Invoke("ResetIce", iceTime);
@@ -402,6 +403,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     public void TakeSnow() 
     {
         PV.RPC(nameof(RPC_TakeSnow), PV.Owner);
+        AudioManager.Instacne.PlaySFX("Hit");
         //RPC 호출하는 법: PV.RPC("함수 이름), 타겟, 함수 파라미터) 
         //RpcTarget.All: 서버에 있는 모든 플레이어에게 정보 전달
     }
@@ -424,7 +426,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     {
         snowmanObject.SetActive(false);
         brokeSnowmanObject.SetActive(true);
-        Debug.Log("브레이크왜안해");
     }
 
 
@@ -466,12 +467,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         PV.RPC("RPC_Ice", RpcTarget.All, false);    //만약 눈사람인 경우, 눈사람 해제
         canvasForGun.SetActive(false);
         targettingUI.SetActive(false);
+        frostEffect.ResetFrost();
     }
 
     [PunRPC]
     void RPC_SetRanking(int ranking)
     {
-        frostEffect.ResetFrost();
         this.transform.position = RankingManager.Instance.rankingPoints[ranking].position;
         this.transform.rotation = RankingManager.Instance.rankingPoints[ranking].rotation;
     }

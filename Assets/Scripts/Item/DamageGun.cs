@@ -36,12 +36,14 @@ public class DamageGun : Gun
     {
         canShoot = false;
 
-
+        AudioManager.Instacne.PlaySFX("Fire_Damage");
         //raycast 
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f)); //스크린(1인칭 카메라)의 중앙으로부터 뻗어 나오는 ray
         ray.origin = cam.transform.position; // ray의 시작점을 카메라의 위치로
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 50.0f, playerLayer))
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 50.0f, (1 << 0) | (1 << 8) | (1 << 11)))
         {
             Debug.Log(hit.collider.gameObject);
             hit.collider.gameObject.GetComponentInParent<IDamageable>()?.TakeDamage();

@@ -41,7 +41,7 @@ public class SnowGun : Gun
         {
             return;
         }
-
+        AudioManager.Instacne.PlaySFX("Fire_Snow");
         //raycast 
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f)); //스크린(1인칭 카메라)의 중앙으로부터 뻗어 나오는 ray
         ray.origin = cam.transform.position; // ray의 시작점을 카메라의 위치로
