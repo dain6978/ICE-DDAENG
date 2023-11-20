@@ -12,6 +12,7 @@ public class DamageGun : Gun
     public Animator anim;
 
     bool canShoot = true;
+    public bool canUse = false;
     int playerLayer = (1 << 8);
 
 
@@ -20,11 +21,11 @@ public class DamageGun : Gun
         PV = GetComponent<PhotonView>();
         playerAnimManager = FindObjectOfType<PlayerAnimManager>();
     }
-
+    
     public override void Use()
     {
-        if(canShoot)
-            Shoot();
+        if (!canUse || !canShoot) return;
+        Shoot();
     }
 
     private void Update()

@@ -382,6 +382,7 @@ MonoBehaviour:
   bulletImpactPrefab: {fileID: 25086794617256619, guid: 4b8ee48e2b584654cbdac00280052a78, type: 3}
   cam: {fileID: 8714806973997662750}
   anim: {fileID: 6121814565697887205}
+  canUse: 0
 --- !u!114 &2781316001797235904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1520,6 +1521,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3018036716066604815}
   - component: {fileID: 6121814565697887205}
+  - component: {fileID: 8118199681351051359}
   m_Layer: 8
   m_Name: DamageGunObject
   m_TagString: Untagged
@@ -1563,6 +1565,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8118199681351051359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2388417996060838998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6bcd0ff107b1f0418a01d20947921ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damGun: {fileID: 3212047353772527245}
 --- !u!1 &2518806222460886530
 GameObject:
   m_ObjectHideFlags: 0
@@ -4743,6 +4758,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3650712138510226589}
   - component: {fileID: 2374720447142908894}
+  - component: {fileID: 4306900017192943748}
   m_Layer: 8
   m_Name: SnowGunObject
   m_TagString: Untagged
@@ -4786,6 +4802,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4306900017192943748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7656949856607685905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa63ecb609ac76f4580fa1a159631b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snowGun: {fileID: 4319435247465045486}
 --- !u!1 &7681725944492123785
 GameObject:
   m_ObjectHideFlags: 0
@@ -5058,6 +5087,7 @@ MonoBehaviour:
   bulletImpactPrefab: {fileID: 25086794617256619, guid: 4b8ee48e2b584654cbdac00280052a78, type: 3}
   cam: {fileID: 8714806973997662750}
   fireRate: 0.1
+  canUse: 0
   anim: {fileID: 2374720447142908894}
 --- !u!1 &8196740450889940221
 GameObject:

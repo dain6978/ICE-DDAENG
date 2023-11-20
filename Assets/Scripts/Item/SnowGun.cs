@@ -14,6 +14,8 @@ public class SnowGun : Gun
     public float fireRate;
     float fireTimer;
 
+    public bool canUse = false;
+
     public Animator anim;
 
     private void Awake()
@@ -22,8 +24,12 @@ public class SnowGun : Gun
         playerAnimManager = FindObjectOfType<PlayerAnimManager>();
     }
 
+    
+
+
     public override void Use()
     {
+        if (!canUse) return;
         Shoot();
     }
 

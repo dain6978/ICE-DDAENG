@@ -371,8 +371,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             gunMeshes[previousItemIndex].SetActive(false);
         }
 
-        previousItemIndex = itemIndex;
+        if (PV.IsMine)
+        {
+            AudioManager.Instacne.PlaySFX(AudioManager.Instacne.sfx[itemIndex].name);
+        }
 
+        previousItemIndex = itemIndex;
     }
 
 

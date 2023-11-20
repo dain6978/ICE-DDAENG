@@ -14,8 +14,8 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instacne;
 
-    [SerializeField] Sound[] sfx = null;
-    [SerializeField] Sound[] bgm = null;
+    public Sound[] sfx = null;
+    public Sound[] bgm = null;
 
     [SerializeField] AudioSource bgmPlayer = null;
     [SerializeField] AudioSource[] sfxPlayer = null;
@@ -77,4 +77,5 @@ public class AudioManager : MonoBehaviour
         Debug.Log(p_sfxName + " 이름의 효과음이 없습니다.");
         return;
     }
+
 }
