@@ -403,7 +403,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     public void TakeSnow() 
     {
         PV.RPC(nameof(RPC_TakeSnow), PV.Owner);
-        AudioManager.Instacne.PlaySFX("Hit");
         //RPC 호출하는 법: PV.RPC("함수 이름), 타겟, 함수 파라미터) 
         //RpcTarget.All: 서버에 있는 모든 플레이어에게 정보 전달
     }
@@ -417,6 +416,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         {
             PV.RPC("RPC_Break", RpcTarget.All);
             PlayerManager.Find(info.Sender).GetKill();
+            AudioManager.Instacne.PlaySFX("Destruction_die");
             Invoke("Die", 2.0f);
         }
     }
@@ -434,7 +434,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     {
 
         playerAnimManager.DamageAnim();
-
+        AudioManager.Instacne.PlaySFX("Hit");
         iceCurTime = 0;
         ice++;
         frostEffect.AddFrost();

@@ -86,7 +86,7 @@ public class PlayerManager : MonoBehaviour
     void RPC_GetKill()
     {
         kills++;
-
+        AudioManager.Instacne.PlaySFX("Destruction_kill");
         Hashtable hash = new Hashtable();
         hash.Add("kills", kills);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
