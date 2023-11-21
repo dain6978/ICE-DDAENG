@@ -4,16 +4,32 @@ using UnityEngine;
 
 public class BreakingManager : MonoBehaviour
 {
-    public enum ice {ice1, ice2, ice3, ice4};
-    public ice currnetIce;
+    [SerializeField] enum ice {ice1, ice2, ice3, ice4};
+    [SerializeField] Material[] materials;
+    [SerializeField] ice currnetIce;
 
     private bool check = false;
     private int count = 0;
     private GameObject brokenIce;
 
-
     private void Start()
     {
+        switch (currnetIce)
+        {
+            case ice.ice1:
+                count = 1;
+                break;
+            case ice.ice2:
+                count = 2;
+                break;
+            case ice.ice3:
+                count = 3;
+                break;
+            case ice.ice4:
+                count = 4;
+                break;
+        }
+
         brokenIce = this.transform.GetChild(0).gameObject;
     }
 
@@ -31,35 +47,19 @@ public class BreakingManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         check = true;
-        
-        count++;
-        Debug.Log("체크아이스 카운트 증가");
-        switch (currnetIce)
-        {
-            case ice.ice1:
-                if (count == 1)
-                    BreakIce();
-                break;
-            case ice.ice2:
-                if (count == 2)
-                    BreakIce();
-                break;
-            case ice.ice3:
-                if (count == 3)
-                    BreakIce();
-                break;
-            case ice.ice4:
-                if (count == 4)
-                    BreakIce();
-                break;
 
-        }
+        count--;
+        if (count == 0) 
+            BreakIce();
+        else
+            SetMaterial(count);
+
         yield return null;
     }
 
     void BreakIce()
     {
-        Debug.Log("############브레이크!#######");
+        AudioManager.Instacne.PlaySFX("Destruction_die");
 
         this.gameObject.GetComponent<MeshRenderer>().enabled = false;
         this.gameObject.GetComponent<Collider>().enabled = false;
@@ -67,5 +67,10 @@ public class BreakingManager : MonoBehaviour
         brokenIce.SetActive(true);
 
         Destroy(gameObject, 3);
+    }
+
+    void SetMaterial(int count)
+    {
+        this.gameObject.GetComponent<MeshRenderer>().material =  materials[count-1];
     }
 }

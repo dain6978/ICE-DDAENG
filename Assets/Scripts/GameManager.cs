@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     PlayerManager playerManager;
 
     private float time;
-    private float gameTime = 15f;
+    private float gameTime = 150f;
 
     [HideInInspector]
     public bool isEnd;
@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         uiManager.DestroyGameUI();
         Destroy(uiManager);
 
-        Invoke(nameof(OnGameEnd), 20f);
+        Invoke(nameof(OnGameEnd), 10f);
     }
 
     public void SetPodium()
