@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     private GameManager gameManager;
     private MouseCursor mouseCursor;
     private Stack<GameObject> popupStack;
+    private PlayerUI currentPlayerUI;
 
     public float sec = 0f;
     public int min = 0;
@@ -85,8 +86,7 @@ public class UIManager : MonoBehaviour
     {
         if (popupStack.Count == 0)
         {
-            //if (playerUI != null)
-            //    playerUI.HideAim();
+            HidePlayerUI();
 
             ShowPopupUI(managingWindow);
             mouseCursor.OnCursor();
@@ -96,8 +96,7 @@ public class UIManager : MonoBehaviour
             HidePopupUI();
             mouseCursor.OffCursor();
 
-            //if (playerUI != null)
-            //    playerUI.ShowAim();
+            ShowPlayerUI();
         }
     }
 
@@ -118,5 +117,45 @@ public class UIManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+
+    void ShowPlayerUI()
+    {
+        //SetPlayerUI();
+        Debug.Log("ºÓ");
+        currentPlayerUI.Show();
+    }
+
+    void HidePlayerUI()
+    {
+        SetPlayerUI();
+        Debug.Log("«œ¿ÃµÂ");
+        currentPlayerUI.Hide();
+    }
+
+    void SetPlayerUI()
+    {
+        foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
+        {
+            if (player.IsLocal)
+                currentPlayerUI = RoomManager.Instance.playerDict[player].playerController.GetComponentInChildren<PlayerUI>();
+        }
+        //    PlayerController[] playerControllers = gameManager.FindAllPlayerControllers();
+
+        //    foreach (PlayerController playerController in playerControllers)
+        //    {
+        //        if (playerController.PV.IsMine)
+        //        {
+        //            currentPlayerUI = playerController.player.GetComponentInChildren<PlayerUI>();
+        //            Debug.Log(currentPlayerUI);
+        //        }
+        //        else
+        //        {
+        //            Debug.Log("æ»µ≈!");
+        //        }
+        //    }
+        //}
+
     }
 }

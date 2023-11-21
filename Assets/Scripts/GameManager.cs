@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         SetPlayersEnded();
         RankingManager.Instance.ShowRanking();
 
-        Invoke(nameof(OnGameEnd), 20f);
+        Invoke(nameof(OnGameEnd), 10f);
     }
 
 
@@ -83,15 +83,13 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void SetPlayersEnded()
     {
-        playerControllers = FindAllPlayerControllers();
-
-        foreach (PlayerController playerController in playerControllers)
+        foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
         {
-            playerController.player.GetComponentInChildren<PlayerUI>().Hide();
-            
+            if (player.IsLocal)
+                RoomManager.Instance.playerDict[player].playerController.GetComponentInChildren<PlayerUI>().Hide();
         }
-        //uiManager.DestroyGameUI();
-        //Destroy(uiManager);
+        uiManager.DestroyGameUI();
+        Destroy(uiManager);
     }
 
     //public void LeaveRoom()
@@ -106,13 +104,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     //        // Disconnect 실행할 경우 LeaveRoom 이 자동으로 실행됨 -> OnLeftRoom -> OnDisconnected
     //    }
     //}
-
-
-    public PlayerController[] FindAllPlayerControllers()
-    {
-        //씬의 모든 플레이어컨트롤러 배열 리턴
-        return FindObjectsOfType<PlayerController>();
-    }
 
 
 }

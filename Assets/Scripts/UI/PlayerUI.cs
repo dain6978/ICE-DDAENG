@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
-    [SerializeField] GameObject playerCanvas;
+    public GameObject playerCanvas;
     [SerializeField] GameObject aimUI;
     [SerializeField] Sprite[] iceState;
     [SerializeField] Image[] iceUI;
