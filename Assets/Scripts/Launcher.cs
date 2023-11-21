@@ -40,6 +40,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         Instance = this;
         roomdict = new Dictionary<RoomInfo, GameObject>();
         Cursor.visible = true;
+        Screen.SetResolution(2048, 1536, true);
     }
 
     void Start()
