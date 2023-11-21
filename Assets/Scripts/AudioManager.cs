@@ -25,16 +25,16 @@ public class AudioManager : MonoBehaviour
         if (Instacne == null)
         {
             Instacne = this;
-            DontDestroyOnLoad(Instacne);
+            //DontDestroyOnLoad(Instacne);
         }
         else
             Destroy(gameObject);
 
-        var obj = FindObjectsOfType<AudioManager>();
-        if (obj.Length == 1)
-            DontDestroyOnLoad(gameObject);
-        else
-            Destroy(gameObject);
+        //var obj = FindObjectsOfType<AudioManager>();
+        //if (obj.Length == 1)
+        //    DontDestroyOnLoad(gameObject);
+        //else
+        //    Destroy(gameObject);
     }
 
     public void PlayBGM(string p_bgmName)
