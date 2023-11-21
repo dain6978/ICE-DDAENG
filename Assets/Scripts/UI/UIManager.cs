@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,9 +13,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Canvas gameCanvas;
     [SerializeField] private TextMeshProUGUI timerText;
 
-    private GameObject player;
-    private PlayerUI playerUI;
-    private PhotonView PV;
 
     private GameManager gameManager;
     private MouseCursor mouseCursor;
@@ -37,34 +35,17 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        // °ÔÀÓ Á¾·á
-        //if (gameManager.isEnd)
-        //{
-        //    foreach (Transform child in gameCanvas.transform)
-        //        Destroy(child.gameObject); // °ÔÀÓ ¾À Äµ¹ö½º ÆÄ±« 
-        //    playerUI.Destroy(); // ÇÃ·¹ÀÌ¾î Äµ¹ö½º ÆÄ±«
-        //    Destroy(this); 
-        //}
-
         updateTimer();
 
-        if (Input.GetKeyDown(KeyCode.Escape)) 
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             SwitchMangingWindow();
         }
     }
 
-    public void SetPlayer(GameObject playerController)
-    {
-        player = playerController;
-
-        if (player != null)
-            playerUI = player.GetComponentInChildren<PlayerUI>();
-    }
-
     // scene UI
     public void ShowSceneUI(GameObject scene)
-    { 
+    {
         scene.SetActive(true);
     }
 
@@ -84,7 +65,7 @@ public class UIManager : MonoBehaviour
     public void HidePopupUI()
     {
         if (popupStack.Count == 0)
-            return; 
+            return;
 
         GameObject popup = popupStack.Pop();
         popup.SetActive(false);
@@ -104,8 +85,8 @@ public class UIManager : MonoBehaviour
     {
         if (popupStack.Count == 0)
         {
-            if (playerUI != null)
-                playerUI.HideAim();
+            //if (playerUI != null)
+            //    playerUI.HideAim();
 
             ShowPopupUI(managingWindow);
             mouseCursor.OnCursor();
@@ -115,8 +96,8 @@ public class UIManager : MonoBehaviour
             HidePopupUI();
             mouseCursor.OffCursor();
 
-            if (playerUI != null)
-                playerUI.ShowAim();
+            //if (playerUI != null)
+            //    playerUI.ShowAim();
         }
     }
 
@@ -129,5 +110,13 @@ public class UIManager : MonoBehaviour
             sec = 0;
         }
         timerText.text = string.Format("{0:D2}:{1:D2}", min, (int)sec);
+    }
+
+    public void DestroyGameUI()
+    {
+        foreach (Transform child in gameCanvas.transform)
+        {
+            Destroy(child.gameObject);
+        }
     }
 }

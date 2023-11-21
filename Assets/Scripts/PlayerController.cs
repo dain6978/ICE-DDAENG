@@ -8,6 +8,9 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamageable 인터페이스 부착 -> 인터페이스의 함수 반드시 구현해야 함
 {
+    [HideInInspector]
+    public GameObject player;
+
     PhotonView PV;
 
     [Header("Camera")]
@@ -50,8 +53,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     Rigidbody rb;
     
-    GameObject playerAnimal;
-    //SkinnedMeshRenderer[] playerMeshs; // 동물 메시 & face 메시
     SkinnedMeshRenderer smr;
     PlayerAnimManager playerAnimManager;
 
@@ -60,7 +61,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     //[SerializeField] Image healthbarImage;
     private PlayerUI playerUI;
     private PlayerManager playerManager;
-    private UIManager uiManager;
     public Transform snowGunTransform;
     public Transform damageGunTransform;
     int snowGunZoom = 1000;
@@ -73,9 +73,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     public bool isIced = false;
     public int ice = 0;
     int iceMAX = 4;
-    public GameObject snowmanObject;
-    public GameObject playerObject;
-    public GameObject brokeSnowmanObject;
+    [SerializeField] GameObject snowmanObject;
+    [SerializeField] GameObject animalObject;
+    [SerializeField] GameObject brokeSnowmanObject;
 
 
 
@@ -92,6 +92,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     private void Awake()
     {
+        player = this.gameObject;
+
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
         smr = GetComponentInChildren<SkinnedMeshRenderer>();
@@ -109,7 +111,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     private void Start()
     {
-       
         if (PV.IsMine)
         {
             ChangeLayerRecursively(transform, LayerMask.NameToLayer("LocalPlayer"));
@@ -135,7 +136,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             //카메라뿐만 아니라 gameObject 파괴 -> 오디오 리스너도 함께 파괴 (cameraHolder를 사용한 이유라는데 잘 모르겠당...)
             Destroy(rb); 
             //로컬 플레이어의 rigidbody만 사용하도록 파괴
-            Destroy(playerUI); //로컬 플레이어의 UI (health바)만 사용
         }
     }
     private void Update()
@@ -240,7 +240,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     [PunRPC]
     void RPC_Ice(bool Ice)
     {
-        playerObject.SetActive(!Ice);
+        animalObject.SetActive(!Ice);
         snowmanObject.SetActive(Ice);
         
     }
@@ -389,7 +389,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     [PunRPC]
     void SetSkin(int _index)
     {
-        Debug.Log($"name: {PV.Owner.NickName}, userskin: { _index} ");
+        //Debug.Log($"name: {PV.Owner.NickName}, userskin: { _index} ");
         smr.sharedMesh = PlayerSkinManager.Instance.Meshs[_index];
         smr.material = PlayerSkinManager.Instance.Materials[_index];
     }
@@ -462,7 +462,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             canDance = true;
         }
 
-        Debug.Log($"{ranking}등, {photonView.name}, isEnd: {isEnd}");
+        //Debug.Log($"{ranking}등, {photonView.name}, isEnd: {isEnd}");
         //입력받을수있도록 변경해야 함.
 
         
@@ -481,7 +481,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         this.transform.position = RankingManager.Instance.rankingPoints[ranking].position;
         this.transform.rotation = RankingManager.Instance.rankingPoints[ranking].rotation;
         //rb.constraints = RigidbodyConstraints.FreezeAll;
-        rb.mass = 10;
+        //rb.mass = 10;
     }
 
     public GameObject GetItems()

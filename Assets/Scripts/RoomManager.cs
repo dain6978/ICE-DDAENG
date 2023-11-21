@@ -53,7 +53,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
         base.OnDisable();
         //델리게이트 체인 제거
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        Debug.Log("Room Manager Disabled.");
+        //Debug.Log("Room Manager Disabled.");
         Instance = null;
     }
     
@@ -81,8 +81,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        
-        Debug.Log("On Left Room");
+        //Debug.Log("On Left Room");
         // 게임 씬에서 방을 떠난 거라면
         if (SceneManager.GetActiveScene().name == "Game")
         {

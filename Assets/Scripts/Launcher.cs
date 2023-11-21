@@ -47,7 +47,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         MenuManager.Instance.OpenMenu("loading");
         //'PhotonServerSettings'의 설정을 활용하여 포톤 마스터 서버에 접근할 수 있게 함
-        Debug.Log("Connecting to Master");
+        //Debug.Log("Connecting to Master");
 
         PhotonNetwork.ConnectUsingSettings();
 
@@ -57,7 +57,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     //OnConnectedToMaster: 마스터 서버에 성공적으로 연결되었을 때 포톤에 의해 호출되는 콜백 함수
     public override void OnConnectedToMaster()
     {
-        Debug.Log("Connected to Master");
+        //Debug.Log("Connected to Master");
         PhotonNetwork.JoinLobby();
         //로비란 기본적으로 룸을 생성하고, 찾을 수 있는 곳
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -67,8 +67,8 @@ public class Launcher : MonoBehaviourPunCallbacks
     //로비에 연결될 경우 실행되는 함수 (OnConnectedToMaster -> PhotonNetwork.JoinLobby -> OnJoinedLobby)
     public override void OnJoinedLobby()
     {
-        Debug.Log("Joined Lobby");
-        Debug.Log("RoomName" + RoomManager.roomName);
+        //Debug.Log("Joined Lobby");
+        //Debug.Log("RoomName" + RoomManager.roomName);
         if (RoomManager.roomName != null)
         {
             ReturnRoom();

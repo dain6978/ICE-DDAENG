@@ -43,6 +43,7 @@ public class PlayerManager : MonoBehaviour
             hash.Add("deaths", 0);
             PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
         }
+
         RoomManager.Instance.playerDict.Add(PV.Owner, this);
     }
 
@@ -55,17 +56,12 @@ public class PlayerManager : MonoBehaviour
 
         playerController.GetComponent<PlayerController>().SetCharacterSkin();
         // 플레이어 컨트롤러 생성할 때마다(플레이어 매니저 & 컨트롤러 1:1 관계) 각 플레이어 컨트롤러에 대한 viewID를 생성하겠다는 건가? 
-
-        //uiManager.SetPlayer(playerController);
-        //dancingManager.SetPlayer(playerController);
     }
 
     public void Die()
     {
         PhotonNetwork.Destroy(playerController); // 죽으면 씬에 있는 playerController 파괴
         playerController = null;
-        //uiManager.SetPlayer(null);
-        //dancingManager.SetPlayer(null);
 
 
         CreateController(); // 리스폰
@@ -97,7 +93,6 @@ public class PlayerManager : MonoBehaviour
         return FindObjectsOfType<PlayerManager>().SingleOrDefault(x => x.PV.Owner == player);
     }
 
-
     private void OnDisable()
     {
         if (PV.IsMine)
@@ -106,6 +101,18 @@ public class PlayerManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             //Debug.Log("커서 잠금 해제");
         }
+    }
+
+    public void SetPlayerObject()
+    {
+
+    }
+
+    public GameObject GetPlayerController()
+    {
+        return playerController;
+        // 흠 근데 이런 식으로 하면 죽은 상태에서 리스폰 되기 전에 게임이 끝나면... 오류나지 않나? 
+        // 리스폰할 때 플레이어 컨트롤러 생성 및 파괴 딜레이 없나?
     }
 
 }

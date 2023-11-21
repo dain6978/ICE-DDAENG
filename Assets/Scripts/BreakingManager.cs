@@ -15,7 +15,6 @@ public class BreakingManager : MonoBehaviour
     private void Start()
     {
         brokenIce = this.transform.GetChild(0).gameObject;
-        Debug.Log(brokenIce.name);
     }
 
     private void OnCollisionEnter(Collision collision)

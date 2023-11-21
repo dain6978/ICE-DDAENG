@@ -31,12 +31,6 @@ public class PlayerUI : MonoBehaviour
     }
 
 
-    public void Destroy()
-    {
-        Debug.Log("»Ï..");
-        Destroy(playerCanvas);
-    }
-
     public void AddIce()
     {
         for (int i = 0; i < iceUI.Length; i++)

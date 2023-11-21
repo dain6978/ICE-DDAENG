@@ -2933,6 +2933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3972282eff299c94ab1a42b7ccb17c71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   cameraObject: {fileID: 1321827355768667022}
   canvasForGun: {fileID: 5285942321487221848}
   cameraZoom: 20
@@ -2957,7 +2958,7 @@ MonoBehaviour:
   isIced: 0
   ice: 0
   snowmanObject: {fileID: 6588742046811497303}
-  playerObject: {fileID: 4789930418817990515}
+  animalObject: {fileID: 4789930418817990515}
   brokeSnowmanObject: {fileID: 369599320610720448}
 --- !u!54 &966964062745625820
 Rigidbody:

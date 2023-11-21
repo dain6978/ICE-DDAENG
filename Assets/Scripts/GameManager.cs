@@ -12,9 +12,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     private DancingManager dancingManager;
     private UIManager uiManager;
+    PlayerController[] playerControllers;
 
     private float time;
-    private float gameTime = 500f;
+    private float gameTime = 6f;
 
     [HideInInspector]
     public bool isEnd;
@@ -56,15 +57,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         hash.Add("isEnd", isEnd);
         PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
 
-        Debug.Log("게임 종료");
-
-        SetPlayers();
+        SetPlayersEnded();
         RankingManager.Instance.ShowRanking();
 
-
-        //player.AddComponent<DancingAnimation>();
-
-        Invoke(nameof(OnGameEnd), 10f);
+        Invoke(nameof(OnGameEnd), 20f);
     }
 
 
@@ -85,20 +81,17 @@ public class GameManager : MonoBehaviourPunCallbacks
 #endif
     }
 
-    public void SetPlayers()
+    public void SetPlayersEnded()
     {
-        foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
+        playerControllers = FindAllPlayerControllers();
+
+        foreach (PlayerController playerController in playerControllers)
         {
-            if (player != null)
-            {
-                dancingManager.SetAnimator(player);
-                //uiManager.SetUI(player);
-            }
-            else
-            {
-                Debug.Log("player is null");
-            }
+            playerController.player.GetComponentInChildren<PlayerUI>().Hide();
+            
         }
+        //uiManager.DestroyGameUI();
+        //Destroy(uiManager);
     }
 
     //public void LeaveRoom()
@@ -113,4 +106,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     //        // Disconnect 실행할 경우 LeaveRoom 이 자동으로 실행됨 -> OnLeftRoom -> OnDisconnected
     //    }
     //}
+
+
+    public PlayerController[] FindAllPlayerControllers()
+    {
+        //씬의 모든 플레이어컨트롤러 배열 리턴
+        return FindObjectsOfType<PlayerController>();
+    }
+
+
 }
