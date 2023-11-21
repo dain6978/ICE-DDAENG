@@ -141,21 +141,5 @@ public class UIManager : MonoBehaviour
             if (player.IsLocal)
                 currentPlayerUI = RoomManager.Instance.playerDict[player].playerController.GetComponentInChildren<PlayerUI>();
         }
-        //    PlayerController[] playerControllers = gameManager.FindAllPlayerControllers();
-
-        //    foreach (PlayerController playerController in playerControllers)
-        //    {
-        //        if (playerController.PV.IsMine)
-        //        {
-        //            currentPlayerUI = playerController.player.GetComponentInChildren<PlayerUI>();
-        //            Debug.Log(currentPlayerUI);
-        //        }
-        //        else
-        //        {
-        //            Debug.Log("¾ÈµÅ!");
-        //        }
-        //    }
-        //}
-
     }
 }

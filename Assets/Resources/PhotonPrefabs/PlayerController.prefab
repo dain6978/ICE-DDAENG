@@ -7435,8 +7435,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96ff4ce7ae6b1ef48af7223787a3599b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameAnimator: {fileID: 9100000, guid: b5bf5b6d78f51c84c81a54a976cd27cc, type: 2}
+  dancingAnimator: {fileID: 9100000, guid: 5ded61c1c77e8ce448985458ffe5106d, type: 2}
   moveMagnitude: 0
   playerSpineRotation: 0
+  playerAnimator: {fileID: 0}
 --- !u!4 &4789930418818015933 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400232, guid: 49f10d89ddfdd594f9ed88fa79351b6c, type: 3}

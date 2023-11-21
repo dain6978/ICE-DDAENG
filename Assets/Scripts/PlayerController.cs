@@ -133,9 +133,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             Destroy(GetComponentInChildren<Camera>().gameObject);
             //자기 자신의 플레이어(로컬 플레이어) 컨트롤러가 아닐 경우 카메라 파괴 to 자기 자신의 카메라만 사용할 수 있도록
             //카메라뿐만 아니라 gameObject 파괴 -> 오디오 리스너도 함께 파괴 (cameraHolder를 사용한 이유라는데 잘 모르겠당...)
-            Destroy(rb);
+            Destroy(rb); //로컬 플레이어의 rigidbody만 사용하도록 파괴
             Destroy(playerUI.playerCanvas);
-            //로컬 플레이어의 rigidbody만 사용하도록 파괴
         }
     }
     private void Update()
@@ -143,10 +142,21 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (!PV.IsMine)
             return; //플레이어 컨트롤러가 자기 자신의 플레이어만 컨트롤할 수 있게 
 
-        if(canDance)
-            if (Input.GetKeyDown(KeyCode.K))
-                Debug.Log("Dance~~!!");
-                //여기다 춤추는 입력 넣기
+        if (canDance && playerAnimManager.playerAnimator.runtimeAnimatorController == playerAnimManager.dancingAnimator)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                playerAnimManager.DancingAnim1();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                playerAnimManager.DancingAnim2();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                playerAnimManager.DancingAnim3();
+            }
+        }
 
         if (isEnd)
             return;
@@ -484,8 +494,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         //rb.mass = 10;
     }
 
-    public GameObject GetItems()
+    public void SetPlayersEnded()
     {
-        return itemHolder;
+        this.gameObject.GetComponentInChildren<PlayerUI>().Hide();
+        //this.gameObject.GetComponentInChildren<PlayerAnimManager>().SetDancingMode();
+        //this.gameObject.GetComponentInChildren<PlayerAnimManager>().Test();
+        PV.RPC("RPC_SetPlayersEnded", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void RPC_SetPlayersEnded()
+    {
+        //this.gameObject.GetComponentInChildren<PlayerAnimManager>().Test();
+        this.gameObject.GetComponentInChildren<PlayerAnimManager>().SetDancingMode();
+        itemHolder.SetActive(false);
     }
 }

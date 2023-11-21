@@ -5,13 +5,21 @@ using Photon.Pun;
 
 public class PlayerAnimManager : MonoBehaviour, IPunObservable
 {
+    public RuntimeAnimatorController gameAnimator;
+    public RuntimeAnimatorController dancingAnimator;
+
     [HideInInspector]
     public float moveMagnitude = 0f;
     public float playerSpineRotation = 0f;
 
     //GameObject playerAnimal;
-    Animator playerAnimator;
+    [HideInInspector]
+    public Animator playerAnimator;
+    
     Transform playerSpine;
+
+
+
     private void Awake()
     {
         playerAnimator = GetComponentInParent<Animator>();
@@ -19,7 +27,18 @@ public class PlayerAnimManager : MonoBehaviour, IPunObservable
 
         playerAnimator.SetFloat("BlendDamage", 0.7f);
         playerAnimator.SetFloat("BlendShoot", 0.6f);
+
+        //animPV = this.gameObject.GetComponentInParent<PhotonAnimatorView>();
     }
+
+    private void Update()
+    {
+        if (playerAnimator.runtimeAnimatorController == gameAnimator)
+        {
+            return;
+        }
+    }
+
 
     private void LateUpdate()
     {
@@ -27,6 +46,22 @@ public class PlayerAnimManager : MonoBehaviour, IPunObservable
         //mouse y에 따라(2차원에서 y축으로 마우스 움직임에 따라), 3차원에서 z축을 중심으로 Spine이 회전
         playerSpine.localRotation = Quaternion.Euler(0, 0, playerSpineRotation * 0.8f);
     }
+
+
+    public void DancingAnim1()
+    {
+        playerAnimator.SetTrigger("Dance1");
+    }
+    public void DancingAnim2()
+    {
+        playerAnimator.SetTrigger("Dance2");
+    }
+
+    public void DancingAnim3()
+    {
+        playerAnimator.SetTrigger("Dance3");
+    }
+
 
     public void JumpAnim()
     {
@@ -68,5 +103,22 @@ public class PlayerAnimManager : MonoBehaviour, IPunObservable
         {
             playerSpineRotation = (float)stream.ReceiveNext();
         }
+    }
+
+    public void SetDancingMode()
+    {
+        Destroy(this.gameObject.GetComponent<PhotonAnimatorView>());
+        playerAnimator.runtimeAnimatorController = dancingAnimator;
+        playerSpineRotation = 0;
+
+        PhotonAnimatorView animPV = this.gameObject.GetComponentInParent<PhotonAnimatorView>();
+        animPV.SetParameterSynchronized("Dance1", PhotonAnimatorView.ParameterType.Trigger, PhotonAnimatorView.SynchronizeType.Discrete);
+        animPV.SetParameterSynchronized("Dance2", PhotonAnimatorView.ParameterType.Trigger, PhotonAnimatorView.SynchronizeType.Discrete);
+        animPV.SetParameterSynchronized("Dance3", PhotonAnimatorView.ParameterType.Trigger, PhotonAnimatorView.SynchronizeType.Discrete);
+    }
+
+    public void Test()
+    {
+        Debug.Log("테스트용함수");
     }
 }

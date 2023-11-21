@@ -16,7 +16,6 @@ public class PlayerManager : MonoBehaviour
     public GameObject playerController;
     SpawnManager spawnManager;
     UIManager uiManager;
-    DancingManager dancingManager;
 
     int kills;
     int deaths;
@@ -27,7 +26,6 @@ public class PlayerManager : MonoBehaviour
         PV = GetComponent<PhotonView>();
         spawnManager = FindObjectOfType<SpawnManager>();
         uiManager = FindObjectOfType<UIManager>();
-        dancingManager = FindObjectOfType<DancingManager>();
     }
 
     void Start()

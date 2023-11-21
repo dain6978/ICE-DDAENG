@@ -10,12 +10,11 @@ using System.Linq;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    private DancingManager dancingManager;
     private UIManager uiManager;
     PlayerController[] playerControllers;
 
     private float time;
-    private float gameTime = 6f;
+    private float gameTime = 4f;
 
     [HideInInspector]
     public bool isEnd;
@@ -25,7 +24,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         StartGame();
 
-        dancingManager = FindObjectOfType<DancingManager>();
         uiManager = FindObjectOfType<UIManager>();
     }
 
@@ -57,10 +55,25 @@ public class GameManager : MonoBehaviourPunCallbacks
         hash.Add("isEnd", isEnd);
         PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
 
-        SetPlayersEnded();
+        foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
+        {
+            if (player.IsLocal)
+            {
+                RoomManager.Instance.playerDict[player].playerController.GetComponent<PlayerController>().SetPlayersEnded();
+                // Player UI 끄기
+                //playerObject.GetComponentInChildren<PlayerUI>().Hide();
+                // 총 끄기 (동기화 처리 해야 함)
+                //playerObject.GetComponent<PlayerController>().GetItems().SetActive(false); 
+                // 애니메이션 처리 (동기화 처리 해야 함)
+                //playerObject.GetComponentInChildren<PlayerAnimManager>().SetDancingMode();            
+            }
+        }
+        uiManager.DestroyGameUI();
+        Destroy(uiManager);
+
         RankingManager.Instance.ShowRanking();
 
-        Invoke(nameof(OnGameEnd), 10f);
+        Invoke(nameof(OnGameEnd), 60f);
     }
 
 
@@ -81,16 +94,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 #endif
     }
 
-    public void SetPlayersEnded()
-    {
-        foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
-        {
-            if (player.IsLocal)
-                RoomManager.Instance.playerDict[player].playerController.GetComponentInChildren<PlayerUI>().Hide();
-        }
-        uiManager.DestroyGameUI();
-        Destroy(uiManager);
-    }
 
     //public void LeaveRoom()
     //{
