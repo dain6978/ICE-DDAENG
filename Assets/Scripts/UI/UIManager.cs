@@ -14,7 +14,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
 
 
-    private GameManager gameManager;
     private MouseCursor mouseCursor;
     private Stack<GameObject> popupStack;
 
@@ -27,7 +26,6 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
         mouseCursor = GetComponent<MouseCursor>();
         popupStack = new Stack<GameObject>();
 

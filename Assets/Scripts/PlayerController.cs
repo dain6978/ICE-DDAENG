@@ -8,13 +8,11 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamageable 인터페이스 부착 -> 인터페이스의 함수 반드시 구현해야 함
 {
-    [HideInInspector]
-    public GameObject player;
-    public PhotonView PV;
+    PhotonView PV;
 
     [Header("Camera")]
     public GameObject cameraObject;
-    Camera camera;
+    Camera cam;
     [SerializeField] GameObject canvasForGun;
     public int cameraZoom;
 
@@ -92,13 +90,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     private void Awake()
     {
-        player = this.gameObject;
-
         rb = GetComponent<Rigidbody>();
         PV = GetComponent<PhotonView>();
         smr = GetComponentInChildren<SkinnedMeshRenderer>();
         frostEffect = cameraObject.GetComponent<FrostEffect>();
-        camera = cameraObject.GetComponent<Camera>();
+        cam = cameraObject.GetComponent<Camera>();
 
         playerManager = PhotonView.Find((int)PV.InstantiationData[0]).GetComponent<PlayerManager>();
         // PV.InstantiationData[0]: PlayerManager의 createController에 생성하고 전송한 viewID에 대한 정보??
@@ -143,17 +139,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (canDance && playerAnimManager.playerAnimator.runtimeAnimatorController == playerAnimManager.dancingAnimator)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
                 playerAnimManager.DancingAnim1();
-            }
             if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
                 playerAnimManager.DancingAnim2();
-            }
             if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
                 playerAnimManager.DancingAnim3();
-            }
         }
 
         if (isEnd)
@@ -214,7 +204,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             cameraZoom *= -1;
             snowGunZoom *= -1;
             damageGunZoom *= -1;
-            camera.fieldOfView += cameraZoom;
+            cam.fieldOfView += cameraZoom;
             snowGunTransform.localPosition = new Vector3(snowGunTransform.localPosition.x+snowGunZoom, snowGunTransform.localPosition.y, snowGunTransform.localPosition.z);
             damageGunTransform.localPosition = new Vector3(damageGunTransform.localPosition.x + damageGunZoom, damageGunTransform.localPosition.y, damageGunTransform.localPosition.z);
             targettingUI.SetActive(!targettingUI.activeSelf);
@@ -479,38 +469,55 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         //Debug.Log($"{ranking}등, {photonView.name}, isEnd: {isEnd}");
         //입력받을수있도록 변경해야 함.
 
-        
-        RankingManager.Instance.RankingCameraOn();
+        this.gameObject.GetComponentInChildren<PlayerUI>().Hide();
         cameraObject.SetActive(false);
-
-        PV.RPC("RPC_Ice", RpcTarget.All, false);    //만약 눈사람인 경우, 눈사람 해제
         canvasForGun.SetActive(false);
         targettingUI.SetActive(false);
         frostEffect.ResetFrost();
+
+       RankingManager.Instance.RankingCameraOn();
     }
 
     [PunRPC]
     void RPC_SetRanking(int ranking)
     {
+        brokeSnowmanObject.SetActive(false);
+        snowmanObject.SetActive(false);
+        animalObject.SetActive(true);
+
+        if (playerAnimManager != null)
+            playerAnimManager.SetDancingMode();
+
+        itemHolder.SetActive(false);
+
         this.transform.position = RankingManager.Instance.rankingPoints[ranking].position;
         this.transform.rotation = RankingManager.Instance.rankingPoints[ranking].rotation;
         //rb.constraints = RigidbodyConstraints.FreezeAll;
         //rb.mass = 10;
     }
 
-    public void SetPlayersEnded()
-    {
-        PlayerUI playerUI = this.gameObject.GetComponentInChildren<PlayerUI>();
-        if (playerUI != null)
-            this.gameObject.GetComponentInChildren<PlayerUI>().Hide();
-        //this.gameObject.GetComponentInChildren<PlayerAnimManager>().SetDancingMode();
-        PV.RPC("RPC_SetPlayersEnded", RpcTarget.All);
-    }
+    //public void SetPlayersEnded()
+    //{
+    //    PlayerUI playerUI = this.gameObject.GetComponentInChildren<PlayerUI>();
+    //    if (playerUI != null)
+    //        this.gameObject.GetComponentInChildren<PlayerUI>().Hide();
+    //    //this.gameObject.GetComponentInChildren<PlayerAnimManager>().SetDancingMode();
 
-    [PunRPC]
-    void RPC_SetPlayersEnded()
-    {
-        this.gameObject.GetComponentInChildren<PlayerAnimManager>().SetDancingMode();
-        itemHolder.SetActive(false);
-    }
+
+    //    PV.RPC("RPC_SetPlayersEnded", RpcTarget.All);
+    //}
+
+    //[PunRPC]
+    //void RPC_SetPlayersEnded()
+    //{
+    //    brokeSnowmanObject.SetActive(false);
+    //    snowmanObject.SetActive(false);
+    //    animalObject.SetActive(true);
+
+    //    if (playerAnimManager != null)
+    //    {
+    //        playerAnimManager.SetDancingMode();
+    //    }
+    //    itemHolder.SetActive(false);
+    //}
 }

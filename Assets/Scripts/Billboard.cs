@@ -5,16 +5,11 @@ using UnityEngine;
 public class Billboard : MonoBehaviour
 {
     Camera cam;
-    private GameManager gameManager;
 
-    private void Start()
-    {
-        gameManager = FindObjectOfType<GameManager>();
-    }
 
     void Update()
     {
-        if (gameManager.isEnd)
+        if (GameManager.Instance.isEnd)
         {
             this.gameObject.SetActive(false);
             return;

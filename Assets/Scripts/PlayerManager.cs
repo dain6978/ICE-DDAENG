@@ -46,7 +46,7 @@ public class PlayerManager : MonoBehaviour
     }
 
 
-    void CreateController()
+    public void CreateController()
     {
         // Instantiate our player controller
         Transform spawnpoint = spawnManager.GetSpawnPoint();
@@ -58,6 +58,9 @@ public class PlayerManager : MonoBehaviour
 
     public void Die()
     {
+        if (GameManager.Instance.isEnd)
+            return;
+
         PhotonNetwork.Destroy(playerController); // 죽으면 씬에 있는 playerController 파괴
         playerController = null;
 
@@ -101,16 +104,5 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void SetPlayerObject()
-    {
-
-    }
-
-    public GameObject GetPlayerController()
-    {
-        return playerController;
-        // 흠 근데 이런 식으로 하면 죽은 상태에서 리스폰 되기 전에 게임이 끝나면... 오류나지 않나? 
-        // 리스폰할 때 플레이어 컨트롤러 생성 및 파괴 딜레이 없나?
-    }
 
 }

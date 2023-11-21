@@ -10,16 +10,28 @@ using System.Linq;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    private UIManager uiManager;
-    PlayerController[] playerControllers;
+    public static GameManager Instance;
+
+    UIManager uiManager;
+    PlayerManager playerManager;
 
     private float time;
-    private float gameTime = 10f;
+    private float gameTime = 15f;
 
     [HideInInspector]
     public bool isEnd;
 
-    
+    private void Awake()
+    {
+        if (Instance)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
+
     private void Start()
     {
         AudioManager.Instacne.StopBGM();
@@ -58,27 +70,18 @@ public class GameManager : MonoBehaviourPunCallbacks
         hash.Add("isEnd", isEnd);
         PhotonNetwork.CurrentRoom.SetCustomProperties(hash);
 
-        foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
-        {
-            if (player.IsLocal)
-            {
-                RoomManager.Instance.playerDict[player].playerController.GetComponent<PlayerController>().SetPlayersEnded();
-                // Player UI 끄기
-                //playerObject.GetComponentInChildren<PlayerUI>().Hide();
-                // 총 끄기 (동기화 처리 해야 함)
-                //playerObject.GetComponent<PlayerController>().GetItems().SetActive(false); 
-                // 애니메이션 처리 (동기화 처리 해야 함)
-                //playerObject.GetComponentInChildren<PlayerAnimManager>().SetDancingMode();            
-            }
-        }
+        RankingManager.Instance.ShowRanking();
+
         uiManager.DestroyGameUI();
         Destroy(uiManager);
 
-        RankingManager.Instance.ShowRanking();
-
-        Invoke(nameof(OnGameEnd), 60f);
+        Invoke(nameof(OnGameEnd), 20f);
     }
 
+    public void SetPodium()
+    {
+        Debug.Log("룸 여기서 바꾸나?"); // rpc로 다 포지션 세팅하고 옮기는 게 나을 것 같은데..
+    }
 
     private void OnGameEnd()
     {
