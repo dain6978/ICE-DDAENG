@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     PlayerController[] playerControllers;
 
     private float time;
-    private float gameTime = 4f;
+    private float gameTime = 5f;
 
     [HideInInspector]
     public bool isEnd;
@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     
     private void Start()
     {
+        AudioManager.Instacne.StopBGM();
+        AudioManager.Instacne.PlayBGM("Game");
+
         StartGame();
 
         uiManager = FindObjectOfType<UIManager>();
@@ -82,6 +85,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.IsOpen = true;
         RoomManager.roomName = PhotonNetwork.CurrentRoom.Name;
         PhotonNetwork.LeaveRoom();
+        AudioManager.Instacne.PlayBGM("Lobby");
     }
 
     public void QuitGame()

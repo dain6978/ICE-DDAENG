@@ -496,16 +496,16 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     public void SetPlayersEnded()
     {
-        this.gameObject.GetComponentInChildren<PlayerUI>().Hide();
+        PlayerUI playerUI = this.gameObject.GetComponentInChildren<PlayerUI>();
+        if (playerUI != null)
+            this.gameObject.GetComponentInChildren<PlayerUI>().Hide();
         //this.gameObject.GetComponentInChildren<PlayerAnimManager>().SetDancingMode();
-        //this.gameObject.GetComponentInChildren<PlayerAnimManager>().Test();
         PV.RPC("RPC_SetPlayersEnded", RpcTarget.All);
     }
 
     [PunRPC]
     void RPC_SetPlayersEnded()
     {
-        //this.gameObject.GetComponentInChildren<PlayerAnimManager>().Test();
         this.gameObject.GetComponentInChildren<PlayerAnimManager>().SetDancingMode();
         itemHolder.SetActive(false);
     }

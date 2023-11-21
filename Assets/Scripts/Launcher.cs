@@ -76,7 +76,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             return;
         }
 
-
+        AudioManager.Instacne.PlayBGM("Lobby");
         MenuManager.Instance.OpenMenu("title");
     }
 
@@ -238,7 +238,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     }
 
     public void ReturnRoom()
-    {
+    { 
         RoomOptions ro = new RoomOptions();
         ro.MaxPlayers = (byte)maxPlayers;
         ro.IsOpen = true;

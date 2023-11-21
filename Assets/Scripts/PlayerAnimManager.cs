@@ -31,13 +31,6 @@ public class PlayerAnimManager : MonoBehaviour, IPunObservable
         //animPV = this.gameObject.GetComponentInParent<PhotonAnimatorView>();
     }
 
-    private void Update()
-    {
-        if (playerAnimator.runtimeAnimatorController == gameAnimator)
-        {
-            return;
-        }
-    }
 
 
     private void LateUpdate()
@@ -117,8 +110,4 @@ public class PlayerAnimManager : MonoBehaviour, IPunObservable
         animPV.SetParameterSynchronized("Dance3", PhotonAnimatorView.ParameterType.Trigger, PhotonAnimatorView.SynchronizeType.Discrete);
     }
 
-    public void Test()
-    {
-        Debug.Log("테스트용함수");
-    }
 }

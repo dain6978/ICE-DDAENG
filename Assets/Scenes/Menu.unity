@@ -6554,7 +6554,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -8, y: 0}
+  m_AnchoredPosition: {x: -7.999878, y: 0}
   m_SizeDelta: {x: -16.000244, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &719975742
@@ -11446,7 +11446,11 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: bdc5a41352fe1ca4dbfc050ed46d8ee6, type: 3}
   - name: Destruction_die
     clip: {fileID: 8300000, guid: df71a6ab9b4a53c46bb2b3395e406a87, type: 3}
-  bgm: []
+  bgm:
+  - name: Lobby
+    clip: {fileID: 8300000, guid: 8c726ec0d94bd7149b82c40b68f9dadf, type: 3}
+  - name: Game
+    clip: {fileID: 8300000, guid: 2c1097f2559c95146814f469f7ad8dc9, type: 3}
   bgmPlayer: {fileID: 648586716}
   sfxPlayer:
   - {fileID: 1439859876}

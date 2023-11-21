@@ -25,7 +25,7 @@ public class AudioMixerController : MonoBehaviour
 
     public void SetMusicVolume(float volume)
     {
-        m_AudioMixer.SetFloat("BGM", Mathf.Log10(volume) * 20);
+        m_AudioMixer.SetFloat("BGM", Mathf.Log10(volume) * 10);
     }
 
     public void SetSFXVolume(float volume)
