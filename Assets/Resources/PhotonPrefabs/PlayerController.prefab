@@ -3208,6 +3208,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f20b2086edb0fa14194625121c56cecc, type: 3}
   - {fileID: 8300000, guid: 763409ee05f3fce4a8e83df52710a28e, type: 3}
   landSound: {fileID: 8300000, guid: 18ffef6e634a1be4eacb2c4c57d73520, type: 3}
+  twkerSound: {fileID: 8300000, guid: 4d8db6f95bb088e488867d919401a788, type: 3}
+  sambaSound: {fileID: 8300000, guid: 9a2606a8933ea5d468a150ce4538554c, type: 3}
+  hiphopSound: {fileID: 8300000, guid: ec4ec43f558c97e42883dc9babf05477, type: 3}
 --- !u!1 &4941760474556279426
 GameObject:
   m_ObjectHideFlags: 0

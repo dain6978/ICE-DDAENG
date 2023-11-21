@@ -9,7 +9,11 @@ public class PlayerSound : MonoBehaviour
     public AudioClip[] footstepSounds_Walk;
     public AudioClip[] footstepSounds_Run;
 
-    public AudioClip landSound;
+    public AudioClip landSound; 
+
+    public AudioClip twkerSound;
+    public AudioClip sambaSound;
+    public AudioClip hiphopSound;
 
     AudioSource source;
     PhotonView PV;
@@ -38,5 +42,23 @@ public class PlayerSound : MonoBehaviour
     {
         if (!PV.IsMine) return;
         source.PlayOneShot(landSound);
+    }
+
+    public void PlayTwkerSound()
+    {
+        source.Stop();
+        source.PlayOneShot(twkerSound);
+    }
+
+    public void PlaySambaSound()
+    {
+        source.Stop();
+        source.PlayOneShot(sambaSound);
+    }
+
+    public void PlayHiphopSound()
+    {
+        source.Stop();
+        source.PlayOneShot(hiphopSound);
     }
 }
