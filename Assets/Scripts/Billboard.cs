@@ -4,10 +4,22 @@ using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
-    Camera cam; 
+    Camera cam;
+    private GameManager gameManager;
+
+    private void Start()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+    }
 
     void Update()
     {
+        if (gameManager.isEnd)
+        {
+            this.gameObject.SetActive(false);
+            return;
+        }
+
         if (cam == null) //카메라가 null이라면 씬의 어딘가에서 camera를 찾아서 할당
             cam = FindObjectOfType<Camera>();
 

@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     PlayerController[] playerControllers;
 
     private float time;
-    private float gameTime = 5f;
+    private float gameTime = 10f;
 
     [HideInInspector]
     public bool isEnd;

@@ -1900,7 +1900,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0.11429388, y: 0.18553376}
-  m_SizeDelta: {x: 400, y: 100}
+  m_SizeDelta: {x: 500, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &3885955221615555571
 Canvas:
@@ -2961,6 +2961,7 @@ MonoBehaviour:
   snowmanObject: {fileID: 6588742046811497303}
   animalObject: {fileID: 4789930418817990515}
   brokeSnowmanObject: {fileID: 369599320610720448}
+  canClick: 1
 --- !u!54 &966964062745625820
 Rigidbody:
   m_ObjectHideFlags: 0

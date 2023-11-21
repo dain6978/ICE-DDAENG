@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     private GameManager gameManager;
     private MouseCursor mouseCursor;
     private Stack<GameObject> popupStack;
+
+    private GameObject currentPlayer;
     private PlayerUI currentPlayerUI;
 
     public float sec = 0f;
@@ -68,6 +70,12 @@ public class UIManager : MonoBehaviour
         if (popupStack.Count == 0)
             return;
 
+        if (popupStack.Count == 1)
+        {
+            mouseCursor.OffCursor();
+            ShowPlayerUI();
+        }
+
         GameObject popup = popupStack.Pop();
         popup.SetActive(false);
         popup = null;
@@ -94,9 +102,6 @@ public class UIManager : MonoBehaviour
         else
         {
             HidePopupUI();
-            mouseCursor.OffCursor();
-
-            ShowPlayerUI();
         }
     }
 
@@ -122,16 +127,15 @@ public class UIManager : MonoBehaviour
 
     void ShowPlayerUI()
     {
-        //SetPlayerUI();
-        Debug.Log("쇼");
         currentPlayerUI.Show();
+        currentPlayer.GetComponent<PlayerController>().canClick = true; // 플레이어 입력 활성화
     }
 
     void HidePlayerUI()
     {
         SetPlayerUI();
-        Debug.Log("하이드");
         currentPlayerUI.Hide();
+        currentPlayer.GetComponent<PlayerController>().canClick = false; // 플레이어 입력 비활성화
     }
 
     void SetPlayerUI()
@@ -139,7 +143,10 @@ public class UIManager : MonoBehaviour
         foreach (Player player in PhotonNetwork.CurrentRoom.Players.Values)
         {
             if (player.IsLocal)
-                currentPlayerUI = RoomManager.Instance.playerDict[player].playerController.GetComponentInChildren<PlayerUI>();
+            {
+                currentPlayer = RoomManager.Instance.playerDict[player].playerController;
+                currentPlayerUI = currentPlayer.GetComponentInChildren<PlayerUI>();
+            }
         }
     }
 }

@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     float iceTime = 5f;
 
     bool canDance = false;
+    [HideInInspector] public bool canClick = true;
     bool isZoom = false;
     FrostEffect frostEffect;
 
@@ -123,10 +124,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Confined;
 
-            // 플레이어 1인칭 시점에서 자기 자신의 모습 (mesh) 안 보이게 설정
-            //Destroy(playerMeshs[0]);
-            //Destroy(playerMeshs[1]);
-
         }
         else 
         { 
@@ -142,6 +139,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (!PV.IsMine)
             return; //플레이어 컨트롤러가 자기 자신의 플레이어만 컨트롤할 수 있게 
 
+        // 게임 끝났을 때 시상대에서 댄싱
         if (canDance && playerAnimManager.playerAnimator.runtimeAnimatorController == playerAnimManager.dancingAnimator)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -208,6 +206,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     void Zoom()
     {
+        if (!canClick)
+            return;
+
         if (Input.GetMouseButtonDown(1))
         {
             cameraZoom *= -1;
@@ -283,6 +284,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     void Fire()
     {
+        if (!canClick)
+            return;
+
         if (Input.GetButton("Fire1")) //마우스 왼쪽 버튼 누르면 해당 총에 대해 Use (shoot)
         {
             if (isIced)

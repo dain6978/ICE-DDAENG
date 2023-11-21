@@ -51,6 +51,8 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         PhotonNetwork.ConnectUsingSettings();
 
+        AudioManager.Instacne.PlayBGM("Lobby");
+
     }
 
 
@@ -75,8 +77,6 @@ public class Launcher : MonoBehaviourPunCallbacks
 
             return;
         }
-
-        AudioManager.Instacne.PlayBGM("Lobby");
         MenuManager.Instance.OpenMenu("title");
     }
 
