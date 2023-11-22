@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     public GameObject cameraObject;
     Camera cam;
     [SerializeField] GameObject canvasForGun;
+    public GameObject dieEffect;
     public int cameraZoom;
 
     [Header("Items")]
@@ -196,6 +197,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     void Zoom()
     {
+        if (isIced)
+            return;
+
         if (!canClick)
             return;
 
@@ -243,13 +247,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     {
         animalObject.SetActive(!Ice);
         snowmanObject.SetActive(Ice);
-        
     }
 
     
 
     void Item()
     {
+        if (isIced)
+            return;
+
         for (int i = 0; i < items.Length; i++)
         {
             if (Input.GetKeyDown((i + 1).ToString())) //GetKeyDonw("string")이니까 ToString() 한 것
@@ -259,10 +265,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             }
         }
 
-
         int mouseWheel = (int)Input.GetAxisRaw("Mouse ScrollWheel");
         if (mouseWheel == 0) return;
-
 
         itemIndex = (itemIndex + mouseWheel) % (items.Length);
         if (itemIndex < 0) itemIndex *= -1;
@@ -422,10 +426,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         if (isIced)
         {
+            dieEffect.SetActive(true);
+            playerUI.HideAim();
+            playerUI.HideIce();
+            playerUI.ShowRespawn();
+
             PV.RPC("RPC_Break", RpcTarget.All);
             PlayerManager.Find(info.Sender).GetKill();
             AudioManager.Instacne.PlaySFX("Destruction_die");
-            Invoke("Die", 2.0f);
+            Invoke("Die", 3.0f);
         }
     }
 

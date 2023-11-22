@@ -7,8 +7,18 @@ public class PlayerUI : MonoBehaviour
 {
     public GameObject playerCanvas;
     [SerializeField] GameObject aimUI;
+    [SerializeField] GameObject iceUI;
+    [SerializeField] GameObject respawnUI;
     [SerializeField] Sprite[] iceState;
-    [SerializeField] Image[] iceUI;
+    [SerializeField] Image[] iceImg;
+    private Image respawnGauge;
+    private bool isDeath;
+    
+    private void Start()
+    {
+        respawnGauge = respawnUI.transform.GetChild(2).gameObject.GetComponent<Image>();
+        respawnGauge.fillAmount = 0;
+    }
 
     public void Hide()
     {
@@ -25,23 +35,36 @@ public class PlayerUI : MonoBehaviour
         aimUI.SetActive(false);
     }
 
-    public void ShowAim()
+    public void HideIce()
     {
-        aimUI.SetActive(true);
+        iceUI.SetActive(false);
     }
 
+    public void ShowRespawn()
+    {
+        respawnUI.SetActive(true);
+        isDeath = true;
+    }
+
+    private void Update()
+    {
+        if (isDeath)
+        {
+            respawnGauge.fillAmount += (Time.deltaTime/2.8f);
+        }
+    }
 
     public void AddIce()
     {
-        for (int i = 0; i < iceUI.Length; i++)
+        for (int i = 0; i < iceImg.Length; i++)
         {
             // 만약 i번째 ice UI가 non-iced 상태라면 ice 상태로 바꾸고 alpha값 변경
-            if (iceUI[i].sprite == iceState[0])
+            if (iceImg[i].sprite == iceState[0])
             {
-                iceUI[i].sprite = iceState[1];
-                Color color = iceUI[i].color;
+                iceImg[i].sprite = iceState[1];
+                Color color = iceImg[i].color;
                 color.a = 1.0f;
-                iceUI[i].color = color;
+                iceImg[i].color = color;
 
                 return;
             }
@@ -50,12 +73,12 @@ public class PlayerUI : MonoBehaviour
 
     public void ResetIce()
     {
-        for (int i = 0; i < iceUI.Length; i++)
+        for (int i = 0; i < iceImg.Length; i++)
         {
-            iceUI[i].sprite = iceState[0];
-            Color color = iceUI[i].color;
+            iceImg[i].sprite = iceState[0];
+            Color color = iceImg[i].color;
             color.a = 0.4f;
-            iceUI[i].color = color;
+            iceImg[i].color = color;
         }
     }
 }
