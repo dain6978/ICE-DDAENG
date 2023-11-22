@@ -42,6 +42,7 @@ public class FrostEffect : MonoBehaviour
 
     public void ResetFrost()
     {
+        Debug.Log("¿¨");
         FrostAmount = 0.0f;
     }
 

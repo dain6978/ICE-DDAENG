@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     [SerializeField] GameObject snowmanObject;
     [SerializeField] GameObject animalObject;
     [SerializeField] GameObject brokeSnowmanObject;
-
+    FrostEffect frostEffect;
 
 
     //ice개수 초기화 시간
@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     bool canDance = false;
     [HideInInspector] public bool canClick = true;
     bool isZoom = false;
-    FrostEffect frostEffect;
+    bool isDie = false;
 
     private void Awake()
     {
@@ -163,6 +163,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         if (transform.position.y < -10f)
             Die();
 
+        if (isDie)
+            return;
+
         if (iceCurTime < iceCoolTime)
             iceCurTime += Time.deltaTime;
         else
@@ -234,6 +237,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     //ice 초기화
     void ResetIce()
     {
+        if (isDie)
+        {
+            Debug.Log("죽었당!!");
+
+            return;
+        }
+        Debug.Log("죽었다니까 모하노!!");
+
         ice = 0;
         isIced = false;
         playerUI.ResetIce();
@@ -426,6 +437,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         if (isIced)
         {
+            isDie = true;
             dieEffect.SetActive(true);
             playerUI.HideAim();
             playerUI.HideIce();
