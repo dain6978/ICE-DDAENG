@@ -225,12 +225,13 @@ public class Launcher : MonoBehaviourPunCallbacks
 
     public void LoadGameScene()
     {
-        //if(PhotonNetwork.CurrentRoom.PlayerCount < minPlayers)
-        //{
-        //    Debug.Log($"인원 {minPlayers}명부터 게임 시작이 가능합니다.");
-        //    return;
-        //}
-        
+        if (PhotonNetwork.CurrentRoom.PlayerCount < minPlayers)
+        {
+            noticeText.text = "이미 존재하는 방입니다.";
+            noticeWindow.SetActive(true);
+            return;
+        }
+
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.LoadLevel(1);
         //'Game' 씬 로드 (빌드 세팅에서 Game 씬의 인덱스를 1로 설정했기 때문에)

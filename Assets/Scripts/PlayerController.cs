@@ -79,10 +79,10 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     //ice개수 초기화 시간
     float iceCurTime = 0f;
-    float iceCoolTime = 5f;
+    float iceCoolTime = 4f;
 
     //isIced상태 지속시간
-    float iceTime = 5f;
+    float iceTime = 4f;
 
     bool canDance = false;
     [HideInInspector] public bool canClick = true;
