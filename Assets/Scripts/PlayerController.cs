@@ -160,7 +160,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         CheckIce();
 
         // 플레이어 무한 추락 방지
-        if (transform.position.y < -10f)
+        if (transform.position.y < -8f)
             Die();
 
         if (isDie)
