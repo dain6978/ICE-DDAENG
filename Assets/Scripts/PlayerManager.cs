@@ -58,20 +58,23 @@ public class PlayerManager : MonoBehaviour
 
     public void Die()
     {
-        if (GameManager.Instance.isEnd)
-            return;
-
-        PhotonNetwork.Destroy(playerController); // Á×À¸¸é ¾À¿¡ ÀÖ´Â playerController ÆÄ±«
-        playerController = null;
-
-
-        CreateController(); // ¸®½ºÆù
-
         deaths++;
 
         Hashtable hash = new Hashtable();
         hash.Add("deaths", deaths);
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+
+        Invoke(nameof(RespawnPlayer), 3f);
+    }
+
+    void RespawnPlayer()
+    {
+        if (GameManager.Instance.isEnd)
+            return;
+
+        PhotonNetwork.Destroy(playerController); // Á×À¸¸é ¾À¿¡ ÀÖ´Â playerController ÆÄ±«
+        playerController = null;
+        CreateController(); // ¸®½ºÆù
     }
     
     public void GetKill()

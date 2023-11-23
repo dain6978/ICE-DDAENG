@@ -418,6 +418,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     {
         
         PV.RPC(nameof(RPC_TakeDamage), PV.Owner);
+        playerUI.HideAim();
+        playerUI.HideIce();
+        playerUI.ShowRespawn();
         //RPC 호출하는 법: PV.RPC("함수 이름), 타겟, 함수 파라미터) 
         //RpcTarget.All: 서버에 있는 모든 플레이어에게 정보 전달
         //PV.Owner은 데미지 입는 본인한테만.
@@ -435,18 +438,15 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     void RPC_TakeDamage(PhotonMessageInfo info) // runs on everyone's computer, but the '!PV.IsMine' check makes it only run on the victim's computer
     {
 
-        if (isIced)
+        if (isIced && !isDie)
         {
             isDie = true;
             dieEffect.SetActive(true);
-            playerUI.HideAim();
-            playerUI.HideIce();
-            playerUI.ShowRespawn();
 
             PV.RPC("RPC_Break", RpcTarget.All);
             PlayerManager.Find(info.Sender).GetKill();
             AudioManager.Instacne.PlaySFX("Destruction_die");
-            Invoke("Die", 3.0f);
+            Die();
         }
     }
 
@@ -469,12 +469,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         frostEffect.AddFrost();
         playerUI.AddIce();
 
-    }
-
-    void Die()
-    {
-        // 플레이어 매니저에서 플레이어의 death와 respawning 관리
-        playerManager.Die();
     }
 
 
@@ -517,6 +511,11 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         //rb.mass = 10;
     }
 
+    void Die()
+    {
+        playerManager.Die();
+        PV.ObservedComponents.Clear();
+    }
     //public void SetPlayersEnded()
     //{
     //    PlayerUI playerUI = this.gameObject.GetComponentInChildren<PlayerUI>();
