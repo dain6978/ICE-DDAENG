@@ -227,7 +227,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.CurrentRoom.PlayerCount < minPlayers)
         {
-            noticeText.text = "이미 존재하는 방입니다.";
+            noticeText.text = "최소 플레이어 수는 2명입니다.";
             noticeWindow.SetActive(true);
             return;
         }
