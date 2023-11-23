@@ -16592,6 +16592,10 @@ PrefabInstance:
       propertyPath: Loop
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2452759014765336400, guid: 68ab78441838e374eb285a93ff1554d0, type: 3}
+      propertyPath: m_Volume
+      value: 0.007
+      objectReference: {fileID: 0}
     - target: {fileID: 2452759015471424153, guid: 68ab78441838e374eb285a93ff1554d0, type: 3}
       propertyPath: m_MusicBGMSlider
       value: 
