@@ -437,7 +437,6 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
         if (isIced && !isDie)
         {
-            isDie = true;
             dieEffect.SetActive(true);
 
             playerUI.HideAim();
