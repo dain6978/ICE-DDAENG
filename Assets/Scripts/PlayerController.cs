@@ -159,12 +159,12 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
         Fire();
         CheckIce();
 
+        if (isDie)
+            return;
+
         // 플레이어 무한 추락 방지
         if (transform.position.y < -8f)
             Die();
-
-        if (isDie)
-            return;
 
         if (iceCurTime < iceCoolTime)
             iceCurTime += Time.deltaTime;
@@ -212,8 +212,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             snowGunZoom *= -1;
             damageGunZoom *= -1;
             cam.fieldOfView += cameraZoom;
-            snowGunTransform.localPosition = new Vector3(snowGunTransform.localPosition.x+snowGunZoom, snowGunTransform.localPosition.y, snowGunTransform.localPosition.z);
-            damageGunTransform.localPosition = new Vector3(damageGunTransform.localPosition.x + damageGunZoom, damageGunTransform.localPosition.y, damageGunTransform.localPosition.z);
+            //snowGunTransform.localPosition = new Vector3(snowGunTransform.localPosition.x+snowGunZoom, snowGunTransform.localPosition.y, snowGunTransform.localPosition.z);
+            //damageGunTransform.localPosition = new Vector3(damageGunTransform.localPosition.x + damageGunZoom, damageGunTransform.localPosition.y, damageGunTransform.localPosition.z);
             targettingUI.SetActive(!targettingUI.activeSelf);
         }
        
@@ -416,11 +416,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
     //IDamageable 인터페이스의 TakeDamage 함수 구현
     public void TakeDamage() //runs on the shooter's computer
     {
-        
         PV.RPC(nameof(RPC_TakeDamage), PV.Owner);
-        playerUI.HideAim();
-        playerUI.HideIce();
-        playerUI.ShowRespawn();
+        
         //RPC 호출하는 법: PV.RPC("함수 이름), 타겟, 함수 파라미터) 
         //RpcTarget.All: 서버에 있는 모든 플레이어에게 정보 전달
         //PV.Owner은 데미지 입는 본인한테만.
@@ -443,6 +440,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
             isDie = true;
             dieEffect.SetActive(true);
 
+            playerUI.HideAim();
+            playerUI.HideIce();
+            playerUI.ShowRespawn();
             PV.RPC("RPC_Break", RpcTarget.All);
             PlayerManager.Find(info.Sender).GetKill();
             AudioManager.Instacne.PlaySFX("Destruction_die");
@@ -513,6 +513,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IDamageable //IDamage
 
     void Die()
     {
+        if (isDie) return;
+        isDie = true;
         playerManager.Die();
         PV.ObservedComponents.Clear();
     }
